@@ -5,9 +5,9 @@ A modern single-page experience built with Next.js 16, Tailwind CSS, and Framer 
 ## Stack
 
 - Next.js App Router + TypeScript
-- Tailwind CSS v4 with custom utility helpers
+- Tailwind CSS v4
 - Framer Motion for entrance choreography
-- Lucide icons for consistent visual language
+- Lucide icons 
 
 ## Local Development
 
@@ -25,4 +25,3 @@ npm run build
 npm run start
 ```
 
-Lint the project with `npm run lint` before committing. Deploy on Vercel or any Node-compatible platform.

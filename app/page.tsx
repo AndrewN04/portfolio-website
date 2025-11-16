@@ -9,35 +9,133 @@ import {
   Mail,
   Sparkles,
 } from "lucide-react";
+import { type IconType } from "react-icons";
+import {
+  SiNextdotjs,
+  SiPostgresql,
+  SiPrisma,
+  SiPython,
+  SiOpencv,
+  SiMongodb,
+  SiTailwindcss,
+} from "react-icons/si";
 
-const projects = [
+const LangChainIcon: IconType = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+    <path
+      d="M9.5 7.5a3 3 0 0 1 4.243 0l2.757 2.757a3 3 0 0 1 0 4.243l-1.061 1.061"
+      stroke="currentColor"
+      strokeWidth={1.6}
+      strokeLinecap="round"
+    />
+    <path
+      d="M14.5 16.5a3 3 0 0 1-4.243 0L7.5 13.743a3 3 0 0 1 0-4.243L8.56 8.44"
+      stroke="currentColor"
+      strokeWidth={1.6}
+      strokeLinecap="round"
+    />
+  </svg>
+);
+
+type TechKey =
+  | "nextjs"
+  | "postgres"
+  | "prisma"
+  | "python"
+  | "opencv"
+  | "langchain"
+  | "mongodb"
+  | "tailwind";
+
+const techRegistry: Record<
+  TechKey,
+  { label: string; icon: IconType; color: string; background: string }
+> = {
+  nextjs: {
+    label: "Next.js",
+    icon: SiNextdotjs,
+    color: "#F1F5F9",
+    background: "rgba(248,250,252,0.08)",
+  },
+  postgres: {
+    label: "PostgreSQL",
+    icon: SiPostgresql,
+    color: "#48A9DC",
+    background: "rgba(14,165,233,0.12)",
+  },
+  prisma: {
+    label: "Prisma",
+    icon: SiPrisma,
+    color: "#0C344B",
+    background: "rgba(148,163,184,0.12)",
+  },
+  python: {
+    label: "Python",
+    icon: SiPython,
+    color: "#FACC15",
+    background: "rgba(250,204,21,0.1)",
+  },
+  opencv: {
+    label: "OpenCV",
+    icon: SiOpencv,
+    color: "#4ADE80",
+    background: "rgba(74,222,128,0.12)",
+  },
+  langchain: {
+    label: "LangChain",
+    icon: LangChainIcon,
+    color: "#22D3EE",
+    background: "rgba(45,212,191,0.12)",
+  },
+  mongodb: {
+    label: "MongoDB",
+    icon: SiMongodb,
+    color: "#34D399",
+    background: "rgba(52,211,153,0.12)",
+  },
+  tailwind: {
+    label: "Tailwind CSS",
+    icon: SiTailwindcss,
+    color: "#38BDF8",
+    background: "rgba(56,189,248,0.12)",
+  },
+};
+
+type Project = {
+  title: string;
+  description: string;
+  link: string;
+  tech: TechKey[];
+};
+
+const projects: Project[] = [
   {
     title: "TMDB Explorer",
     description:
       "Movie discovery experience with curated collections, smart search, and personalized watchlists powered by TMDB.",
     link: "https://github.com/AndrewN04/tmdb-app",
-    stats: ["Next.js", "TMDB API", "Edge Rendering"],
+    tech: ["nextjs", "postgres", "prisma"],
   },
   {
     title: "Service AI Agent",
     description:
       "Multi-agent research assistant built for CS4485 that evaluates prompts, plans tasks, and orchestrates LLM responses.",
     link: "https://github.com/AndrewN04/CS4485-AI-Agent",
-    stats: ["Python", "LangChain", "Vector Search"],
+    tech: ["python", "langchain", "mongodb"],
   },
   {
     title: "Weather Dashboard",
     description:
       "Weather intelligence dashboard with live radar, geolocation alerts, and responsive offline-ready UI.",
     link: "https://github.com/AndrewN04/weather-app",
-    stats: ["Progressive Web App", "Service Workers", "Mapbox"],
+    tech: ["nextjs", "tailwind"],
   },
   {
     title: "Human Pose Detection",
     description:
       "Real-time skeletal tracking prototype combining WebGL overlays with TensorFlow pose estimation.",
     link: "https://github.com/AndrewN04/human-pos-detection",
-    stats: ["TensorFlow.js", "WebGL", "Computer Vision"],
+    tech: ["python", "opencv"],
   },
 ];
 
@@ -75,7 +173,7 @@ const fadeIn = {
 export default function Home() {
   return (
     <div className="relative isolate overflow-hidden bg-slate-950 text-slate-100">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.12),_transparent_45%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.12),transparent_45%)]" />
       <div className="noise-mask" aria-hidden />
 
       <motion.div
@@ -86,7 +184,7 @@ export default function Home() {
       >
         <motion.section
           variants={fadeIn}
-          className="grid gap-10 rounded-[32px] border border-white/10 bg-white/5 p-10 backdrop-blur-xl lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]"
+          className="grid gap-10 rounded-4xl border border-white/10 bg-white/5 p-10 backdrop-blur-xl lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]"
         >
           <div>
             <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm text-slate-200">
@@ -180,12 +278,23 @@ export default function Home() {
                   </div>
                   <p className="mt-4 text-base text-slate-300">{project.description}</p>
                 </div>
-                <div className="mt-6 flex flex-wrap gap-2 text-xs text-slate-300">
-                  {project.stats.map((stat) => (
-                    <span key={stat} className="rounded-full border border-white/10 px-3 py-1">
-                      {stat}
-                    </span>
-                  ))}
+                <div className="mt-6 flex flex-wrap gap-3">
+                  {project.tech.map((techKey) => {
+                    const tech = techRegistry[techKey];
+                    if (!tech) return null;
+                    const Icon = tech.icon;
+                    return (
+                      <span
+                        key={`${project.title}-${techKey}`}
+                        className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10"
+                        style={{ backgroundColor: tech.background }}
+                        title={tech.label}
+                      >
+                        <Icon className="h-5 w-5" style={{ color: tech.color }} aria-hidden />
+                        <span className="sr-only">{tech.label}</span>
+                      </span>
+                    );
+                  })}
                 </div>
                 <a
                   href={project.link}
@@ -228,7 +337,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="fade-border flex flex-col justify-between rounded-[28px] bg-gradient-to-br from-slate-900/80 via-slate-900/40 to-slate-800/60 p-8">
+          <div className="fade-border flex flex-col justify-between rounded-[28px] bg-linear-to-br from-slate-900/80 via-slate-900/40 to-slate-800/60 p-8">
             <div>
               <p className="text-sm uppercase tracking-[0.2em] text-slate-300">Availability</p>
               <h3 className="mt-3 text-2xl font-semibold text-white">Got a question? Send me a message.</h3>
@@ -257,7 +366,7 @@ export default function Home() {
           </div>
         </motion.section>
 
-        <motion.footer variants={fadeIn} className="rounded-[24px] border border-white/10 bg-slate-900/60 px-6 py-4 text-center text-sm text-slate-400">
+        <motion.footer variants={fadeIn} className="rounded-3xl border border-white/10 bg-slate-900/60 px-6 py-4 text-center text-sm text-slate-400">
           Built with Next.js 16, Tailwind CSS, and Framer Motion.
         </motion.footer>
       </motion.div>
