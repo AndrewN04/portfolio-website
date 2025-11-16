@@ -16,6 +16,7 @@ npm install
 npm run dev
 ```
 
+Access at https://andrewn04.github.io/
 Visit [http://localhost:3000](http://localhost:3000) to view the site. The main content lives in `app/page.tsx`, and global styling tweaks live in `app/globals.css`.
 
 ## Production
