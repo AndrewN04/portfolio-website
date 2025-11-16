@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
@@ -19,6 +20,8 @@ import {
   SiMongodb,
   SiTailwindcss,
 } from "react-icons/si";
+
+const heroRoles = ["Developer", "Designer", "Innovator"] as const;
 
 const LangChainIcon: IconType = (props) => (
   <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
@@ -165,12 +168,52 @@ const focusAreas = [
   },
 ];
 
+const useTypewriter = (
+  words: readonly string[],
+  typingSpeed = 120,
+  pauseDuration = 1500,
+) => {
+  const [index, setIndex] = useState(0);
+  const [subIndex, setSubIndex] = useState(0);
+  const [direction, setDirection] = useState<"forward" | "backward">("forward");
+
+  useEffect(() => {
+    const currentWord = words[index];
+    const isCompleted = direction === "forward" && subIndex === currentWord.length;
+    const isEmpty = direction === "backward" && subIndex === 0;
+
+    let timeout: ReturnType<typeof setTimeout>;
+
+    if (isCompleted) {
+      timeout = setTimeout(() => setDirection("backward"), pauseDuration);
+      return () => clearTimeout(timeout);
+    }
+
+    if (isEmpty) {
+      timeout = setTimeout(() => {
+        setDirection("forward");
+        setIndex((prev) => (prev + 1) % words.length);
+      }, typingSpeed);
+      return () => clearTimeout(timeout);
+    }
+
+    timeout = setTimeout(() => {
+      setSubIndex((prev) => prev + (direction === "forward" ? 1 : -1));
+    }, direction === "forward" ? typingSpeed : typingSpeed / 2);
+
+    return () => clearTimeout(timeout);
+  }, [words, index, subIndex, direction, typingSpeed, pauseDuration]);
+
+  return words[index].slice(0, subIndex);
+};
+
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0 },
 };
 
 export default function Home() {
+  const typedRole = useTypewriter(heroRoles);
   return (
     <div className="relative isolate overflow-hidden bg-slate-950 text-slate-100">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.12),transparent_45%)]" />
@@ -194,34 +237,41 @@ export default function Home() {
             <h1 className="text-4xl font-semibold leading-tight text-white md:text-5xl">
               Andrew Nguyen
             </h1>
+            <p className="mt-3 text-xl font-medium text-slate-200 md:text-2xl" aria-live="polite">
+              <span className="text-slate-400">— </span>
+              <span className="text-white/90">{typedRole}</span>
+              <span className="caret align-middle" aria-hidden />
+            </p>
             <p className="mt-6 text-lg text-slate-300">
                 I develop full-stack experiences that balance functionality with great design, and I enjoy solving problems,
                 learning new technologies, and building tools that make people’s lives easier.
             </p>
-            <div className="mt-8 flex flex-wrap gap-4">
+            <div className="mt-8 flex flex-col gap-4">
               <Link
                 href="#projects"
-                className="group inline-flex items-center gap-2 rounded-full bg-slate-100 px-6 py-3 text-slate-900 transition hover:bg-white"
+                className="group inline-flex w-fit items-center gap-2 self-start rounded-full bg-slate-100 px-6 py-3 text-slate-900 transition hover:bg-white"
               >
                 Peek at my projects
                 <ArrowUpRight className="h-5 w-5 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
               </Link>
-              <a
-                href="mailto:hello@andrewnguyen.dev"
-                className="inline-flex items-center gap-2 rounded-full border border-white/20 px-6 py-3 text-white transition hover:border-white/40"
-              >
-                <Mail className="h-5 w-5" />
-                Contact me
-              </a>
-              <a
-                href="https://github.com/AndrewN04"
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-2 rounded-full border border-white/20 px-6 py-3 text-white transition hover:border-white/40"
-              >
-                <Github className="h-5 w-5" />
-                GitHub
-              </a>
+              <div className="flex flex-wrap gap-4">
+                <a
+                  href="mailto:hello@andrewnguyen.dev"
+                  className="inline-flex items-center gap-2 rounded-full border border-white/20 px-6 py-3 text-white transition hover:border-white/40"
+                >
+                  <Mail className="h-5 w-5" />
+                  Contact me
+                </a>
+                <a
+                  href="https://github.com/AndrewN04"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full border border-white/20 px-6 py-3 text-white transition hover:border-white/40"
+                >
+                  <Github className="h-5 w-5" />
+                  GitHub
+                </a>
+              </div>
             </div>
           </div>
 
@@ -252,7 +302,7 @@ export default function Home() {
           <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
             <div>
               <p className="text-sm uppercase tracking-[0.2em] text-slate-400">Selected projects</p>
-              <h2 className="text-3xl font-semibold text-white">Shipped with curiosity and polish.</h2>
+              <h2 className="text-3xl font-semibold text-white">Built with curiosity.</h2>
             </div>
             <a
               href="https://github.com/AndrewN04"

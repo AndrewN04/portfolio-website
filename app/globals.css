@@ -36,6 +36,26 @@ body {
   color: #f8fafc;
 }
 
+.caret {
+  display: inline-block;
+  width: 2px;
+  height: 1.3em;
+  margin-left: 0.25rem;
+  background: currentColor;
+  animation: caret-blink 1s steps(1) infinite;
+}
+
+@keyframes caret-blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  50.0001%,
+  100% {
+    opacity: 0;
+  }
+}
+
 .sr-only {
   position: absolute;
   width: 1px;
