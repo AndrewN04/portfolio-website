@@ -41,7 +41,7 @@ export default function Home() {
         </motion.div>
 
         <motion.footer variants={fadeIn} className="rounded-3xl border border-white/10 bg-slate-900/60 px-6 py-4 text-center text-sm text-slate-400">
-          Built with Next.js 16, Tailwind CSS, and Framer Motion.
+          Built with Next.js, Tailwind CSS, and Framer Motion.
         </motion.footer>
       </motion.div>
       <ScrollToTopButton />

@@ -1,6 +1,40 @@
+"use client";
+
+import { useState } from "react";
 import { Mail } from "lucide-react";
 
+const FORM_ENDPOINT = "https://formspree.io/f/mjkjlqdn";
+
 export function ContactSection() {
+  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+
+    setStatus("sending");
+    try {
+      const response = await fetch(FORM_ENDPOINT, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+        },
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Form submission failed");
+      }
+
+      setStatus("success");
+      form.reset();
+    } catch (error) {
+      console.error(error);
+      setStatus("error");
+    }
+  };
+
   return (
     <section
       id="contact"
@@ -11,12 +45,11 @@ export function ContactSection() {
           <p className="text-sm uppercase tracking-[0.2em] text-slate-300">Availability</p>
           <h3 className="mt-3 text-3xl font-semibold text-white">Contact me through my form or by email.</h3>
           <p className="mt-3 text-slate-300">
-            Remote-friendly from the US. I&apos;d love to hear from you. Share a few details and I&apos;ll follow up within one business
-            day.
+            Remote-friendly from the US. I&apos;d love to hear from you. Share a few details and I&apos;ll follow up with you.
           </p>
         </div>
         <a
-          href="mailto:hello@andrewnguyen.dev"
+          href="mailto:andrew@a04.dev"
           className="inline-flex w-fit items-center gap-2 rounded-full bg-white px-5 py-3 text-slate-900 transition hover:bg-slate-100"
         >
           <Mail className="h-5 w-5" />
@@ -24,11 +57,9 @@ export function ContactSection() {
         </a>
       </div>
 
-      <form className="rounded-[28px] border border-white/10 bg-slate-900/40 p-5 text-sm text-slate-200 sm:p-6">
-        <p className="text-base font-medium text-white">Contact Form</p>
-        <p className="mt-1 text-xs text-slate-400">
-          Temporary form — let me know the best way to reach you and I&apos;ll reply manually.
-        </p>
+      <form onSubmit={handleSubmit} className="rounded-[28px] border border-white/10 bg-slate-900/40 p-5 text-sm text-slate-200 sm:p-6">
+        <p className="text-lg font-medium text-white">Contact Form</p>
+        <p className="mt-1 text-sm text-slate-400">I typically reply within two to three business days.</p>
         <div className="mt-5 grid gap-4">
           <div>
             <label htmlFor="contact-name" className="mb-1 block text-xs uppercase tracking-[0.2em] text-slate-400">
@@ -39,6 +70,7 @@ export function ContactSection() {
               name="name"
               type="text"
               placeholder="John Doe"
+              required
               className="w-full rounded-2xl border border-white/10 bg-slate-900/60 px-4 py-3 text-base text-white outline-none ring-0 transition focus:border-white/40"
             />
           </div>
@@ -51,6 +83,7 @@ export function ContactSection() {
               name="email"
               type="email"
               placeholder="email@address.com"
+              required
               className="w-full rounded-2xl border border-white/10 bg-slate-900/60 px-4 py-3 text-base text-white outline-none ring-0 transition focus:border-white/40"
             />
           </div>
@@ -63,17 +96,22 @@ export function ContactSection() {
               name="message"
               rows={4}
               placeholder="Type here..."
+              required
               className="w-full rounded-2xl border border-white/10 bg-slate-900/60 px-4 py-3 text-base text-white outline-none ring-0 transition focus:border-white/40"
             />
           </div>
           <button
-            type="button"
-            disabled
-            className="inline-flex items-center justify-center rounded-full bg-white/10 px-4 py-3 font-medium text-white transition hover:bg-white/20 disabled:opacity-60"
+            type="submit"
+            disabled={status === "sending"}
+            className="inline-flex items-center justify-center rounded-full bg-white/10 px-4 py-3 font-medium text-white transition hover:bg-white/20 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            Send message (coming soon)
+            {status === "sending" ? "Sending…" : status === "success" ? "Message sent" : "Send message"}
           </button>
         </div>
+        <p className="mt-3 text-xs text-slate-400" aria-live="polite">
+          {status === "success" && "Thanks for reaching out! I’ll get back to you shortly."}
+          {status === "error" && "Hmm—something went wrong. Could you try again in a moment?"}
+        </p>
       </form>
     </section>
   );
