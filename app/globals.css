@@ -31,6 +31,10 @@ body {
   overflow-x: hidden;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 ::selection {
   background: rgba(129, 140, 248, 0.4);
   color: #f8fafc;

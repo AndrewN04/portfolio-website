@@ -74,7 +74,7 @@ export function HeroSection() {
         </Link>
         <div className="flex flex-wrap gap-4">
           <a
-            href="mailto:hello@andrewnguyen.dev"
+            href="#contact"
             className="inline-flex items-center gap-2 rounded-full border border-white/20 px-6 py-3 text-white transition hover:border-white/40"
           >
             <Mail className="h-5 w-5" />

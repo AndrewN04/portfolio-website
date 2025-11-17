@@ -5,6 +5,7 @@ import { HeroSection } from "./components/hero";
 import { FocusPanel } from "./components/focus-panel";
 import { ProjectsGrid } from "./components/projects-grid";
 import { ContactSection } from "./components/contact-section";
+import { ScrollToTopButton } from "./components/scroll-to-top";
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -43,6 +44,7 @@ export default function Home() {
           Built with Next.js 16, Tailwind CSS, and Framer Motion.
         </motion.footer>
       </motion.div>
+      <ScrollToTopButton />
     </div>
   );
 }

@@ -2,7 +2,10 @@ import { Mail } from "lucide-react";
 
 export function ContactSection() {
   return (
-    <section className="fade-border grid gap-10 rounded-4xl bg-linear-to-br from-slate-900/80 via-slate-900/40 to-slate-800/60 p-8 lg:grid-cols-2">
+    <section
+      id="contact"
+      className="fade-border grid gap-10 rounded-4xl bg-linear-to-br from-slate-900/80 via-slate-900/40 to-slate-800/60 p-8 lg:grid-cols-2"
+    >
       <div className="flex flex-col gap-8">
         <div>
           <p className="text-sm uppercase tracking-[0.2em] text-slate-300">Availability</p>
@@ -17,7 +20,7 @@ export function ContactSection() {
           className="inline-flex w-fit items-center gap-2 rounded-full bg-white px-5 py-3 text-slate-900 transition hover:bg-slate-100"
         >
           <Mail className="h-5 w-5" />
-          Email Andrew
+          Email Me
         </a>
       </div>
 
