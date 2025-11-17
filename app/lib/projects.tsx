@@ -7,6 +7,10 @@ import {
   SiOpencv,
   SiMongodb,
   SiTailwindcss,
+  SiTensorflow,
+  SiFastapi,
+  SiSqlite,
+  SiCplusplus,
 } from "react-icons/si";
 
 const LangChainIcon: IconType = (props) => (
@@ -34,7 +38,11 @@ export type TechKey =
   | "opencv"
   | "langchain"
   | "mongodb"
-  | "tailwind";
+  | "tailwind"
+  | "tensorflow"
+  | "fastapi"
+  | "sqlite"
+  | "cplusplus";
 
 export const techRegistry: Record<
   TechKey,
@@ -88,6 +96,30 @@ export const techRegistry: Record<
     color: "#38BDF8",
     background: "rgba(56,189,248,0.12)",
   },
+  tensorflow: {
+    label: "TensorFlow",
+    icon: SiTensorflow,
+    color: "#F97316",
+    background: "rgba(249,115,22,0.12)",
+  },
+  fastapi: {
+    label: "FastAPI",
+    icon: SiFastapi,
+    color: "#10B981",
+    background: "rgba(16,185,129,0.12)",
+  },
+  sqlite: {
+    label: "SQLite",
+    icon: SiSqlite,
+    color: "#38AADD",
+    background: "rgba(56,170,221,0.12)",
+  },
+  cplusplus: {
+    label: "C++",
+    icon: SiCplusplus,
+    color: "#2563EB",
+    background: "rgba(37,99,235,0.12)",
+  },
 };
 
 export type Project = {
@@ -99,7 +131,7 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    title: "TMDB Explorer",
+    title: "TMDB Explorer (In Progress)",
     description:
       "Movie discovery experience with curated collections, smart search, and personalized watchlists powered by TMDB.",
     link: "https://github.com/AndrewN04/tmdb-app",
@@ -124,7 +156,28 @@ export const projects: Project[] = [
     description:
       "Real-time skeletal tracking prototype combining WebGL overlays with TensorFlow pose estimation.",
     link: "https://github.com/AndrewN04/human-pos-detection",
-    tech: ["python", "opencv"],
+    tech: ["python", "opencv", "tensorflow"],
+  },
+  {
+    title: "Task Management Web App (Planned)",
+    description:
+      "Upcoming productivity suite for prioritizing work, automations, and handoffs built with real-time collaboration in mind.",
+    link: "",
+    tech: ["nextjs", "postgres", "prisma"],
+  },
+  {
+    title: "Data Visualization Tool (Planned)",
+    description:
+      "Planned analytics playground pairing a performant Next.js front-end with FastAPI pipelines for custom dashboards.",
+    link: "",
+    tech: ["nextjs", "python", "fastapi"],
+  },
+  {
+    title: "Personal Finance Tracker (Planned)",
+    description:
+      "Roadmap concept for a privacy-first budgeting companion powered by lightweight native modules.",
+    link: "",
+    tech: ["sqlite", "cplusplus"],
   },
 ];
 
