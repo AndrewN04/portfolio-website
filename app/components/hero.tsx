@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ArrowUpRight, Github, Mail, Sparkles } from "lucide-react";
+import { ArrowUpRight, Download, Mail, Sparkles } from "lucide-react";
 
 const heroRoles = ["Developer", "Designer", "Innovator"] as const;
 
@@ -81,13 +81,13 @@ export function HeroSection() {
             Contact me
           </a>
           <a
-            href="https://github.com/AndrewN04"
+            href="/Andrew-CV.pdf"
             target="_blank"
             rel="noreferrer"
             className="inline-flex items-center gap-2 rounded-full border border-white/20 px-6 py-3 text-white transition hover:border-white/40"
           >
-            <Github className="h-5 w-5" />
-            GitHub
+            <Download className="h-5 w-5" />
+            View CV
           </a>
         </div>
       </div>
