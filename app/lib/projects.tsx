@@ -132,7 +132,7 @@ export const toolbelt = [
   "Next.js",
   "TypeScript",
   "Node.js",
-  "HTML, CSS, JS",
+  "MongoDB",
   "PostgreSQL",
   "React",
   "Tailwind CSS",

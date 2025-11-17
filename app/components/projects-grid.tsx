@@ -3,7 +3,7 @@ import { projects, techRegistry } from "../lib/projects";
 
 export function ProjectsGrid() {
   return (
-    <section id="projects" className="space-y-6">
+    <section id="projects" className="space-y-8">
       <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
         <div>
           <p className="text-sm uppercase tracking-[0.2em] text-slate-400">Selected projects</p>
@@ -20,11 +20,11 @@ export function ProjectsGrid() {
         </a>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2">
+      <div className="grid gap-8 md:grid-cols-2">
         {projects.map((project) => (
           <article
             key={project.title}
-            className="fade-border group relative flex h-full flex-col justify-between rounded-[28px] bg-slate-900/60 p-8 transition hover:-translate-y-1"
+            className="fade-border group relative flex h-full flex-col justify-between rounded-[28px] bg-slate-900/60 p-6 sm:p-7 lg:p-8 transition hover:-translate-y-1"
           >
             <div>
               <div className="flex items-center justify-between">

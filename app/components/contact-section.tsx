@@ -4,9 +4,9 @@ export function ContactSection() {
   return (
     <section
       id="contact"
-      className="fade-border grid gap-10 rounded-4xl bg-linear-to-br from-slate-900/80 via-slate-900/40 to-slate-800/60 p-8 lg:grid-cols-2"
+      className="fade-border grid gap-8 rounded-4xl bg-linear-to-br from-slate-900/80 via-slate-900/40 to-slate-800/60 p-6 sm:p-8 lg:grid-cols-2"
     >
-      <div className="flex flex-col gap-8">
+      <div className="flex flex-col gap-6 sm:gap-8">
         <div>
           <p className="text-sm uppercase tracking-[0.2em] text-slate-300">Availability</p>
           <h3 className="mt-3 text-3xl font-semibold text-white">Contact me through my form or by email.</h3>
@@ -24,7 +24,7 @@ export function ContactSection() {
         </a>
       </div>
 
-      <form className="rounded-[28px] border border-white/10 bg-slate-900/40 p-6 text-sm text-slate-200">
+      <form className="rounded-[28px] border border-white/10 bg-slate-900/40 p-5 text-sm text-slate-200 sm:p-6">
         <p className="text-base font-medium text-white">Contact Form</p>
         <p className="mt-1 text-xs text-slate-400">
           Temporary form — let me know the best way to reach you and I&apos;ll reply manually.

@@ -26,7 +26,7 @@ export default function Home() {
       >
         <motion.section
           variants={fadeIn}
-          className="grid gap-10 rounded-4xl border border-white/10 bg-white/5 p-10 backdrop-blur-xl lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]"
+          className="grid gap-10 rounded-4xl border border-white/10 bg-white/5 p-6 sm:p-8 lg:p-10 backdrop-blur-xl lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]"
         >
           <HeroSection />
           <FocusPanel />
