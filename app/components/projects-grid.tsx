@@ -49,9 +49,10 @@ export function ProjectsGrid() {
             className="hidden md:flex items-center gap-1 text-[#1337ec] font-medium hover:text-[#0f2cb8] transition-colors"
             href="https://github.com/AndrewN04"
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
+            aria-label="View GitHub profile (opens in new tab)"
           >
-            View Github <span className="material-symbols-outlined text-sm">open_in_new</span>
+            View Github <span className="material-symbols-outlined text-sm" aria-hidden="true">open_in_new</span>
           </a>
         </div>
 
@@ -79,8 +80,9 @@ export function ProjectsGrid() {
                         <a
                           href={project.link}
                           target="_blank"
-                          rel="noreferrer"
+                          rel="noopener noreferrer"
                           className="bg-white text-black text-sm font-bold py-2 px-4 rounded-full hover:bg-slate-100 transition-colors"
+                          aria-label={`View ${project.title} repository (opens in new tab)`}
                         >
                           View Repository
                         </a>
@@ -95,15 +97,15 @@ export function ProjectsGrid() {
                       </h3>
                       <div className="flex gap-2">
                         {project.link && (
-                          <a
-                            href={project.link}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="text-slate-500 hover:text-white cursor-pointer transition-colors"
-                            title="Github"
-                          >
-                            <span className="material-symbols-outlined">code</span>
-                          </a>
+<a
+                          href={project.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-slate-500 hover:text-white cursor-pointer transition-colors"
+                          aria-label={`View ${project.title} on GitHub (opens in new tab)`}
+                        >
+                          <span className="material-symbols-outlined" aria-hidden="true">code</span>
+                        </a>
                         )}
                       </div>
                     </div>
@@ -176,9 +178,10 @@ export function ProjectsGrid() {
             className="inline-flex items-center gap-1 text-[#1337ec] font-medium hover:text-[#0f2cb8] transition-colors"
             href="https://github.com/AndrewN04"
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
+            aria-label="View GitHub profile (opens in new tab)"
           >
-            View Github <span className="material-symbols-outlined text-sm">open_in_new</span>
+            View Github <span className="material-symbols-outlined text-sm" aria-hidden="true">open_in_new</span>
           </a>
         </div>
       </div>

@@ -32,10 +32,11 @@ export function Navigation() {
               href="/Andrew-CV.pdf"
               target="_blank"
               rel="noreferrer"
+              aria-label="Download Resume (PDF, opens in new tab)"
               className="bg-[#1337ec] hover:bg-[#0f2cb8] text-white text-sm font-bold py-2 px-5 rounded-lg transition-colors flex items-center gap-2"
             >
               <span>Resume</span>
-              <span className="material-symbols-outlined text-[16px]">download</span>
+              <span className="material-symbols-outlined text-[16px]" aria-hidden="true">download</span>
             </a>
           </div>
 
@@ -43,15 +44,17 @@ export function Navigation() {
           <button
             className="md:hidden text-white"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Toggle menu"
+            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-menu"
           >
-            <span className="material-symbols-outlined">{mobileMenuOpen ? "close" : "menu"}</span>
+            <span className="material-symbols-outlined" aria-hidden="true">{mobileMenuOpen ? "close" : "menu"}</span>
           </button>
         </div>
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden mt-4 pb-4 space-y-4">
+          <div id="mobile-menu" className="md:hidden mt-4 pb-4 space-y-4" role="menu">
             <a
               className="block text-sm font-medium text-slate-400 hover:text-white transition-colors"
               href="#about"
@@ -84,6 +87,7 @@ export function Navigation() {
               href="/Andrew-CV.pdf"
               target="_blank"
               rel="noreferrer"
+              aria-label="Download Resume (PDF, opens in new tab)"
               className="block bg-[#1337ec] hover:bg-[#0f2cb8] text-white text-sm font-bold py-2 px-5 rounded-lg transition-colors w-fit"
             >
               Resume

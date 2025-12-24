@@ -73,7 +73,7 @@ export function HeroSection() {
                 className="bg-[#1337ec] hover:bg-[#0f2cb8] text-white h-12 px-8 rounded-lg font-bold transition-all transform hover:-translate-y-0.5 shadow-lg shadow-[#1337ec]/25 flex items-center gap-2"
               >
                 <span>View Projects</span>
-                <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+                <span className="material-symbols-outlined text-[18px]" aria-hidden="true">arrow_forward</span>
               </Link>
               <Link
                 href="#contact"
@@ -97,14 +97,14 @@ export function HeroSection() {
                     <div className="w-3 h-3 rounded-full bg-[#27c93f]"></div>
                   </div>
                 </div>
-                <div className="text-xs font-mono text-slate-400 select-none">developer_profile.ts</div>
+                <div className="text-xs font-mono text-slate-400 select-none">developer_profile.tsx</div>
                 <div className="w-10"></div>
               </div>
 
               {/* Editor Body */}
               <div className="p-6 font-mono text-sm sm:text-base overflow-x-auto custom-scrollbar">
                 <div className="flex">
-                  <div className="flex flex-col text-right pr-4 text-slate-600 select-none border-r border-slate-700/50 mr-4">
+                  <div className="flex flex-col text-right pr-4 text-slate-600 select-none border-r border-slate-700/50 mr-4" aria-hidden="true">
                     <span>1</span>
                     <span>2</span>
                     <span>3</span>
@@ -121,68 +121,49 @@ export function HeroSection() {
                     <span>14</span>
                     <span>15</span>
                     <span>16</span>
-                    <span>17</span>
-                    <span>18</span>
-                    <span>19</span>
                   </div>
                   <div className="text-slate-300 whitespace-pre">
-                    <span className="code-syntax-comment">// Welcome to my creative space!</span>
-                    {"\n"}
-                    <span className="code-syntax-keyword">import</span>{" "}
-                    {"{"} <span className="code-syntax-var">Engineer</span>,{" "}
-                    <span className="code-syntax-var">Creator</span> {"}"}{" "}
-                    <span className="code-syntax-keyword">from</span>{" "}
-                    <span className="code-syntax-string">&apos;./universe&apos;</span>;
-                    {"\n"}
-                    <span className="code-syntax-keyword">class</span>{" "}
-                    <span className="code-syntax-var">Portfolio</span>{" "}
-                    <span className="code-syntax-keyword">extends</span>{" "}
-                    <span className="code-syntax-var">Engineer</span> {"{"}
+                    <span className="code-syntax-keyword">const</span>{" "}
+                    <span className="code-syntax-func">Developer</span> = () =&gt; {"{"}
                     {"\n  "}
-                    <span className="code-syntax-keyword">constructor</span>() {"{"}
+                    <span className="code-syntax-keyword">const</span>{" "}
+                    <span className="code-syntax-prop">profile</span> = {"{"}
                     {"\n    "}
-                    <span className="code-syntax-keyword">super</span>();
+                    <span className="code-syntax-prop">name</span>:{" "}
+                    <span className="code-syntax-string">&quot;Andrew Nguyen&quot;</span>,
                     {"\n    "}
-                    <span className="code-syntax-keyword">this</span>.
-                    <span className="code-syntax-prop">name</span> ={" "}
-                    <span className="code-syntax-string">&quot;Andrew Nguyen&quot;</span>;
-                    {"\n    "}
-                    <span className="code-syntax-keyword">this</span>.
-                    <span className="code-syntax-prop">traits</span> = [
+                    <span className="code-syntax-prop">role</span>:{" "}
                     <span className="code-syntax-string">&quot;</span>
                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#61afef] to-[#c678dd]">
                       {typedRole}
                     </span>
                     <span className="typing-cursor"></span>
-                    <span className="code-syntax-string">&quot;</span>];
+                    <span className="code-syntax-string">&quot;</span>,
                     {"\n    "}
-                    <span className="code-syntax-keyword">this</span>.
-                    <span className="code-syntax-prop">coffeeLevel</span> ={" "}
-                    <span className="code-syntax-string">&quot;High&quot;</span>;
+                    <span className="code-syntax-prop">coffee</span>:{" "}
+                    <span className="code-syntax-string">&quot;High&quot;</span>,
                     {"\n  "}
-                    {"}"}
-                    {"\n  "}
-                    <span className="code-syntax-keyword">async</span>{" "}
-                    <span className="code-syntax-func">createMagic</span>() {"{"}
+                    {"}"};
+                    {"\n\n  "}
+                    <span className="code-syntax-keyword">return</span> (
                     {"\n    "}
-                    <span className="code-syntax-keyword">while</span> (
-                    <span className="code-syntax-keyword">true</span>) {"{"}
+                    <span className="code-syntax-var">&lt;Portfolio&gt;</span>
                     {"\n      "}
-                    <span className="code-syntax-keyword">await</span>{" "}
-                    <span className="code-syntax-keyword">this</span>.
-                    <span className="code-syntax-func">writeCode</span>();
+                    <span className="code-syntax-var">&lt;Skills </span>
+                    <span className="code-syntax-prop">stack</span>=
+                    <span className="code-syntax-string">{"{"}fullStack{"}"}</span>
+                    <span className="code-syntax-var"> /&gt;</span>
                     {"\n      "}
-                    <span className="code-syntax-keyword">await</span>{" "}
-                    <span className="code-syntax-keyword">this</span>.
-                    <span className="code-syntax-func">debug</span>();
-                    {"\n      "}
-                    <span className="code-syntax-comment">// The cycle of innovation</span>
+                    <span className="code-syntax-var">&lt;Projects </span>
+                    <span className="code-syntax-prop">passion</span>=
+                    <span className="code-syntax-string">{"{"}true{"}"}</span>
+                    <span className="code-syntax-var"> /&gt;</span>
                     {"\n    "}
-                    {"}"}
+                    <span className="code-syntax-var">&lt;/Portfolio&gt;</span>
                     {"\n  "}
-                    {"}"}
+                    );
                     {"\n"}
-                    {"}"}
+                    {"}"};
                     <span className="typing-cursor"></span>
                   </div>
                 </div>
@@ -192,19 +173,19 @@ export function HeroSection() {
               <div className="px-4 py-1.5 bg-[#1337ec] text-white text-[10px] font-mono flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <span className="flex items-center gap-1">
-                    <span className="material-symbols-outlined text-[10px]">account_tree</span> main
+                    <span className="material-symbols-outlined text-[10px]" aria-hidden="true">account_tree</span> main
                   </span>
                   <span className="flex items-center gap-1">
-                    <span className="material-symbols-outlined text-[10px]">close</span> 0 errors
+                    <span className="material-symbols-outlined text-[10px]" aria-hidden="true">close</span> 0 errors
                   </span>
                 </div>
                 <div>TypeScript React</div>
               </div>
             </div>
 
-            {/* Floating Tech Stack Badges around the editor */}
-            <div className="absolute -z-10 -top-10 -right-10 w-64 h-64 bg-[#1337ec]/20 rounded-full blur-3xl"></div>
-            <div className="absolute -z-10 -bottom-10 -left-10 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl"></div>
+            {/* Decorative blur orbs */}
+            <div className="absolute -z-10 -top-10 -right-10 w-64 h-64 bg-[#1337ec]/20 rounded-full blur-3xl" aria-hidden="true" />
+            <div className="absolute -z-10 -bottom-10 -left-10 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl" aria-hidden="true" />
           </div>
         </div>
       </div>

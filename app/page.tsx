@@ -10,12 +10,19 @@ import { ScrollToTopButton } from "./components/scroll-to-top";
 export default function Home() {
   return (
     <div className="bg-[#101322] text-white overflow-x-hidden flex flex-col min-h-screen">
+      {/* Skip to main content link for keyboard users */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:bg-[#1337ec] focus:text-white focus:px-4 focus:py-2 focus:rounded-lg focus:font-bold"
+      >
+        Skip to main content
+      </a>
       <Navigation />
 
       {/* Main Content Wrapper */}
-      <main className="flex-grow pt-[72px] relative">
-        {/* Background Grid */}
-        <div className="absolute inset-0 bg-grid-pattern opacity-[0.15] pointer-events-none z-0"></div>
+      <main id="main-content" className="flex-grow pt-[72px] relative" tabIndex={-1}>
+        {/* Background Grid - Decorative */}
+        <div className="absolute inset-0 bg-grid-pattern opacity-[0.15] pointer-events-none z-0" aria-hidden="true" />
 
         {/* Hero Section */}
         <HeroSection />
@@ -39,10 +46,9 @@ export default function Home() {
               className="text-slate-500 hover:text-white transition-colors"
               href="https://github.com/AndrewN04"
               target="_blank"
-              rel="noreferrer"
-              aria-label="GitHub"
+              rel="noopener noreferrer"
+              aria-label="Visit GitHub profile (opens in new tab)"
             >
-              <span className="sr-only">GitHub</span>
               <svg aria-hidden="true" className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
                 <path
                   clipRule="evenodd"
@@ -55,10 +61,9 @@ export default function Home() {
               className="text-slate-500 hover:text-white transition-colors"
               href="https://www.linkedin.com/in/adn2004/"
               target="_blank"
-              rel="noreferrer"
-              aria-label="LinkedIn"
+              rel="noopener noreferrer"
+              aria-label="Visit LinkedIn profile (opens in new tab)"
             >
-              <span className="sr-only">LinkedIn</span>
               <svg aria-hidden="true" className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
                 <path
                   clipRule="evenodd"

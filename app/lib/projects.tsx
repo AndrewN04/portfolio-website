@@ -181,28 +181,3 @@ export const projects: Project[] = [
   },
 ];
 
-export const toolbelt = [
-  "Next.js",
-  "TypeScript",
-  "Node.js",
-  "MongoDB",
-  "PostgreSQL",
-  "React",
-  "Tailwind CSS",
-  "Python",
-  "C++",
-  "Docker",
-];
-
-export const focusAreas = [
-  {
-    title: "Product-minded engineering",
-    copy:
-      "Pairing strong UX instincts with platform knowledge to ship experiences that feel fast, polished, and purposeful.",
-  },
-  {
-    title: "Performance-first web",
-    copy:
-      "Designing resilient architectures that lean on streaming, caching, and edge compute when scale matters.",
-  },
-];
