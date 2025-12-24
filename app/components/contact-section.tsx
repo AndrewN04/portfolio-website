@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Mail } from "lucide-react";
 
 const FORM_ENDPOINT = "https://formspree.io/f/mjkjlqdn";
 
@@ -36,83 +35,80 @@ export function ContactSection() {
   };
 
   return (
-    <section
-      id="contact"
-      className="fade-border grid gap-8 rounded-4xl bg-linear-to-br from-slate-900/80 via-slate-900/40 to-slate-800/60 p-6 sm:p-8 lg:grid-cols-2"
-    >
-      <div className="flex flex-col gap-6 sm:gap-8">
-        <div>
-          <p className="text-sm uppercase tracking-[0.2em] text-slate-300">Availability</p>
-          <h3 className="mt-3 text-3xl font-semibold text-white">Contact me through my form or by email.</h3>
-          <p className="mt-3 text-slate-300">
-            Remote-friendly from the US. I&apos;d love to hear from you. Share a few details and I&apos;ll follow up with you.
-          </p>
+    <section className="py-20 bg-[#0c0e1a] border-t border-[#282b39]" id="contact">
+      <div className="max-w-4xl mx-auto px-6 text-center">
+        <div className="size-16 mx-auto bg-slate-800 rounded-2xl flex items-center justify-center mb-6 text-white shadow-lg">
+          <span className="material-symbols-outlined text-3xl">mail</span>
         </div>
-        <a
-          href="mailto:andrew@a04.dev"
-          className="inline-flex w-fit items-center gap-2 rounded-full bg-white px-5 py-3 text-slate-900 transition hover:bg-slate-100"
-        >
-          <Mail className="h-5 w-5" />
-          Email Me
-        </a>
-      </div>
-
-      <form onSubmit={handleSubmit} className="rounded-[28px] border border-white/10 bg-slate-900/40 p-5 text-sm text-slate-200 sm:p-6">
-        <p className="text-lg font-medium text-white">Contact Form</p>
-        <p className="mt-1 text-sm text-slate-400">I typically reply within two to three business days.</p>
-        <div className="mt-5 grid gap-4">
-          <div>
-            <label htmlFor="contact-name" className="mb-1 block text-xs uppercase tracking-[0.2em] text-slate-400">
-              Name
-            </label>
-            <input
-              id="contact-name"
-              name="name"
-              type="text"
-              placeholder="John Doe"
-              required
-              className="w-full rounded-2xl border border-white/10 bg-slate-900/60 px-4 py-3 text-base text-white outline-none ring-0 transition focus:border-white/40"
-            />
-          </div>
-          <div>
-            <label htmlFor="contact-email" className="mb-1 block text-xs uppercase tracking-[0.2em] text-slate-400">
-              Email
-            </label>
-            <input
-              id="contact-email"
-              name="email"
-              type="email"
-              placeholder="email@address.com"
-              required
-              className="w-full rounded-2xl border border-white/10 bg-slate-900/60 px-4 py-3 text-base text-white outline-none ring-0 transition focus:border-white/40"
-            />
-          </div>
-          <div>
-            <label htmlFor="contact-message" className="mb-1 block text-xs uppercase tracking-[0.2em] text-slate-400">
-              Message details
-            </label>
-            <textarea
-              id="contact-message"
-              name="message"
-              rows={4}
-              placeholder="Type here..."
-              required
-              className="w-full rounded-2xl border border-white/10 bg-slate-900/60 px-4 py-3 text-base text-white outline-none ring-0 transition focus:border-white/40"
-            />
-          </div>
-          <button
-            type="submit"
-            disabled={status === "sending"}
-            className="inline-flex items-center justify-center rounded-full bg-white/10 px-4 py-3 font-medium text-white transition hover:bg-white/20 disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            {status === "sending" ? "Sending…" : status === "success" ? "Message sent" : "Send message"}
-          </button>
-        </div>
-        <p className="mt-3 text-xs text-slate-400" aria-live="polite">
-          {status === "success" && "Thanks for reaching out! I’ll get back to you shortly."}
-          {status === "error" && "Hmm—something went wrong. Could you try again in a moment?"}
+        <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">Interested in working together?</h2>
+        <p className="text-slate-400 text-lg mb-10 max-w-xl mx-auto">
+          I&apos;m currently open for new opportunities. Whether you have a question or just want to say hi, I&apos;ll
+          try my best to get back to you!
         </p>
-      </form>
+
+        {/* Contact Form - Preserved from original */}
+        <form
+          onSubmit={handleSubmit}
+          className="max-w-2xl mx-auto bg-[#1a1d2d] border border-slate-800 rounded-xl p-6 sm:p-8 text-left"
+        >
+          <p className="text-lg font-medium text-white mb-1">Contact Form</p>
+          <p className="text-sm text-slate-400 mb-6">I typically reply within two to three business days.</p>
+
+          <div className="grid gap-4">
+            <div>
+              <label htmlFor="contact-name" className="mb-1 block text-xs uppercase tracking-[0.2em] text-slate-400">
+                Name
+              </label>
+              <input
+                id="contact-name"
+                name="name"
+                type="text"
+                placeholder="John Doe"
+                required
+                className="w-full rounded-lg border border-slate-700 bg-slate-900/60 px-4 py-3 text-base text-white outline-none ring-0 transition focus:border-[#1337ec]"
+              />
+            </div>
+            <div>
+              <label htmlFor="contact-email" className="mb-1 block text-xs uppercase tracking-[0.2em] text-slate-400">
+                Email
+              </label>
+              <input
+                id="contact-email"
+                name="email"
+                type="email"
+                placeholder="email@address.com"
+                required
+                className="w-full rounded-lg border border-slate-700 bg-slate-900/60 px-4 py-3 text-base text-white outline-none ring-0 transition focus:border-[#1337ec]"
+              />
+            </div>
+            <div>
+              <label htmlFor="contact-message" className="mb-1 block text-xs uppercase tracking-[0.2em] text-slate-400">
+                Message details
+              </label>
+              <textarea
+                id="contact-message"
+                name="message"
+                rows={4}
+                placeholder="Type here..."
+                required
+                className="w-full rounded-lg border border-slate-700 bg-slate-900/60 px-4 py-3 text-base text-white outline-none ring-0 transition focus:border-[#1337ec] resize-none"
+              />
+            </div>
+            <button
+              type="submit"
+              disabled={status === "sending"}
+              className="bg-[#1337ec] hover:bg-[#0f2cb8] text-white h-12 px-8 rounded-lg font-bold transition-all transform hover:-translate-y-0.5 shadow-lg shadow-[#1337ec]/25 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0"
+            >
+              {status === "sending" ? "Sending…" : status === "success" ? "Message sent" : "Get in Touch"}
+            </button>
+          </div>
+
+          <p className="mt-4 text-sm text-slate-400 text-center" aria-live="polite">
+            {status === "success" && "Thanks for reaching out! I'll get back to you shortly."}
+            {status === "error" && "Hmm—something went wrong. Could you try again in a moment?"}
+          </p>
+        </form>
+      </div>
     </section>
   );
 }
