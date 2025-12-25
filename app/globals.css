@@ -1,9 +1,5 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
 
 @theme {
   --color-primary: #1337ec;
@@ -24,7 +20,7 @@
 }
 
 body {
-  font-family: "Space Grotesk", sans-serif;
+  font-family: var(--font-display), "Space Grotesk", sans-serif;
   background-color: #101322;
   color: #ffffff;
   min-height: 100vh;
@@ -40,11 +36,11 @@ html {
   color: #ffffff;
 }
 
-/* Glass navigation effect */
-.glass-nav {
-  background: rgba(16, 19, 34, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+/* Pale glass navigation effect */
+.glass-nav-pale {
+  background: rgba(45, 50, 75, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 }
 
 /* Code syntax highlighting */
@@ -79,6 +75,15 @@ html {
   animation: blink 1s step-end infinite;
 }
 
+/* Footer brand text styles */
+.footer-brand-text {
+  font-family: var(--font-mono);
+}
+
+.clip-circle-hidden {
+  clip-path: circle(40px at -100px -100px);
+}
+
 @keyframes blink {
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }
@@ -92,4 +97,42 @@ html {
   mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
   -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
 }
+
+/* Tech badge styles */
+.tech-badge-nextjs { background-color: rgba(248,250,252,0.08); }
+.tech-badge-nextjs .tech-icon { color: #F1F5F9; }
+
+.tech-badge-postgres { background-color: rgba(14,165,233,0.12); }
+.tech-badge-postgres .tech-icon { color: #48A9DC; }
+
+.tech-badge-prisma { background-color: rgba(148,163,184,0.12); }
+.tech-badge-prisma .tech-icon { color: #0C344B; }
+
+.tech-badge-python { background-color: rgba(250,204,21,0.1); }
+.tech-badge-python .tech-icon { color: #FACC15; }
+
+.tech-badge-opencv { background-color: rgba(74,222,128,0.12); }
+.tech-badge-opencv .tech-icon { color: #4ADE80; }
+
+.tech-badge-langchain { background-color: rgba(45,212,191,0.12); }
+.tech-badge-langchain .tech-icon { color: #22D3EE; }
+
+.tech-badge-mongodb { background-color: rgba(52,211,153,0.12); }
+.tech-badge-mongodb .tech-icon { color: #34D399; }
+
+.tech-badge-tailwind { background-color: rgba(56,189,248,0.12); }
+.tech-badge-tailwind .tech-icon { color: #38BDF8; }
+
+.tech-badge-tensorflow { background-color: rgba(249,115,22,0.12); }
+.tech-badge-tensorflow .tech-icon { color: #F97316; }
+
+.tech-badge-fastapi { background-color: rgba(16,185,129,0.12); }
+.tech-badge-fastapi .tech-icon { color: #10B981; }
+
+.tech-badge-sqlite { background-color: rgba(56,170,221,0.12); }
+.tech-badge-sqlite .tech-icon { color: #38AADD; }
+
+.tech-badge-cplusplus { background-color: rgba(37,99,235,0.12); }
+.tech-badge-cplusplus .tech-icon { color: #2563EB; }
+
 

@@ -2,38 +2,53 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { scrollToSection } from "../lib/utils";
 
 export function Navigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  const handleNavClick = (id: string) => {
+    scrollToSection(id);
+    setMobileMenuOpen(false);
+  };
+
   return (
-    <nav className="fixed top-0 w-full z-50 glass-nav border-b border-[#282b39]">
-      <div className="max-w-7xl mx-auto px-6 py-4">
+    <nav className="fixed top-4 left-1/2 -translate-x-1/2 z-50 glass-nav-pale rounded-2xl border border-[#3d4259]/50 shadow-lg shadow-black/20 w-[90%] md:w-[440px] lg:w-[520px]">
+      <div className="px-6 py-3">
         <div className="flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
             <span className="text-xl font-bold tracking-tight text-white">a04.dev</span>
           </Link>
 
+          {/* Separator */}
+          <div className="hidden md:block h-6 w-px bg-white/15" />
+
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center gap-8">
-            <a className="text-sm font-medium text-slate-400 hover:text-white transition-colors" href="#about">
-              About
-            </a>
-            <a className="text-sm font-medium text-slate-400 hover:text-white transition-colors" href="#projects">
+          <div className="hidden md:flex items-center gap-4 lg:gap-6">
+            <button
+              onClick={() => scrollToSection("projects")}
+              className="text-sm font-medium text-slate-400 hover:text-white transition-colors"
+            >
               Projects
-            </a>
-            <a className="text-sm font-medium text-slate-400 hover:text-white transition-colors" href="#skills">
+            </button>
+            <button
+              onClick={() => scrollToSection("skills")}
+              className="text-sm font-medium text-slate-400 hover:text-white transition-colors"
+            >
               Skills
-            </a>
-            <a className="text-sm font-medium text-slate-400 hover:text-white transition-colors" href="#contact">
+            </button>
+            <button
+              onClick={() => scrollToSection("contact")}
+              className="text-sm font-medium text-slate-400 hover:text-white transition-colors"
+            >
               Contact
-            </a>
+            </button>
             <a
               href="/Andrew-CV.pdf"
               target="_blank"
               rel="noreferrer"
               aria-label="Download Resume (PDF, opens in new tab)"
-              className="bg-[#1337ec] hover:bg-[#0f2cb8] text-white text-sm font-bold py-2 px-5 rounded-lg transition-colors flex items-center gap-2"
+              className="bg-primary hover:bg-primary-hover text-white text-sm font-bold py-2 px-5 rounded-lg transition-colors flex items-center gap-2"
             >
               <span>Resume</span>
               <span className="material-symbols-outlined text-[16px]" aria-hidden="true">download</span>
@@ -45,7 +60,7 @@ export function Navigation() {
             className="md:hidden text-white"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
-            aria-expanded={mobileMenuOpen}
+            {...(mobileMenuOpen ? { "aria-expanded": true } : { "aria-expanded": false })}
             aria-controls="mobile-menu"
           >
             <span className="material-symbols-outlined" aria-hidden="true">{mobileMenuOpen ? "close" : "menu"}</span>
@@ -54,41 +69,30 @@ export function Navigation() {
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div id="mobile-menu" className="md:hidden mt-4 pb-4 space-y-4" role="menu">
-            <a
+          <div id="mobile-menu" className="md:hidden mt-4 pb-4 space-y-4">
+            <button
+              onClick={() => handleNavClick("projects")}
               className="block text-sm font-medium text-slate-400 hover:text-white transition-colors"
-              href="#about"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              About
-            </a>
-            <a
-              className="block text-sm font-medium text-slate-400 hover:text-white transition-colors"
-              href="#projects"
-              onClick={() => setMobileMenuOpen(false)}
             >
               Projects
-            </a>
-            <a
+            </button>
+            <button
+              onClick={() => handleNavClick("skills")}
               className="block text-sm font-medium text-slate-400 hover:text-white transition-colors"
-              href="#skills"
-              onClick={() => setMobileMenuOpen(false)}
             >
               Skills
-            </a>
-            <a
+            </button>
+            <button
+              onClick={() => handleNavClick("contact")}
               className="block text-sm font-medium text-slate-400 hover:text-white transition-colors"
-              href="#contact"
-              onClick={() => setMobileMenuOpen(false)}
             >
               Contact
-            </a>
+            </button>
             <a
               href="/Andrew-CV.pdf"
               target="_blank"
               rel="noreferrer"
-              aria-label="Download Resume (PDF, opens in new tab)"
-              className="block bg-[#1337ec] hover:bg-[#0f2cb8] text-white text-sm font-bold py-2 px-5 rounded-lg transition-colors w-fit"
+              className="block bg-primary hover:bg-primary-hover text-white text-sm font-bold py-2 px-5 rounded-lg transition-colors w-fit"
             >
               Resume
             </a>

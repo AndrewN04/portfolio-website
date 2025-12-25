@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { Mail } from "lucide-react";
+import { scrollToSection } from "../lib/utils";
 
 const heroRoles = ["Developer", "Designer", "Innovator"] as const;
 
@@ -56,38 +56,37 @@ export function HeroSection() {
           <div className="flex flex-col gap-6">
             <div className="space-y-2">
               <h1 className="text-5xl lg:text-7xl font-bold tracking-tight leading-[1.1]">
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1337ec] to-purple-400">
+                <span className="text-transparent bg-clip-text bg-linear-to-r from-primary to-purple-400">
                   {typedRole}
                 </span>
                 <span className="typing-cursor"></span>
               </h1>
               <p className="text-slate-400 text-lg lg:text-xl max-w-xl leading-relaxed pt-4">
-                Hello, I&apos;m <span className="text-white font-medium">Andrew Nguyen</span>. A Full Stack Developer
-                crafting clean, efficient code to solve complex problems and deliver beautiful user interfaces.
+                Hello, I&apos;m <span className="text-white font-medium">Andrew Nguyen</span>—a Full Stack Developer based in Texas. Working on projects when I can.
               </p>
             </div>
 
             <div className="flex flex-wrap gap-4 pt-4">
-              <Link
-                href="#projects"
-                className="bg-[#1337ec] hover:bg-[#0f2cb8] text-white h-12 px-8 rounded-lg font-bold transition-all transform hover:-translate-y-0.5 shadow-lg shadow-[#1337ec]/25 flex items-center gap-2"
+              <button
+                onClick={() => scrollToSection("projects")}
+                className="bg-primary hover:bg-primary-hover text-white h-12 px-8 rounded-lg font-bold transition-all transform hover:-translate-y-0.5 shadow-lg shadow-primary/25 flex items-center gap-2"
               >
                 <span>View Projects</span>
                 <span className="material-symbols-outlined text-[18px]" aria-hidden="true">arrow_forward</span>
-              </Link>
-              <Link
-                href="#contact"
-                className="bg-[#1a1d2d] border border-slate-700 hover:border-slate-500 text-white h-12 px-8 rounded-lg font-bold transition-all flex items-center gap-2"
+              </button>
+              <button
+                onClick={() => scrollToSection("contact")}
+                className="bg-surface-dark border border-slate-700 hover:border-slate-500 text-white h-12 px-8 rounded-lg font-bold transition-all flex items-center gap-2"
               >
                 <span>Contact Me</span>
                 <Mail className="h-5 w-5" />
-              </Link>
+              </button>
             </div>
           </div>
 
           {/* Right Column: Code Editor Aesthetic */}
           <div className="w-full">
-            <div className="relative rounded-xl overflow-hidden shadow-2xl bg-[#1e1e2e] border border-[#282b39] transform lg:rotate-1 hover:rotate-0 transition-transform duration-500">
+            <div className="relative rounded-xl overflow-hidden shadow-2xl bg-code-bg border border-[#282b39] transform lg:rotate-1 hover:rotate-0 transition-transform duration-500">
               {/* Editor Header */}
               <div className="flex items-center justify-between px-4 py-3 bg-[#15151e] border-b border-[#282b39]">
                 <div className="flex items-center gap-2">
@@ -134,13 +133,13 @@ export function HeroSection() {
                     {"\n    "}
                     <span className="code-syntax-prop">role</span>:{" "}
                     <span className="code-syntax-string">&quot;</span>
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#61afef] to-[#c678dd]">
+                    <span className="text-transparent bg-clip-text bg-linear-to-r from-[#61afef] to-[#c678dd]">
                       {typedRole}
                     </span>
                     <span className="typing-cursor"></span>
                     <span className="code-syntax-string">&quot;</span>,
                     {"\n    "}
-                    <span className="code-syntax-prop">coffee</span>:{" "}
+                    <span className="code-syntax-prop">caffine</span>:{" "}
                     <span className="code-syntax-string">&quot;High&quot;</span>,
                     {"\n  "}
                     {"}"};
@@ -170,7 +169,7 @@ export function HeroSection() {
               </div>
 
               {/* Editor Footer */}
-              <div className="px-4 py-1.5 bg-[#1337ec] text-white text-[10px] font-mono flex items-center justify-between">
+              <div className="px-4 py-1.5 bg-primary text-white text-[10px] font-mono flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <span className="flex items-center gap-1">
                     <span className="material-symbols-outlined text-[10px]" aria-hidden="true">account_tree</span> main
@@ -184,7 +183,7 @@ export function HeroSection() {
             </div>
 
             {/* Decorative blur orbs */}
-            <div className="absolute -z-10 -top-10 -right-10 w-64 h-64 bg-[#1337ec]/20 rounded-full blur-3xl" aria-hidden="true" />
+            <div className="absolute -z-10 -top-10 -right-10 w-64 h-64 bg-primary/20 rounded-full blur-3xl" aria-hidden="true" />
             <div className="absolute -z-10 -bottom-10 -left-10 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl" aria-hidden="true" />
           </div>
         </div>

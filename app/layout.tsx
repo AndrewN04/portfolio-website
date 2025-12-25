@@ -15,12 +15,12 @@ const firaCode = Fira_Code({
 });
 
 export const metadata: Metadata = {
-  title: "Andrew Nguyen | Software Engineer",
+  title: "Andrew Nguyen | Web Dev",
   description:
     "Portfolio website for Andrew Nguyen, a software engineer and web developer crafting thoughtful, modern web experiences.",
   metadataBase: new URL("https://andrew-nguyen.dev"),
   openGraph: {
-    title: "Andrew Nguyen | Software Engineer",
+    title: "Andrew Nguyen | Web Dev",
     description:
       "Modern portfolio showcasing full-stack and front-end projects by Andrew Nguyen.",
     url: "https://andrew-nguyen.dev",
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Andrew Nguyen | Software Engineer",
+    title: "Andrew Nguyen | Web Dev",
     description:
       "Modern portfolio showcasing full-stack and front-end projects by Andrew Nguyen.",
   },
@@ -50,7 +50,6 @@ export default function RootLayout({
       </head>
       <body
         className={`${spaceGrotesk.variable} ${firaCode.variable} antialiased`}
-        style={{ fontFamily: 'var(--font-display)' }}
       >
         {children}
       </body>

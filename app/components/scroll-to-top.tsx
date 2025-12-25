@@ -8,13 +8,19 @@ export function ScrollToTopButton() {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
+    const controller = new AbortController();
+    
     const handleScroll = () => {
       setIsVisible(window.scrollY > 240);
     };
 
     handleScroll();
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { 
+      passive: true, 
+      signal: controller.signal 
+    });
+    
+    return () => controller.abort();
   }, []);
 
   const scrollToTop = () => {

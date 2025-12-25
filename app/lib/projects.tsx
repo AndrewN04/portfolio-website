@@ -132,50 +132,43 @@ export type Project = {
 export const projects: Project[] = [
   {
     title: "TMDB Explorer (In Progress)",
-    description:
-      "Movie discovery experience with curated collections, smart search, and personalized watchlists powered by TMDB.",
+    description: "Movie discovery app with smart search and personalized watchlists.",
     link: "https://github.com/AndrewN04/tmdb-app",
     tech: ["nextjs", "postgres", "prisma"],
   },
   {
     title: "Service AI Agent",
-    description:
-      "Multi-agent research assistant built for CS4485 that evaluates prompts, plans tasks, and orchestrates LLM responses.",
+    description: "Multi-agent assistant that plans tasks and orchestrates LLM responses.",
     link: "https://github.com/AndrewN04/CS4485-AI-Agent",
     tech: ["python", "langchain", "mongodb"],
   },
   {
     title: "Weather Dashboard",
-    description:
-      "Weather intelligence dashboard with live radar, geolocation alerts, and responsive offline-ready UI.",
+    description: "Weather dashboard with live radar and geolocation alerts.",
     link: "https://github.com/AndrewN04/weather-app",
     tech: ["nextjs", "tailwind"],
   },
   {
     title: "Human Pose Detection",
-    description:
-      "Real-time skeletal tracking prototype combining WebGL overlays with TensorFlow pose estimation.",
+    description: "Real-time skeletal tracking with TensorFlow pose estimation.",
     link: "https://github.com/AndrewN04/human-pos-detection",
     tech: ["python", "opencv", "tensorflow"],
   },
   {
     title: "Task Management Web App (Planned)",
-    description:
-      "Upcoming productivity suite for prioritizing work, automations, and handoffs built with real-time collaboration in mind.",
+    description: "Productivity suite for task prioritization with real-time collaboration.",
     link: "",
     tech: ["nextjs", "postgres", "prisma"],
   },
   {
     title: "Data Visualization Tool (Planned)",
-    description:
-      "Planned analytics playground pairing a performant Next.js front-end with FastAPI pipelines for custom dashboards.",
+    description: "Analytics playground with custom dashboards and FastAPI pipelines.",
     link: "",
     tech: ["nextjs", "python", "fastapi"],
   },
   {
     title: "Personal Finance Tracker (Planned)",
-    description:
-      "Roadmap concept for a privacy-first budgeting companion powered by lightweight native modules.",
+    description: "Privacy-first budgeting app with lightweight native modules.",
     link: "",
     tech: ["sqlite", "cplusplus"],
   },
