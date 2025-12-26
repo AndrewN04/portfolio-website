@@ -139,7 +139,7 @@ export function HeroSection() {
                     <span className="typing-cursor"></span>
                     <span className="code-syntax-string">&quot;</span>,
                     {"\n    "}
-                    <span className="code-syntax-prop">caffine</span>:{" "}
+                    <span className="code-syntax-prop">caffeine</span>:{" "}
                     <span className="code-syntax-string">&quot;High&quot;</span>,
                     {"\n  "}
                     {"}"};

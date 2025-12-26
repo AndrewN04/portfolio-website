@@ -32,7 +32,7 @@ export function CustomCursor() {
     const updatePosition = (e: MouseEvent) => {
       mouseX.set(e.clientX);
       mouseY.set(e.clientY);
-      if (!isVisible) setIsVisible(true);
+      setIsVisible(true);
     };
 
     const handleMouseLeave = () => setIsVisible(false);
@@ -43,7 +43,7 @@ export function CustomCursor() {
     document.addEventListener("mouseenter", handleMouseEnter, { signal });
 
     return () => controller.abort();
-  }, [mouseX, mouseY, isVisible, isTouchDevice]);
+  }, [mouseX, mouseY, isTouchDevice]);
 
   // Don't render on touch devices
   if (isTouchDevice) return null;

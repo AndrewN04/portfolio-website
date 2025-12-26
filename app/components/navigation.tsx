@@ -26,16 +26,16 @@ export function Navigation() {
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center gap-4 lg:gap-6">
             <button
-              onClick={() => scrollToSection("projects")}
-              className="text-sm font-medium text-slate-400 hover:text-white transition-colors"
-            >
-              Projects
-            </button>
-            <button
               onClick={() => scrollToSection("skills")}
               className="text-sm font-medium text-slate-400 hover:text-white transition-colors"
             >
               Skills
+            </button>
+            <button
+              onClick={() => scrollToSection("projects")}
+              className="text-sm font-medium text-slate-400 hover:text-white transition-colors"
+            >
+              Projects
             </button>
             <button
               onClick={() => scrollToSection("contact")}
@@ -71,16 +71,16 @@ export function Navigation() {
         {mobileMenuOpen && (
           <div id="mobile-menu" className="md:hidden mt-4 pb-4 space-y-4">
             <button
-              onClick={() => handleNavClick("projects")}
-              className="block text-sm font-medium text-slate-400 hover:text-white transition-colors"
-            >
-              Projects
-            </button>
-            <button
               onClick={() => handleNavClick("skills")}
               className="block text-sm font-medium text-slate-400 hover:text-white transition-colors"
             >
               Skills
+            </button>
+            <button
+              onClick={() => handleNavClick("projects")}
+              className="block text-sm font-medium text-slate-400 hover:text-white transition-colors"
+            >
+              Projects
             </button>
             <button
               onClick={() => handleNavClick("contact")}

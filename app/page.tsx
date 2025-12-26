@@ -1,5 +1,3 @@
-"use client";
-
 import { Navigation } from "./components/navigation";
 import { HeroSection } from "./components/hero";
 import { SkillsSection } from "./components/skills-section";
