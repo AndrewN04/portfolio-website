@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const FORM_ENDPOINT = "https://formspree.io/f/mjkjlqdn";
 
@@ -20,7 +20,12 @@ const formatLoginTime = (date: Date): string => {
 
 export function ContactSection() {
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
-  const [loginTime] = useState(() => formatLoginTime(new Date()));
+  const [loginTime, setLoginTime] = useState<string | null>(null);
+
+  // Set login time on client only to avoid hydration mismatch
+  useEffect(() => {
+    setLoginTime(formatLoginTime(new Date()));
+  }, []);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -86,7 +91,7 @@ export function ContactSection() {
           {/* Terminal Body */}
           <div className="p-5 md:p-6 font-mono text-sm">
             {/* Terminal Output */}
-            <div className="text-slate-500 mb-1">Last login: {loginTime}</div>
+            <div className="text-slate-500 mb-1">Last login: {loginTime ?? "..."}</div>
             <div className="mb-1">
               <span className="text-emerald-400">system@portfolio</span>
               <span className="text-slate-500">:</span>

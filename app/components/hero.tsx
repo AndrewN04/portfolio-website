@@ -56,7 +56,8 @@ export function HeroSection() {
           <div className="flex flex-col gap-6">
             <div className="space-y-2">
               <h1 className="text-5xl lg:text-7xl font-bold tracking-tight leading-[1.1]">
-                <span className="text-transparent bg-clip-text bg-linear-to-r from-primary to-purple-400">
+                {/* min-w prevents CLS by reserving space for longest word "Innovator" */}
+                <span className="text-transparent bg-clip-text bg-linear-to-r from-primary to-purple-400 inline-block min-w-[5ch]">
                   {typedRole}
                 </span>
                 <span className="typing-cursor"></span>
