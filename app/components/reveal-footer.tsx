@@ -47,22 +47,22 @@ export function RevealFooter() {
   }, [isTouchDevice]);
 
   return (
-    <footer className="fixed bottom-0 left-0 right-0 h-[400px] bg-linear-to-b from-emerald-600 to-emerald-500 flex flex-col justify-center items-center -z-10 overflow-hidden">
+    <footer className="fixed bottom-0 left-0 right-0 h-[400px] bg-surface-dark flex flex-col justify-center items-center -z-10 overflow-hidden">
       {/* Text Container - Relative positioning for layers */}
       <div ref={textContainerRef} className="relative">
-        {/* Base Text Layer - Semi-transparent green */}
+        {/* Base Text Layer - Semi-transparent muted */}
         <div
           id="footer-brand-text"
-          className="text-[15vw] md:text-[12vw] font-bold text-emerald-800/40 select-none tracking-tight leading-none cursor-default footer-brand-text"
+          className="text-[15vw] md:text-[12vw] font-bold text-[#3D4559]/50 select-none tracking-tight leading-none cursor-default footer-brand-text"
         >
           a04.dev
         </div>
 
-        {/* Black Text Layer - Clipped by cursor circle */}
+        {/* Reveal Text Layer - Clipped by cursor circle (white for dark bg) */}
         {!isTouchDevice && (
           <div
             ref={blackTextRef}
-            className="absolute inset-0 text-[15vw] md:text-[12vw] font-bold text-black select-none tracking-tight leading-none cursor-default transition-[clip-path] duration-75 ease-out footer-brand-text clip-circle-hidden"
+            className="absolute inset-0 text-[15vw] md:text-[12vw] font-bold text-white select-none tracking-tight leading-none cursor-default transition-[clip-path] duration-75 ease-out footer-brand-text clip-circle-hidden"
           >
             a04.dev
           </div>
@@ -73,24 +73,24 @@ export function RevealFooter() {
       <div className="absolute bottom-0 left-0 right-0 px-6 py-6">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 items-center gap-4 text-sm">
           {/* Left: Copyright */}
-          <p className="text-emerald-900/70 text-center md:text-left">
+          <p className="text-[#8891A5]/70 text-center md:text-left">
             © {new Date().getFullYear()} Andrew Nguyen
           </p>
 
           {/* Center: Tech Stack */}
-          <p className="text-emerald-900/70 text-center">
+          <p className="text-[#8891A5]/70 text-center">
             Built with{" "}
-            <a href="https://nextjs.org" target="_blank" rel="noopener noreferrer" className="underline hover:text-emerald-950 transition-colors">Next.js</a>,{" "}
-            <a href="https://react.dev" target="_blank" rel="noopener noreferrer" className="underline hover:text-emerald-950 transition-colors">React</a>,{" "}
-            <a href="https://www.typescriptlang.org" target="_blank" rel="noopener noreferrer" className="underline hover:text-emerald-950 transition-colors">TypeScript</a>,{" "}
-            <a href="https://tailwindcss.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-emerald-950 transition-colors">Tailwind</a>, and{" "}
-            <a href="https://motion.dev" target="_blank" rel="noopener noreferrer" className="underline hover:text-emerald-950 transition-colors">Motion.dev</a>.
+            <a href="https://nextjs.org" target="_blank" rel="noopener noreferrer" className="underline hover:text-[#C5CBD8] transition-colors">Next.js</a>,{" "}
+            <a href="https://react.dev" target="_blank" rel="noopener noreferrer" className="underline hover:text-[#C5CBD8] transition-colors">React</a>,{" "}
+            <a href="https://www.typescriptlang.org" target="_blank" rel="noopener noreferrer" className="underline hover:text-[#C5CBD8] transition-colors">TypeScript</a>,{" "}
+            <a href="https://tailwindcss.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-[#C5CBD8] transition-colors">Tailwind</a>, and{" "}
+            <a href="https://motion.dev" target="_blank" rel="noopener noreferrer" className="underline hover:text-[#C5CBD8] transition-colors">Motion.dev</a>.
           </p>
 
           {/* Right: Socials */}
           <div className="flex items-center gap-6 justify-center md:justify-end">
             <a
-              className="text-emerald-900/70 hover:text-emerald-950 transition-colors"
+              className="text-[#8891A5]/70 hover:text-[#C5CBD8] transition-colors"
               href="https://github.com/AndrewN04"
               target="_blank"
               rel="noopener noreferrer"
@@ -105,7 +105,7 @@ export function RevealFooter() {
               </svg>
             </a>
             <a
-              className="text-emerald-900/70 hover:text-emerald-950 transition-colors"
+              className="text-[#8891A5]/70 hover:text-[#C5CBD8] transition-colors"
               href="https://www.linkedin.com/in/adn2004/"
               target="_blank"
               rel="noopener noreferrer"
