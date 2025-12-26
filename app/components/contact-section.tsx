@@ -4,8 +4,23 @@ import { useState } from "react";
 
 const FORM_ENDPOINT = "https://formspree.io/f/mjkjlqdn";
 
+// Format date like macOS terminal: "Fri Dec 26 14:30:45 2024"
+const formatLoginTime = (date: Date): string => {
+  return date.toLocaleString("en-US", {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+    year: "numeric",
+  }).replace(",", "");
+};
+
 export function ContactSection() {
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+  const [loginTime] = useState(() => formatLoginTime(new Date()));
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -71,7 +86,7 @@ export function ContactSection() {
           {/* Terminal Body */}
           <div className="p-5 md:p-6 font-mono text-sm">
             {/* Terminal Output */}
-            <div className="text-slate-500 mb-1">Last login: Today on ttys002</div>
+            <div className="text-slate-500 mb-1">Last login: {loginTime}</div>
             <div className="mb-1">
               <span className="text-emerald-400">system@portfolio</span>
               <span className="text-slate-500">:</span>
