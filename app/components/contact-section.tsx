@@ -45,7 +45,7 @@ export function ContactSection() {
         <div className="text-center mb-10">
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
             <span className="text-slate-400">&lt;</span>
-            <span className="text-emerald-400">Connect</span>
+            <span className="text-emerald-400">Contact</span>
             <span className="text-slate-400">/&gt;</span>
           </h2>
           <p className="font-mono text-slate-400 text-sm md:text-base">
