@@ -59,8 +59,8 @@ export function HeroSection() {
                 {/* min-w prevents CLS by reserving space for longest word "Innovator" */}
                 <span className="text-transparent bg-clip-text bg-linear-to-r from-primary to-purple-400 inline-block min-w-[5ch]">
                   {typedRole}
+                  <span className="typing-cursor"></span>
                 </span>
-                <span className="typing-cursor"></span>
               </h1>
               <p className="text-slate-400 text-lg lg:text-xl max-w-xl leading-relaxed pt-4">
                 Hello, I&apos;m <span className="text-white font-medium">Andrew Nguyen</span>—a Full Stack Developer based in Texas. Working on projects when I can.
