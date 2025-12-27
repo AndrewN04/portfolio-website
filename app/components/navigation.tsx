@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { scrollToSection } from "../lib/utils";
 
 export function Navigation() {
@@ -68,9 +69,8 @@ export function Navigation() {
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
             {...(mobileMenuOpen
-              ? { "aria-expanded": true }
-              : { "aria-expanded": false })}
-            aria-controls="mobile-menu"
+              ? { "aria-expanded": "true", "aria-controls": "mobile-menu" }
+              : { "aria-expanded": "false" })}
           >
             <span className="material-symbols-outlined" aria-hidden="true">
               {mobileMenuOpen ? "close" : "menu"}
@@ -79,36 +79,45 @@ export function Navigation() {
         </div>
 
         {/* Mobile Menu */}
-        {mobileMenuOpen && (
-          <div id="mobile-menu" className="lg:hidden mt-4 pb-4 space-y-4">
-            <button
-              onClick={() => handleNavClick("skills")}
-              className="block text-sm font-medium text-slate-400 hover:text-white transition-colors"
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.div
+              id="mobile-menu"
+              className="lg:hidden mt-4 pb-4 space-y-4 overflow-hidden"
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
             >
-              Skills
-            </button>
-            <button
-              onClick={() => handleNavClick("projects")}
-              className="block text-sm font-medium text-slate-400 hover:text-white transition-colors"
-            >
-              Projects
-            </button>
-            <button
-              onClick={() => handleNavClick("contact")}
-              className="block text-sm font-medium text-slate-400 hover:text-white transition-colors"
-            >
-              Contact
-            </button>
-            <a
-              href="/Andrew-CV.pdf"
-              target="_blank"
-              rel="noreferrer"
-              className="block bg-primary hover:bg-primary-hover text-white text-sm font-bold py-2 px-5 rounded-lg transition-colors w-fit"
-            >
-              Resume
-            </a>
-          </div>
-        )}
+              <button
+                onClick={() => handleNavClick("skills")}
+                className="block text-sm font-medium text-slate-400 hover:text-white transition-colors"
+              >
+                Skills
+              </button>
+              <button
+                onClick={() => handleNavClick("projects")}
+                className="block text-sm font-medium text-slate-400 hover:text-white transition-colors"
+              >
+                Projects
+              </button>
+              <button
+                onClick={() => handleNavClick("contact")}
+                className="block text-sm font-medium text-slate-400 hover:text-white transition-colors"
+              >
+                Contact
+              </button>
+              <a
+                href="/Andrew-CV.pdf"
+                target="_blank"
+                rel="noreferrer"
+                className="block bg-primary hover:bg-primary-hover text-white text-sm font-bold py-2 px-5 rounded-lg transition-colors w-fit"
+              >
+                Resume
+              </a>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </nav>
   );

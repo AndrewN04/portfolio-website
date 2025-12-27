@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useSyncExternalStore } from "react";
+import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
 import { getIsTouchDevice } from "../lib/utils";
 
 // Subscribe to touch device state (static - doesn't change)
@@ -10,51 +11,40 @@ const getServerSnapshot = () => true; // Assume touch on server to skip renderin
 
 export function RevealFooter() {
   const textContainerRef = useRef<HTMLDivElement>(null);
-  const blackTextRef = useRef<HTMLDivElement>(null);
+
   // useSyncExternalStore properly handles SSR hydration mismatch
   const isTouchDevice = useSyncExternalStore(
     subscribe,
     getSnapshot,
-    getServerSnapshot,
+    getServerSnapshot
   );
+
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const clipPath = useMotionTemplate`circle(40px at ${mouseX}px ${mouseY}px)`;
 
   useEffect(() => {
     if (isTouchDevice) return;
 
-    const controller = new AbortController();
-    let animationFrameId: number;
-
-    const updateClipPath = (e: MouseEvent) => {
-      if (textContainerRef.current && blackTextRef.current) {
-        // Get position relative to the text container, not the footer
+    const updateMousePosition = (e: MouseEvent) => {
+      if (textContainerRef.current) {
         const rect = textContainerRef.current.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-
-        // Cancel previous frame and schedule new one for smooth 60fps updates
-        cancelAnimationFrame(animationFrameId);
-        animationFrameId = requestAnimationFrame(() => {
-          blackTextRef.current?.style.setProperty(
-            "clip-path",
-            `circle(40px at ${x}px ${y}px)`,
-          );
-        });
+        mouseX.set(e.clientX - rect.left);
+        mouseY.set(e.clientY - rect.top);
       }
     };
 
-    window.addEventListener("mousemove", updateClipPath, {
+    window.addEventListener("mousemove", updateMousePosition, {
       passive: true,
-      signal: controller.signal,
     });
 
     return () => {
-      controller.abort();
-      cancelAnimationFrame(animationFrameId);
+      window.removeEventListener("mousemove", updateMousePosition);
     };
-  }, [isTouchDevice]);
+  }, [isTouchDevice, mouseX, mouseY]);
 
   return (
-    <footer className="fixed bottom-0 left-0 right-0 h-[400px] bg-surface-dark flex flex-col justify-center items-center -z-10 overflow-hidden">
+    <footer className="fixed bottom-0 left-0 right-0 h-100 bg-surface-dark flex flex-col justify-center items-center -z-10 overflow-hidden">
       {/* Text Container - Relative positioning for layers */}
       <div ref={textContainerRef} className="relative">
         {/* Base Text Layer - Semi-transparent muted */}
@@ -67,12 +57,12 @@ export function RevealFooter() {
 
         {/* Reveal Text Layer - Clipped by cursor circle (white for dark bg) */}
         {!isTouchDevice && (
-          <div
-            ref={blackTextRef}
-            className="absolute inset-0 text-[15vw] md:text-[12vw] font-bold text-white select-none tracking-tight leading-none cursor-default transition-[clip-path] duration-75 ease-out footer-brand-text clip-circle-hidden"
+          <motion.div
+            style={{ clipPath }}
+            className="absolute inset-0 text-[15vw] md:text-[12vw] font-bold text-white select-none tracking-tight leading-none cursor-default footer-brand-text"
           >
             a04.dev
-          </div>
+          </motion.div>
         )}
       </div>
 

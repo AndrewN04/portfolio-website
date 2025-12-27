@@ -9,7 +9,7 @@ const heroRoles = ["Developer", "Designer", "Innovator"] as const;
 const useTypewriter = (
   words: readonly string[],
   typingSpeed = 120,
-  pauseDuration = 1500,
+  pauseDuration = 1500
 ) => {
   const [index, setIndex] = useState(0);
   const [subIndex, setSubIndex] = useState(0);
@@ -40,7 +40,7 @@ const useTypewriter = (
       () => {
         setSubIndex((prev) => prev + (direction === "forward" ? 1 : -1));
       },
-      direction === "forward" ? typingSpeed : typingSpeed / 2,
+      direction === "forward" ? typingSpeed : typingSpeed / 2
     );
 
     return () => clearTimeout(timeout);
@@ -109,7 +109,7 @@ export function HeroSection() {
 
           {/* Right Column: Code Editor Aesthetic */}
           <div className="w-full">
-            <div className="relative rounded-xl overflow-hidden shadow-2xl bg-code-bg border border-[#282b39] transform lg:rotate-1 hover:rotate-0 transition-transform duration-500">
+            <div className="relative rounded-xl overflow-hidden shadow-2xl bg-code-bg border border-[#282b39] transform hover:scale-105 transition-transform duration-500">
               {/* Editor Header */}
               <div className="flex items-center justify-between px-4 py-3 bg-[#15151e] border-b border-[#282b39]">
                 <div className="flex items-center gap-2">

@@ -15,7 +15,7 @@ export function CustomCursor() {
   const isTouchDevice = useSyncExternalStore(
     subscribe,
     getSnapshot,
-    getServerSnapshot,
+    getServerSnapshot
   );
 
   // Use motion values for instant tracking (no React re-renders)
