@@ -83,38 +83,40 @@ export function Navigation() {
           {mobileMenuOpen && (
             <motion.div
               id="mobile-menu"
-              className="lg:hidden mt-4 pb-4 space-y-4 overflow-hidden"
+              className="lg:hidden overflow-hidden"
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
             >
-              <button
-                onClick={() => handleNavClick("skills")}
-                className="block text-sm font-medium text-slate-400 hover:text-white transition-colors"
-              >
-                Skills
-              </button>
-              <button
-                onClick={() => handleNavClick("projects")}
-                className="block text-sm font-medium text-slate-400 hover:text-white transition-colors"
-              >
-                Projects
-              </button>
-              <button
-                onClick={() => handleNavClick("contact")}
-                className="block text-sm font-medium text-slate-400 hover:text-white transition-colors"
-              >
-                Contact
-              </button>
-              <a
-                href="/Andrew-CV.pdf"
-                target="_blank"
-                rel="noreferrer"
-                className="block bg-primary hover:bg-primary-hover text-white text-sm font-bold py-2 px-5 rounded-lg transition-colors w-fit"
-              >
-                Resume
-              </a>
+              <div className="pt-4 pb-4 space-y-4">
+                <button
+                  onClick={() => handleNavClick("skills")}
+                  className="block text-sm font-medium text-slate-400 hover:text-white transition-colors"
+                >
+                  Skills
+                </button>
+                <button
+                  onClick={() => handleNavClick("projects")}
+                  className="block text-sm font-medium text-slate-400 hover:text-white transition-colors"
+                >
+                  Projects
+                </button>
+                <button
+                  onClick={() => handleNavClick("contact")}
+                  className="block text-sm font-medium text-slate-400 hover:text-white transition-colors"
+                >
+                  Contact
+                </button>
+                <a
+                  href="/Andrew-CV.pdf"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="block bg-primary hover:bg-primary-hover text-white text-sm font-bold py-2 px-5 rounded-lg transition-colors w-fit"
+                >
+                  Resume
+                </a>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
