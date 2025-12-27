@@ -17,7 +17,7 @@ export function SkillsSection() {
         </div>
 
         {/* Skills Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
           {/* Frontend Card */}
           <div className="group h-full rounded-lg border border-slate-800 bg-[#15151e] hover:border-slate-600 transition-all hover:shadow-[0_0_20px_rgba(19,55,236,0.1)] font-mono flex flex-col relative overflow-hidden">
             <div

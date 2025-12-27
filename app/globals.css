@@ -34,7 +34,7 @@ html {
 
 /* Pale glass navigation effect */
 .glass-nav-pale {
-  background: rgba(45, 50, 75, 0.65);
+  background: rgba(26, 29, 45, 0.95);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
 }

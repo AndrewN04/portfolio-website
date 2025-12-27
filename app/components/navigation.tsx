@@ -23,10 +23,10 @@ export function Navigation() {
           </Link>
 
           {/* Separator */}
-          <div className="hidden md:block h-6 w-px bg-white/15" />
+          <div className="hidden lg:block h-6 w-px bg-white/15" />
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center gap-4 lg:gap-6">
+          <div className="hidden lg:flex items-center gap-4 lg:gap-6">
             <button
               onClick={() => scrollToSection("skills")}
               className="text-sm font-medium text-slate-400 hover:text-white transition-colors"
@@ -64,7 +64,7 @@ export function Navigation() {
 
           {/* Mobile Menu Icon */}
           <button
-            className="md:hidden text-white"
+            className="lg:hidden text-white"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
             {...(mobileMenuOpen
@@ -80,7 +80,7 @@ export function Navigation() {
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div id="mobile-menu" className="md:hidden mt-4 pb-4 space-y-4">
+          <div id="mobile-menu" className="lg:hidden mt-4 pb-4 space-y-4">
             <button
               onClick={() => handleNavClick("skills")}
               className="block text-sm font-medium text-slate-400 hover:text-white transition-colors"
