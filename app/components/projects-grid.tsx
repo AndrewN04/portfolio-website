@@ -39,7 +39,7 @@ export function ProjectsGrid() {
 
   const handleDragEnd = (
     _: MouseEvent | TouchEvent | PointerEvent,
-    info: PanInfo,
+    info: PanInfo
   ) => {
     const swipeThreshold = 50;
     if (info.offset.x < -swipeThreshold) {
@@ -112,7 +112,7 @@ export function ProjectsGrid() {
           ref={containerRef}
           className="rounded-2xl border border-slate-700/50 bg-[#0c0e1a] p-4 md:p-6"
         >
-          <div className="relative overflow-hidden min-h-[420px]">
+          <div className="relative overflow-hidden min-h-105">
             <AnimatePresence mode="wait" initial={false} custom={direction}>
               <motion.div
                 key={safePage}
