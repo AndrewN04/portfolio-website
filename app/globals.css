@@ -34,9 +34,9 @@ html {
 
 /* Pale glass navigation effect */
 .glass-nav-pale {
-  background: rgba(26, 29, 45, 0.95);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background-color: #1a1d2d !important;
+  background: #1a1d2d !important;
+  opacity: 1 !important;
 }
 
 /* Code syntax highlighting */
