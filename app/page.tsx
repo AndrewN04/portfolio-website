@@ -28,9 +28,16 @@ export default function Home() {
         <Navigation />
 
         {/* Main Content Wrapper */}
-        <main id="main-content" className="grow pt-[72px] relative" tabIndex={-1}>
+        <main
+          id="main-content"
+          className="grow pt-[72px] relative"
+          tabIndex={-1}
+        >
           {/* Background Grid - Decorative */}
-          <div className="absolute inset-0 bg-grid-pattern opacity-[0.15] pointer-events-none z-0" aria-hidden="true" />
+          <div
+            className="absolute inset-0 bg-grid-pattern opacity-[0.15] pointer-events-none z-0"
+            aria-hidden="true"
+          />
 
           {/* Hero Section */}
           <HeroSection />

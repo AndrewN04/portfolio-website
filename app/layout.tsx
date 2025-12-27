@@ -37,7 +37,8 @@ export const metadata: Metadata = {
 };
 
 // Optimized: Fixed values instead of variable ranges (reduces 7.7MB → ~50KB)
-const materialSymbolsFont = "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap";
+const materialSymbolsFont =
+  "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap";
 
 export default function RootLayout({
   children,
@@ -48,7 +49,11 @@ export default function RootLayout({
     <html lang="en" className="dark">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
         <link href={materialSymbolsFont} rel="stylesheet" />
       </head>
       <body

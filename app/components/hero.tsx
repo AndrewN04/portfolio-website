@@ -9,7 +9,7 @@ const heroRoles = ["Developer", "Designer", "Innovator"] as const;
 const useTypewriter = (
   words: readonly string[],
   typingSpeed = 120,
-  pauseDuration = 1500
+  pauseDuration = 1500,
 ) => {
   const [index, setIndex] = useState(0);
   const [subIndex, setSubIndex] = useState(0);
@@ -40,7 +40,7 @@ const useTypewriter = (
       () => {
         setSubIndex((prev) => prev + (direction === "forward" ? 1 : -1));
       },
-      direction === "forward" ? typingSpeed : typingSpeed / 2
+      direction === "forward" ? typingSpeed : typingSpeed / 2,
     );
 
     return () => clearTimeout(timeout);

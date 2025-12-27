@@ -37,7 +37,10 @@ export function ProjectsGrid() {
     setCurrentPage((prev) => (prev - 1 + totalPages) % totalPages);
   };
 
-  const handleDragEnd = (_: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+  const handleDragEnd = (
+    _: MouseEvent | TouchEvent | PointerEvent,
+    info: PanInfo,
+  ) => {
     const swipeThreshold = 50;
     if (info.offset.x < -swipeThreshold) {
       nextPage();
@@ -83,7 +86,9 @@ export function ProjectsGrid() {
         <div className="flex items-end justify-between mb-12">
           <div>
             <h2 className="text-3xl font-bold text-white">Selected Projects</h2>
-            <p className="text-slate-400 mt-2">A showcase of my recent development work.</p>
+            <p className="text-slate-400 mt-2">
+              A showcase of my recent development work.
+            </p>
           </div>
           <a
             className="hidden md:flex items-center gap-1 text-primary font-medium hover:text-primary-hover transition-colors"
@@ -92,12 +97,21 @@ export function ProjectsGrid() {
             rel="noopener noreferrer"
             aria-label="View GitHub profile (opens in new tab)"
           >
-            View Github <span className="material-symbols-outlined text-sm" aria-hidden="true">open_in_new</span>
+            View Github{" "}
+            <span
+              className="material-symbols-outlined text-sm"
+              aria-hidden="true"
+            >
+              open_in_new
+            </span>
           </a>
         </div>
 
         {/* Rounded container box for projects */}
-        <div ref={containerRef} className="rounded-2xl border border-slate-700/50 bg-[#0c0e1a] p-4 md:p-6">
+        <div
+          ref={containerRef}
+          className="rounded-2xl border border-slate-700/50 bg-[#0c0e1a] p-4 md:p-6"
+        >
           <div className="relative overflow-hidden min-h-[420px]">
             <AnimatePresence mode="wait" initial={false} custom={direction}>
               <motion.div
@@ -150,13 +164,20 @@ export function ProjectsGrid() {
                               className="text-slate-500 hover:text-white cursor-pointer transition-colors"
                               aria-label={`View ${project.title} on GitHub (opens in new tab)`}
                             >
-                              <span className="material-symbols-outlined" aria-hidden="true">code</span>
+                              <span
+                                className="material-symbols-outlined"
+                                aria-hidden="true"
+                              >
+                                code
+                              </span>
                             </a>
                           )}
                         </div>
                       </div>
 
-                      <p className="text-slate-400 text-sm mb-4 flex-1 line-clamp-3">{project.description}</p>
+                      <p className="text-slate-400 text-sm mb-4 flex-1 line-clamp-3">
+                        {project.description}
+                      </p>
 
                       {/* Language Icons - Preserved from original */}
                       <div className="flex flex-wrap gap-2 mt-auto">
@@ -185,7 +206,10 @@ export function ProjectsGrid() {
         </div>
 
         {totalPages > 1 && (
-          <div className="flex items-center justify-center gap-3 mt-8" aria-label="Project carousel pagination">
+          <div
+            className="flex items-center justify-center gap-3 mt-8"
+            aria-label="Project carousel pagination"
+          >
             <button
               type="button"
               onClick={prevPage}
@@ -201,7 +225,9 @@ export function ProjectsGrid() {
                   type="button"
                   onClick={() => setCurrentPage(index)}
                   className={`h-2.5 rounded-full transition ${
-                    index === safePage ? "w-8 bg-white" : "w-2.5 bg-white/30 hover:bg-white/60"
+                    index === safePage
+                      ? "w-8 bg-white"
+                      : "w-2.5 bg-white/30 hover:bg-white/60"
                   }`}
                   aria-label={`Go to project set ${index + 1}`}
                   aria-current={index === safePage}
@@ -227,7 +253,13 @@ export function ProjectsGrid() {
             rel="noopener noreferrer"
             aria-label="View GitHub profile (opens in new tab)"
           >
-            View Github <span className="material-symbols-outlined text-sm" aria-hidden="true">open_in_new</span>
+            View Github{" "}
+            <span
+              className="material-symbols-outlined text-sm"
+              aria-hidden="true"
+            >
+              open_in_new
+            </span>
           </a>
         </div>
       </div>
