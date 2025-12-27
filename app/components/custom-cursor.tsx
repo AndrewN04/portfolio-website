@@ -12,7 +12,11 @@ const getServerSnapshot = () => true; // Assume touch on server to skip renderin
 export function CustomCursor() {
   const [isVisible, setIsVisible] = useState(false);
   // useSyncExternalStore properly handles SSR hydration mismatch
-  const isTouchDevice = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const isTouchDevice = useSyncExternalStore(
+    subscribe,
+    getSnapshot,
+    getServerSnapshot,
+  );
 
   // Use motion values for instant tracking (no React re-renders)
   const mouseX = useMotionValue(0);
@@ -38,7 +42,10 @@ export function CustomCursor() {
     const handleMouseLeave = () => setIsVisible(false);
     const handleMouseEnter = () => setIsVisible(true);
 
-    window.addEventListener("mousemove", updatePosition, { passive: true, signal });
+    window.addEventListener("mousemove", updatePosition, {
+      passive: true,
+      signal,
+    });
     document.addEventListener("mouseleave", handleMouseLeave, { signal });
     document.addEventListener("mouseenter", handleMouseEnter, { signal });
 
@@ -68,4 +75,3 @@ export function CustomCursor() {
     </motion.div>
   );
 }
-

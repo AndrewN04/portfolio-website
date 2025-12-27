@@ -1,6 +1,5 @@
 @import "tailwindcss";
 
-
 @theme {
   --color-primary: #1337ec;
   --color-primary-hover: #0f2cb8;
@@ -8,8 +7,7 @@
   --color-background-dark: #101322;
   --color-surface-dark: #1a1d2d;
   --color-code-bg: #1e1e2e;
-  
-  
+
   --radius: 0.25rem;
   --radius-lg: 0.5rem;
   --radius-xl: 0.75rem;
@@ -36,18 +34,31 @@ html {
 
 /* Pale glass navigation effect */
 .glass-nav-pale {
-  background: rgba(45, 50, 75, 0.65);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background-color: #1a1d2d !important;
+  background: #1a1d2d !important;
+  opacity: 1 !important;
 }
 
 /* Code syntax highlighting */
-.code-syntax-keyword { color: #c678dd; } /* Purple */
-.code-syntax-func { color: #61afef; }    /* Blue */
-.code-syntax-string { color: #98c379; }  /* Green */
-.code-syntax-comment { color: #5c6370; font-style: italic; } /* Grey */
-.code-syntax-var { color: #e5c07b; }     /* Yellow */
-.code-syntax-prop { color: #e06c75; }    /* Red */
+.code-syntax-keyword {
+  color: #c678dd;
+} /* Purple */
+.code-syntax-func {
+  color: #61afef;
+} /* Blue */
+.code-syntax-string {
+  color: #98c379;
+} /* Green */
+.code-syntax-comment {
+  color: #5c6370;
+  font-style: italic;
+} /* Grey */
+.code-syntax-var {
+  color: #e5c07b;
+} /* Yellow */
+.code-syntax-prop {
+  color: #e06c75;
+} /* Red */
 
 /* Custom scrollbar for code editor */
 .custom-scrollbar::-webkit-scrollbar {
@@ -55,22 +66,27 @@ html {
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
-  background: #1e1e2e; 
+  background: #1e1e2e;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #3e4451; 
+  background: #3e4451;
   border-radius: 4px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #565c6d; 
+  background: #565c6d;
 }
 
 /* Typing cursor animation */
 .typing-cursor::after {
-  content: '|';
-  animation: blink 1s step-end infinite;
+  content: "|";
+  animation: blink 0.8s step-end infinite;
+}
+
+.typing-cursor.typing::after {
+  animation: none;
+  opacity: 1;
 }
 
 /* Footer brand text styles */
@@ -83,54 +99,105 @@ html {
 }
 
 @keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
 }
 
 /* Grid pattern background */
 .bg-grid-pattern {
   background-image: linear-gradient(to right, #282b39 1px, transparent 1px),
-                    linear-gradient(to bottom, #282b39 1px, transparent 1px);
+    linear-gradient(to bottom, #282b39 1px, transparent 1px);
   background-size: 40px 40px;
   mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
   -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
 }
 
 /* Tech badge styles */
-.tech-badge-nextjs { background-color: rgba(248,250,252,0.08); }
-.tech-badge-nextjs .tech-icon { color: #F1F5F9; }
+.tech-badge-nextjs {
+  background-color: rgba(248, 250, 252, 0.08);
+}
+.tech-badge-nextjs .tech-icon {
+  color: #f1f5f9;
+}
 
-.tech-badge-postgres { background-color: rgba(14,165,233,0.12); }
-.tech-badge-postgres .tech-icon { color: #48A9DC; }
+.tech-badge-postgres {
+  background-color: rgba(14, 165, 233, 0.12);
+}
+.tech-badge-postgres .tech-icon {
+  color: #48a9dc;
+}
 
-.tech-badge-prisma { background-color: rgba(148,163,184,0.12); }
-.tech-badge-prisma .tech-icon { color: #0C344B; }
+.tech-badge-prisma {
+  background-color: rgba(148, 163, 184, 0.12);
+}
+.tech-badge-prisma .tech-icon {
+  color: #0c344b;
+}
 
-.tech-badge-python { background-color: rgba(250,204,21,0.1); }
-.tech-badge-python .tech-icon { color: #FACC15; }
+.tech-badge-python {
+  background-color: rgba(250, 204, 21, 0.1);
+}
+.tech-badge-python .tech-icon {
+  color: #facc15;
+}
 
-.tech-badge-opencv { background-color: rgba(74,222,128,0.12); }
-.tech-badge-opencv .tech-icon { color: #4ADE80; }
+.tech-badge-opencv {
+  background-color: rgba(74, 222, 128, 0.12);
+}
+.tech-badge-opencv .tech-icon {
+  color: #4ade80;
+}
 
-.tech-badge-langchain { background-color: rgba(45,212,191,0.12); }
-.tech-badge-langchain .tech-icon { color: #22D3EE; }
+.tech-badge-langchain {
+  background-color: rgba(45, 212, 191, 0.12);
+}
+.tech-badge-langchain .tech-icon {
+  color: #22d3ee;
+}
 
-.tech-badge-mongodb { background-color: rgba(52,211,153,0.12); }
-.tech-badge-mongodb .tech-icon { color: #34D399; }
+.tech-badge-mongodb {
+  background-color: rgba(52, 211, 153, 0.12);
+}
+.tech-badge-mongodb .tech-icon {
+  color: #34d399;
+}
 
-.tech-badge-tailwind { background-color: rgba(56,189,248,0.12); }
-.tech-badge-tailwind .tech-icon { color: #38BDF8; }
+.tech-badge-tailwind {
+  background-color: rgba(56, 189, 248, 0.12);
+}
+.tech-badge-tailwind .tech-icon {
+  color: #38bdf8;
+}
 
-.tech-badge-tensorflow { background-color: rgba(249,115,22,0.12); }
-.tech-badge-tensorflow .tech-icon { color: #F97316; }
+.tech-badge-tensorflow {
+  background-color: rgba(249, 115, 22, 0.12);
+}
+.tech-badge-tensorflow .tech-icon {
+  color: #f97316;
+}
 
-.tech-badge-fastapi { background-color: rgba(16,185,129,0.12); }
-.tech-badge-fastapi .tech-icon { color: #10B981; }
+.tech-badge-fastapi {
+  background-color: rgba(16, 185, 129, 0.12);
+}
+.tech-badge-fastapi .tech-icon {
+  color: #10b981;
+}
 
-.tech-badge-sqlite { background-color: rgba(56,170,221,0.12); }
-.tech-badge-sqlite .tech-icon { color: #38AADD; }
+.tech-badge-sqlite {
+  background-color: rgba(56, 170, 221, 0.12);
+}
+.tech-badge-sqlite .tech-icon {
+  color: #38aadd;
+}
 
-.tech-badge-cplusplus { background-color: rgba(37,99,235,0.12); }
-.tech-badge-cplusplus .tech-icon { color: #2563EB; }
-
-
+.tech-badge-cplusplus {
+  background-color: rgba(37, 99, 235, 0.12);
+}
+.tech-badge-cplusplus .tech-icon {
+  color: #2563eb;
+}

@@ -13,4 +13,3 @@ export const getIsTouchDevice = (): boolean => {
   if (typeof window === "undefined") return true;
   return window.matchMedia("(pointer: coarse)").matches;
 };
-

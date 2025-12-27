@@ -14,7 +14,12 @@ import {
 } from "react-icons/si";
 
 const LangChainIcon: IconType = (props) => (
-  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
     <path
       d="M9.5 7.5a3 3 0 0 1 4.243 0l2.757 2.757a3 3 0 0 1 0 4.243l-1.061 1.061"
       stroke="currentColor"
@@ -132,13 +137,15 @@ export type Project = {
 export const projects: Project[] = [
   {
     title: "TMDB Explorer (In Progress)",
-    description: "Movie discovery app with smart search and personalized watchlists.",
+    description:
+      "Movie discovery app with smart search and personalized watchlists.",
     link: "https://github.com/AndrewN04/tmdb-app",
     tech: ["nextjs", "postgres", "prisma"],
   },
   {
     title: "Service AI Agent",
-    description: "Multi-agent assistant that plans tasks and orchestrates LLM responses.",
+    description:
+      "Multi-agent assistant that plans tasks and orchestrates LLM responses.",
     link: "https://github.com/AndrewN04/CS4485-AI-Agent",
     tech: ["python", "langchain", "mongodb"],
   },
@@ -156,13 +163,15 @@ export const projects: Project[] = [
   },
   {
     title: "Task Management Web App (Planned)",
-    description: "Productivity suite for task prioritization with real-time collaboration.",
+    description:
+      "Productivity suite for task prioritization with real-time collaboration.",
     link: "",
     tech: ["nextjs", "postgres", "prisma"],
   },
   {
     title: "Data Visualization Tool (Planned)",
-    description: "Analytics playground with custom dashboards and FastAPI pipelines.",
+    description:
+      "Analytics playground with custom dashboards and FastAPI pipelines.",
     link: "",
     tech: ["nextjs", "python", "fastapi"],
   },
@@ -173,4 +182,3 @@ export const projects: Project[] = [
     tech: ["sqlite", "cplusplus"],
   },
 ];
-
