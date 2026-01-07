@@ -133,10 +133,10 @@ html {
 }
 
 .tech-badge-prisma {
-  background-color: rgba(148, 163, 184, 0.12);
+  background-color: rgba(255, 255, 255, 0.08);
 }
 .tech-badge-prisma .tech-icon {
-  color: #0c344b;
+  color: #ffffff;
 }
 
 .tech-badge-python {
@@ -200,4 +200,28 @@ html {
 }
 .tech-badge-cplusplus .tech-icon {
   color: #2563eb;
+}
+
+.tech-badge-typescript {
+  background-color: rgba(49, 120, 198, 0.12);
+}
+.tech-badge-typescript .tech-icon {
+  color: #3178c6 !important;
+  fill: #3178c6 !important;
+}
+
+.tech-badge-supabase {
+  background-color: rgba(63, 207, 142, 0.12);
+}
+.tech-badge-supabase .tech-icon {
+  color: #3fcf8e !important;
+  fill: #3fcf8e !important;
+}
+
+.tech-badge-neon {
+  background-color: rgba(0, 229, 153, 0.12);
+}
+.tech-badge-neon .tech-icon {
+  color: #00e599 !important;
+  fill: #00e599 !important;
 }

@@ -11,6 +11,8 @@ import {
   SiFastapi,
   SiSqlite,
   SiCplusplus,
+  SiTypescript,
+  SiSupabase,
 } from "react-icons/si";
 
 const LangChainIcon: IconType = (props) => (
@@ -35,6 +37,17 @@ const LangChainIcon: IconType = (props) => (
   </svg>
 );
 
+const NeonIcon: IconType = (props) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <path d="M12 2L4 6v12l8 4 8-4V6l-8-4zm0 2.18l5.45 2.73L12 9.64 6.55 6.91 12 4.18zM6 8.27l5 2.5v7.96l-5-2.5V8.27zm12 7.96l-5 2.5V10.77l5-2.5v7.96z" />
+  </svg>
+);
+
 export type TechKey =
   | "nextjs"
   | "postgres"
@@ -47,7 +60,10 @@ export type TechKey =
   | "tensorflow"
   | "fastapi"
   | "sqlite"
-  | "cplusplus";
+  | "cplusplus"
+  | "typescript"
+  | "supabase"
+  | "neon";
 
 export const techRegistry: Record<
   TechKey,
@@ -68,8 +84,8 @@ export const techRegistry: Record<
   prisma: {
     label: "Prisma",
     icon: SiPrisma,
-    color: "#0C344B",
-    background: "rgba(148,163,184,0.12)",
+    color: "#FFFFFF",
+    background: "rgba(255,255,255,0.08)",
   },
   python: {
     label: "Python",
@@ -125,6 +141,24 @@ export const techRegistry: Record<
     color: "#2563EB",
     background: "rgba(37,99,235,0.12)",
   },
+  typescript: {
+    label: "TypeScript",
+    icon: SiTypescript,
+    color: "#3178C6",
+    background: "rgba(49,120,198,0.12)",
+  },
+  supabase: {
+    label: "Supabase",
+    icon: SiSupabase,
+    color: "#3FCF8E",
+    background: "rgba(63,207,142,0.12)",
+  },
+  neon: {
+    label: "Neon",
+    icon: NeonIcon,
+    color: "#00E599",
+    background: "rgba(0,229,153,0.12)",
+  },
 };
 
 export type Project = {
@@ -136,11 +170,18 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    title: "TMDB Explorer (In Progress)",
+    title: "TMDB Chart",
     description:
       "Movie discovery app with smart search and personalized watchlists.",
     link: "https://github.com/AndrewN04/tmdb-app",
-    tech: ["nextjs", "postgres", "prisma"],
+    tech: ["nextjs", "typescript", "supabase", "prisma"],
+  },
+  {
+    title: "go.a04.dev",
+    description:
+      "Security-first URL shortener with expiring links and cross-browser extension.",
+    link: "https://github.com/AndrewN04/url-shortner",
+    tech: ["nextjs", "typescript", "neon"],
   },
   {
     title: "Service AI Agent",
@@ -153,7 +194,7 @@ export const projects: Project[] = [
     title: "Weather Dashboard",
     description: "Weather dashboard with live radar and geolocation alerts.",
     link: "https://github.com/AndrewN04/weather-app",
-    tech: ["nextjs", "tailwind"],
+    tech: ["nextjs", "typescript", "tailwind"],
   },
   {
     title: "Human Pose Detection",
@@ -166,7 +207,7 @@ export const projects: Project[] = [
     description:
       "Productivity suite for task prioritization with real-time collaboration.",
     link: "",
-    tech: ["nextjs", "postgres", "prisma"],
+    tech: ["nextjs", "typescript", "postgres", "prisma"],
   },
   {
     title: "Data Visualization Tool (Planned)",
