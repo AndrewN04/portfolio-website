@@ -1,13 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #ffffff;
-  --color-primary-hover: #e5e5e5;
-  --color-background-light: #f6f6f8;
-  --color-background-dark: #000000;
-  --color-surface-dark: #000000;
-  --color-code-bg: #000000;
-
+  /* Radius variables kept for potential Tailwind usage */
   --radius: 0.25rem;
   --radius-lg: 0.5rem;
   --radius-xl: 0.75rem;
@@ -31,21 +25,6 @@ html {
   background: rgba(255, 255, 255, 0.3);
   color: #ffffff;
 }
-
-/* Enhanced glass navigation with gradient border */
-.glass-nav-pale {
-  background: linear-gradient(135deg, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.98) 100%) !important;
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
-  box-shadow: 
-    0 8px 32px rgba(0, 0, 0, 0.6),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1),
-    0 0 0 1px rgba(255, 255, 255, 0.1) !important;
-  position: relative;
-  overflow: hidden;
-}
-
 
 /* Code syntax highlighting */
 .code-syntax-keyword {
@@ -86,49 +65,6 @@ html {
   background: #565c6d;
 }
 
-/* Smooth rotating pastel rainbow gradient for hero title */
-.cycling-gradient-wrapper {
-  display: inline-block;
-  background: linear-gradient(
-    90deg,
-    #ff6b9d 0%,
-    #ffa366 12.5%,
-    #ffd93d 25%,
-    #6bcf7f 37.5%,
-    #4dd0e1 50%,
-    #5dade2 62.5%,
-    #a569bd 75%,
-    #ec7edf 87.5%,
-    #ff6b9d 100%,
-    #ffa366 112.5%,
-    #ffd93d 125%,
-    #6bcf7f 137.5%,
-    #4dd0e1 150%,
-    #5dade2 162.5%,
-    #a569bd 175%,
-    #ec7edf 187.5%,
-    #ff6b9d 200%
-  );
-  background-size: 200% 100%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: shiftRainbow 8s linear infinite;
-}
-
-.cycling-gradient-wrapper > span {
-  color: inherit;
-}
-
-@keyframes shiftRainbow {
-  0% {
-    background-position: 0% center;
-  }
-  100% {
-    background-position: 100% center;
-  }
-}
-
 /* Typing cursor animation */
 .typing-cursor::after {
   content: "|";
@@ -145,10 +81,6 @@ html {
   font-family: var(--font-mono);
 }
 
-.clip-circle-hidden {
-  clip-path: circle(40px at -100px -100px);
-}
-
 @keyframes blink {
   0%,
   100% {
@@ -159,155 +91,3 @@ html {
   }
 }
 
-@keyframes float {
-  0%, 100% {
-    transform: translate(0, 0) scale(1);
-  }
-  33% {
-    transform: translate(30px, -30px) scale(1.1);
-  }
-  66% {
-    transform: translate(-20px, 20px) scale(0.9);
-  }
-}
-
-.animate-float {
-  animation: float 8s ease-in-out infinite;
-}
-
-@keyframes gradient {
-  0%, 100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-}
-
-.animate-gradient {
-  animation: gradient 3s ease infinite;
-}
-
-
-/* Animated gradient orb effect */
-@keyframes float {
-  0%, 100% {
-    transform: translate(0, 0) scale(1);
-  }
-  33% {
-    transform: translate(30px, -30px) scale(1.1);
-  }
-  66% {
-    transform: translate(-20px, 20px) scale(0.9);
-  }
-}
-
-
-/* Tech badge styles */
-.tech-badge-nextjs {
-  background-color: rgba(248, 250, 252, 0.08);
-}
-.tech-badge-nextjs .tech-icon {
-  color: #f1f5f9;
-}
-
-.tech-badge-postgres {
-  background-color: rgba(14, 165, 233, 0.12);
-}
-.tech-badge-postgres .tech-icon {
-  color: #48a9dc;
-}
-
-.tech-badge-prisma {
-  background-color: rgba(255, 255, 255, 0.08);
-}
-.tech-badge-prisma .tech-icon {
-  color: #ffffff;
-}
-
-.tech-badge-python {
-  background-color: rgba(250, 204, 21, 0.1);
-}
-.tech-badge-python .tech-icon {
-  color: #facc15;
-}
-
-.tech-badge-opencv {
-  background-color: rgba(74, 222, 128, 0.12);
-}
-.tech-badge-opencv .tech-icon {
-  color: #4ade80;
-}
-
-.tech-badge-langchain {
-  background-color: rgba(45, 212, 191, 0.12);
-}
-.tech-badge-langchain .tech-icon {
-  color: #22d3ee;
-}
-
-.tech-badge-mongodb {
-  background-color: rgba(52, 211, 153, 0.12);
-}
-.tech-badge-mongodb .tech-icon {
-  color: #34d399;
-}
-
-.tech-badge-tailwind {
-  background-color: rgba(56, 189, 248, 0.12);
-}
-.tech-badge-tailwind .tech-icon {
-  color: #38bdf8;
-}
-
-.tech-badge-tensorflow {
-  background-color: rgba(249, 115, 22, 0.12);
-}
-.tech-badge-tensorflow .tech-icon {
-  color: #f97316;
-}
-
-.tech-badge-fastapi {
-  background-color: rgba(16, 185, 129, 0.12);
-}
-.tech-badge-fastapi .tech-icon {
-  color: #10b981;
-}
-
-.tech-badge-sqlite {
-  background-color: rgba(56, 170, 221, 0.12);
-}
-.tech-badge-sqlite .tech-icon {
-  color: #38aadd;
-}
-
-.tech-badge-cplusplus {
-  background-color: rgba(37, 99, 235, 0.12);
-}
-.tech-badge-cplusplus .tech-icon {
-  color: #2563eb;
-}
-
-.tech-badge-typescript {
-  background-color: rgba(49, 120, 198, 0.12);
-}
-.tech-badge-typescript .tech-icon {
-  color: #3178c6 !important;
-  fill: #3178c6 !important;
-}
-
-.tech-badge-supabase {
-  background-color: rgba(63, 207, 142, 0.12);
-}
-.tech-badge-supabase .tech-icon {
-  color: #3fcf8e !important;
-  fill: #3fcf8e !important;
-}
-
-.tech-badge-neon {
-  background-color: rgba(0, 229, 153, 0.12);
-}
-.tech-badge-neon .tech-icon {
-  color: #00e599 !important;
-  fill: #00e599 !important;
-}

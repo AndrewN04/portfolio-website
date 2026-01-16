@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { skillsRegistry } from "../lib/projects";
+import { skillsRegistry } from "../lib/skills";
 
 const skillCategories = [
   {

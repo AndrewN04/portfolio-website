@@ -1,22 +1,12 @@
 "use client";
 
-import { useEffect, useState, useSyncExternalStore } from "react";
+import { useEffect, useState } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
-import { getIsTouchDevice } from "../lib/utils";
-
-// Subscribe to touch device state (static - doesn't change)
-const subscribe = () => () => {};
-const getSnapshot = () => getIsTouchDevice();
-const getServerSnapshot = () => true; // Assume touch on server to skip rendering
+import { useTouchDevice } from "../lib/hooks/use-touch-device";
 
 export function CustomCursor() {
   const [isVisible, setIsVisible] = useState(false);
-  // useSyncExternalStore properly handles SSR hydration mismatch
-  const isTouchDevice = useSyncExternalStore(
-    subscribe,
-    getSnapshot,
-    getServerSnapshot
-  );
+  const isTouchDevice = useTouchDevice();
 
   // Use motion values for instant tracking (no React re-renders)
   const mouseX = useMotionValue(0);
@@ -57,7 +47,7 @@ export function CustomCursor() {
 
   return (
     <motion.div
-      className="fixed pointer-events-none z-9999"
+      className="fixed pointer-events-none z-[9999]"
       style={{
         x: cursorX,
         y: cursorY,

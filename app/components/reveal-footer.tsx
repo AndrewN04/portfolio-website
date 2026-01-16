@@ -1,23 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useSyncExternalStore } from "react";
+import { useEffect, useRef } from "react";
 import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
-import { getIsTouchDevice } from "../lib/utils";
-
-// Subscribe to touch device state (static - doesn't change)
-const subscribe = () => () => {};
-const getSnapshot = () => getIsTouchDevice();
-const getServerSnapshot = () => true; // Assume touch on server to skip rendering
+import { useTouchDevice } from "../lib/hooks/use-touch-device";
 
 export function RevealFooter() {
   const textContainerRef = useRef<HTMLDivElement>(null);
-
-  // useSyncExternalStore properly handles SSR hydration mismatch
-  const isTouchDevice = useSyncExternalStore(
-    subscribe,
-    getSnapshot,
-    getServerSnapshot
-  );
+  const isTouchDevice = useTouchDevice();
 
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
