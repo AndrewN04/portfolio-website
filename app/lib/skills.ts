@@ -22,7 +22,9 @@ export type SkillKey =
     | "figma"
     | "postman"
     | "langchain"
-    | "aws";
+    | "aws"
+    | "vite"
+    | "playwright";
 
 export const skillsRegistry: Record<SkillKey, { label: string; svg: string }> =
 {
@@ -121,5 +123,13 @@ export const skillsRegistry: Record<SkillKey, { label: string; svg: string }> =
     aws: {
         label: "AWS",
         svg: "/aws.svg",
+    },
+    vite: {
+        label: "Vite",
+        svg: "/vite.svg",
+    },
+    playwright: {
+        label: "Playwright",
+        svg: "/playwright.svg",
     },
 };

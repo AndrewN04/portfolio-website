@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { skillsRegistry } from "../lib/skills";
 
@@ -48,9 +49,60 @@ const skillCategories = [
     name: "Tools",
     command: "ls tools/",
     icon: "design_services",
-    skills: ["prisma", "figma", "postman", "langchain"],
+    skills: ["prisma", "figma", "postman", "langchain", "vite", "playwright"],
   },
 ];
+
+function SkillIconWithTooltip({
+  skill,
+}: {
+  skill: { label: string; svg: string };
+}) {
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <div
+      className="relative shrink-0"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <div className="flex h-12 w-12 items-center justify-center rounded border border-white/20 hover:border-white/40 transition-all hover:scale-110">
+        <Image
+          src={skill.svg}
+          alt={skill.label}
+          width={24}
+          height={24}
+          className="h-6 w-6"
+          aria-hidden="true"
+        />
+        <span className="sr-only">{skill.label}</span>
+      </div>
+
+      {/* Custom Tooltip */}
+      <AnimatePresence>
+        {isHovered && (
+          <motion.div
+            initial={{ opacity: 0, y: 4, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 4, scale: 0.95 }}
+            transition={{ duration: 0.15, ease: "easeOut" }}
+            className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-50 pointer-events-none"
+          >
+            <div className="relative bg-black border border-white/30 rounded-md px-3 py-1.5 shadow-lg shadow-black/50">
+              <span className="text-[#61afef] text-xs font-mono font-medium whitespace-nowrap">
+                {skill.label}
+              </span>
+              {/* Tooltip arrow pointing down */}
+              <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-px">
+                <div className="w-2 h-2 bg-black border-r border-b border-white/30 rotate-45"></div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
 
 export function SkillsSection() {
   return (
@@ -81,8 +133,6 @@ export function SkillsSection() {
             <motion.article
               key={category.id}
               className="group relative border border-white/20 bg-black hover:bg-white/5 hover:border-white/30 transition-all"
-              whileHover={{ scale: 1.02 }}
-              transition={{ type: "spring", stiffness: 400, damping: 25 }}
             >
               <div className="px-6 py-4 md:py-5">
                 <div className="flex items-start gap-4">
@@ -125,21 +175,10 @@ export function SkillsSection() {
                             ];
                           if (!skill) return null;
                           return (
-                            <div
+                            <SkillIconWithTooltip
                               key={skillKey}
-                              className="flex h-12 w-12 items-center justify-center rounded border border-white/20 hover:border-white/40 transition-all hover:scale-110 shrink-0"
-                              title={skill.label}
-                            >
-                              <Image
-                                src={skill.svg}
-                                alt={skill.label}
-                                width={24}
-                                height={24}
-                                className="h-6 w-6"
-                                aria-hidden="true"
-                              />
-                              <span className="sr-only">{skill.label}</span>
-                            </div>
+                              skill={skill}
+                            />
                           );
                         })}
                       </div>
