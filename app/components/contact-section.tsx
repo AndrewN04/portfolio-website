@@ -63,33 +63,33 @@ export function ContactSection() {
   };
 
   return (
-    <section
-      className="py-24 bg-[#0c0e1a] border-t border-[#282b39]"
-      id="contact"
-    >
-      <div className="max-w-3xl mx-auto px-6">
+    <section className="py-24 relative overflow-hidden" id="contact">
+      <div className="max-w-3xl mx-auto px-6 relative z-10">
         {/* Header */}
         <div className="text-center mb-10">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            <span className="text-slate-400">&lt;</span>
-            <span className="text-emerald-400">Contact</span>
-            <span className="text-slate-400">/&gt;</span>
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 relative inline-block">
+            <span className="text-[#e5c07b]">&lt;</span>
+            <span className="text-[#e5c07b] relative">
+              Contact
+              <span className="absolute -bottom-1 left-0 right-0 h-0.5 bg-[#e5c07b] opacity-50"></span>
+            </span>
+            <span className="text-[#e5c07b]">/&gt;</span>
           </h2>
-          <p className="font-mono text-slate-400 text-sm md:text-base">
-            <span className="text-purple-400">const</span>{" "}
-            <span className="text-white">status</span>{" "}
+          <p className="font-mono text-slate-400 text-sm md:text-base mt-6">
+            <span className="code-syntax-keyword">const</span>{" "}
+            <span className="code-syntax-prop">status</span>{" "}
             <span className="text-slate-500">=</span>{" "}
-            <span className="text-emerald-400">
+            <span className="code-syntax-string">
               &quot;Open for opportunities&quot;
             </span>
             <span className="text-slate-500">;</span>
           </p>
         </div>
 
-        {/* Terminal Window */}
-        <div className="rounded-xl overflow-hidden border border-[#282b39] bg-surface-dark shadow-2xl">
+        {/* Enhanced Terminal Window */}
+        <div className="rounded-xl overflow-hidden border border-white/20 bg-black shadow-2xl relative">
           {/* Terminal Header */}
-          <div className="flex items-center px-4 py-3 bg-[#15151e] border-b border-[#282b39]">
+          <div className="flex items-center px-4 py-3 bg-black border-b border-white/10 relative z-10">
             <div className="flex gap-2">
               <div
                 className="w-3 h-3 rounded-full bg-[#ff5f56]"
@@ -113,21 +113,23 @@ export function ContactSection() {
               Last login: {loginTime ?? "..."}
             </div>
             <div className="mb-1">
-              <span className="text-emerald-400">system@portfolio</span>
+              <span className="text-[#61afef]">system@portfolio</span>
               <span className="text-slate-500">:</span>
-              <span className="text-blue-400">~/contact</span>
-              <span className="text-slate-400">$ ./init_contact_form.sh</span>
+              <span className="text-[#98c379]">~/contact</span>
+              <span className="text-slate-400">
+                <span className="text-[#98c379]">$</span> ./init_contact_form.sh
+              </span>
             </div>
             <div className="text-slate-400 mb-6">
               Initializing secure connection...{" "}
-              <span className="text-emerald-400">Done.</span>
+              <span className="text-white">Done.</span>
             </div>
 
             {/* Form */}
             <form onSubmit={handleSubmit} className="space-y-5">
               {/* Name Field */}
               <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#282b39] rounded-md mb-2">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-black border border-white/20 rounded-md mb-2">
                   <span
                     className="material-symbols-outlined text-slate-400 text-base"
                     aria-hidden="true"
@@ -150,12 +152,12 @@ export function ContactSection() {
                     aria-label="Your name"
                   />
                 </div>
-                <div className="h-px bg-[#282b39] ml-6 mt-1" />
+                <div className="h-px bg-white/20 ml-6 mt-1" />
               </div>
 
               {/* Email Field */}
               <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#282b39] rounded-md mb-2">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-black border border-white/20 rounded-md mb-2">
                   <span
                     className="material-symbols-outlined text-slate-400 text-base"
                     aria-hidden="true"
@@ -180,12 +182,12 @@ export function ContactSection() {
                     aria-label="Your email address"
                   />
                 </div>
-                <div className="h-px bg-[#282b39] ml-6 mt-1" />
+                <div className="h-px bg-white/20 ml-6 mt-1" />
               </div>
 
               {/* Message Field */}
               <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#282b39] rounded-md mb-2">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-black border border-white/20 rounded-md mb-2">
                   <span
                     className="material-symbols-outlined text-slate-400 text-base"
                     aria-hidden="true"
@@ -208,7 +210,7 @@ export function ContactSection() {
                     aria-label="Your message"
                   />
                 </div>
-                <div className="h-px bg-[#282b39] ml-6 mt-1" />
+                <div className="h-px bg-white/20 ml-6 mt-1" />
               </div>
 
               {/* Submit Button */}
@@ -216,10 +218,12 @@ export function ContactSection() {
                 <button
                   type="submit"
                   disabled={status === "sending"}
-                  className="w-full flex items-center justify-between px-4 py-3 bg-[#282b39] hover:bg-[#32364a] rounded-lg transition-colors group disabled:opacity-60 disabled:cursor-not-allowed"
+                  className="w-full flex items-center justify-between px-4 py-3 bg-black hover:bg-gray-900 border border-white/20 hover:border-white/40 rounded-lg transition-all group disabled:opacity-60 disabled:cursor-not-allowed relative overflow-hidden"
                 >
+                  {/* Shimmer effect */}
+                  <span className="absolute inset-0 bg-linear-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></span>
                   <div className="flex items-center gap-3">
-                    <span className="text-emerald-400 font-bold">$</span>
+                    <span className="text-[#98c379] font-bold">$</span>
                     <span className="text-slate-300">
                       {status === "sending"
                         ? "sending_message.sh"
@@ -235,10 +239,10 @@ export function ContactSection() {
                   <span
                     className={`text-xs px-2 py-0.5 rounded uppercase tracking-wider font-bold ${
                       status === "success"
-                        ? "bg-emerald-500/20 text-emerald-400"
+                        ? "bg-white/20 text-white"
                         : status === "error"
                         ? "bg-red-500/20 text-red-400"
-                        : "bg-emerald-500/20 text-emerald-400 group-hover:bg-emerald-500/30"
+                        : "bg-white/20 text-white group-hover:bg-white/30"
                     }`}
                   >
                     {status === "success"
@@ -255,7 +259,7 @@ export function ContactSection() {
               {/* Status Message */}
               <div className="text-center text-sm" aria-live="polite">
                 {status === "success" && (
-                  <p className="text-emerald-400">
+                  <p className="text-white">
                     <span className="text-slate-500">[SUCCESS]</span> Message
                     transmitted. I&apos;ll get back to you shortly.
                   </p>

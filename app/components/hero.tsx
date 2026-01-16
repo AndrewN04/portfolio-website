@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { motion, useMotionValue, useTransform, animate } from "framer-motion";
 import { Mail } from "lucide-react";
 import { scrollToSection } from "../lib/utils";
 
@@ -52,25 +53,75 @@ const useTypewriter = (
   return { text: words[index].slice(0, subIndex), isTyping };
 };
 
+function GradientText({ children }: { children: string }) {
+  const progress = useMotionValue(0);
+
+  useEffect(() => {
+    const controls = animate(progress, [0, 1], {
+      duration: 8,
+      repeat: Infinity,
+      ease: "linear",
+    });
+    return () => controls.stop();
+  }, [progress]);
+
+  const gradientPosition = useTransform(progress, [0, 1], ["0%", "200%"]);
+
+  // Create a seamless repeating gradient by duplicating the pattern
+  const gradient = `linear-gradient(90deg, 
+    #ff6b9d 0%, 
+    #ffa366 12.5%, 
+    #ffd93d 25%, 
+    #6bcf7f 37.5%, 
+    #4dd0e1 50%, 
+    #5dade2 62.5%, 
+    #a569bd 75%, 
+    #ec7edf 87.5%, 
+    #ff6b9d 100%,
+    #ffa366 112.5%, 
+    #ffd93d 125%, 
+    #6bcf7f 137.5%, 
+    #4dd0e1 150%, 
+    #5dade2 162.5%, 
+    #a569bd 175%, 
+    #ec7edf 187.5%, 
+    #ff6b9d 200%
+  )`;
+
+  return (
+    <motion.span
+      className="inline-block"
+      style={{
+        background: gradient,
+        backgroundSize: "200% 100%",
+        backgroundPosition: gradientPosition,
+        WebkitBackgroundClip: "text",
+        WebkitTextFillColor: "transparent",
+        backgroundClip: "text",
+      }}
+    >
+      {children}
+    </motion.span>
+  );
+}
+
 export function HeroSection() {
   const { text: typedRole, isTyping } = useTypewriter(heroRoles);
 
   return (
     <section
-      className="relative z-10 min-h-[calc(100vh-72px)] flex items-center"
+      className="relative z-10 min-h-[calc(100vh-80px)] flex items-center pt-20"
       id="about"
     >
-      <div className="max-w-7xl mx-auto px-6 w-full py-12 lg:py-0">
+      <div className="max-w-7xl mx-auto px-6 w-full py-12 lg:py-0 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Left Column: Personal Pitch */}
           <div className="flex flex-col gap-6">
             <div className="space-y-2">
-              <h1 className="text-5xl lg:text-7xl font-bold tracking-tight leading-[1.1]">
+              <h1 className="text-5xl lg:text-7xl font-bold tracking-tight leading-[1.1] relative">
                 {/* min-w prevents CLS by reserving space for longest word "Innovator" */}
-                <span className="inline-block min-w-[5ch]">
-                  <span className="text-transparent bg-clip-text bg-linear-to-r from-primary to-purple-400">
-                    {typedRole}
-                  </span>
+                <span className="inline-block min-w-[5ch] relative">
+                  <GradientText>{typedRole}</GradientText>
                   <span
                     className={`typing-cursor ${isTyping ? "typing" : ""}`}
                   ></span>
@@ -78,7 +129,7 @@ export function HeroSection() {
               </h1>
               <p className="text-slate-400 text-lg lg:text-xl max-w-xl leading-relaxed pt-4">
                 Hello, I&apos;m{" "}
-                <span className="text-white font-medium">Andrew Nguyen</span>—a
+                <span className="text-white font-medium">Andrew Nguyen</span>, a
                 Full Stack Developer based in Texas. Working on projects when I
                 can.
               </p>
@@ -87,31 +138,32 @@ export function HeroSection() {
             <div className="flex flex-wrap gap-4 pt-4">
               <button
                 onClick={() => scrollToSection("projects")}
-                className="bg-primary hover:bg-primary-hover text-white h-12 px-8 rounded-lg font-bold transition-all transform hover:-translate-y-0.5 shadow-lg shadow-primary/25 flex items-center gap-2"
+                className="bg-white text-black hover:bg-gray-200 h-12 px-8 rounded-lg font-bold transition-all transform hover:-translate-y-0.5 shadow-lg shadow-white/20 hover:shadow-white/30 flex items-center gap-2 relative overflow-hidden group"
               >
-                <span>View Projects</span>
+                <span className="relative z-10">View Projects</span>
                 <span
-                  className="material-symbols-outlined text-[18px]"
+                  className="material-symbols-outlined text-[18px] relative z-10 transition-transform group-hover:translate-x-1"
                   aria-hidden="true"
                 >
                   arrow_forward
                 </span>
+                <span className="absolute inset-0 bg-linear-to-r from-white/0 via-white/20 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></span>
               </button>
               <button
                 onClick={() => scrollToSection("contact")}
-                className="bg-surface-dark border border-slate-700 hover:border-slate-500 text-white h-12 px-8 rounded-lg font-bold transition-all flex items-center gap-2"
+                className="bg-black border border-white/20 hover:border-white/40 text-white h-12 px-8 rounded-lg font-bold transition-all flex items-center gap-2 relative group hover:bg-gray-900 backdrop-blur-sm"
               >
-                <span>Contact Me</span>
-                <Mail className="h-5 w-5" />
+                <span className="relative z-10">Contact Me</span>
+                <Mail className="h-5 w-5 relative z-10 transition-transform group-hover:scale-110" />
               </button>
             </div>
           </div>
 
           {/* Right Column: Code Editor Aesthetic */}
           <div className="w-full">
-            <div className="relative rounded-xl overflow-hidden shadow-2xl bg-code-bg border border-[#282b39] transform hover:scale-105 transition-transform duration-500">
+            <div className="relative rounded-xl overflow-hidden shadow-2xl bg-black border border-white/20 transform hover:scale-105 transition-transform duration-500">
               {/* Editor Header */}
-              <div className="flex items-center justify-between px-4 py-3 bg-[#15151e] border-b border-[#282b39]">
+              <div className="flex items-center justify-between px-4 py-3 bg-black border-b border-white/10">
                 <div className="flex items-center gap-2">
                   <div className="flex gap-1.5">
                     <div className="w-3 h-3 rounded-full bg-[#ff5f56]"></div>
@@ -164,9 +216,7 @@ export function HeroSection() {
                     ,{"\n    "}
                     <span className="code-syntax-prop">role</span>:{" "}
                     <span className="code-syntax-string">&quot;</span>
-                    <span className="text-transparent bg-clip-text bg-linear-to-r from-[#61afef] to-[#c678dd]">
-                      {typedRole}
-                    </span>
+                    <GradientText>{typedRole}</GradientText>
                     <span
                       className={`typing-cursor ${isTyping ? "typing" : ""}`}
                     ></span>
@@ -193,6 +243,13 @@ export function HeroSection() {
                       {"{"}true{"}"}
                     </span>
                     <span className="code-syntax-var"> /&gt;</span>
+                    {"\n      "}
+                    <span className="code-syntax-var">&lt;Contact </span>
+                    <span className="code-syntax-prop">status</span>=
+                    <span className="code-syntax-string">
+                      {"{"}&quot;Open for opportunities&quot;{"}"}
+                    </span>
+                    <span className="code-syntax-var"> /&gt;</span>
                     {"\n    "}
                     <span className="code-syntax-var">&lt;/Portfolio&gt;</span>
                     {"\n  "}
@@ -204,7 +261,7 @@ export function HeroSection() {
               </div>
 
               {/* Editor Footer */}
-              <div className="px-4 py-1.5 bg-primary text-white text-[10px] font-mono flex items-center justify-between">
+              <div className="px-4 py-1.5 bg-black border-t border-white/10 text-white text-[10px] font-mono flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <span className="flex items-center gap-1">
                     <span
@@ -228,16 +285,6 @@ export function HeroSection() {
                 <div>TypeScript React</div>
               </div>
             </div>
-
-            {/* Decorative blur orbs */}
-            <div
-              className="absolute -z-10 -top-10 -right-10 w-64 h-64 bg-primary/20 rounded-full blur-3xl"
-              aria-hidden="true"
-            />
-            <div
-              className="absolute -z-10 -bottom-10 -left-10 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl"
-              aria-hidden="true"
-            />
           </div>
         </div>
       </div>

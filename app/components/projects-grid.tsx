@@ -3,17 +3,20 @@
 import { useState, useRef, useEffect } from "react";
 import { AnimatePresence, motion, Variants, PanInfo } from "framer-motion";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { projects, techRegistry } from "../lib/projects";
+import { projects } from "../lib/projects";
 
 const slideVariants: Variants = {
   enter: (direction: "left" | "right") => ({
     x: direction === "right" ? "100%" : "-100%",
+    opacity: 0,
   }),
   center: {
     x: 0,
+    opacity: 1,
   },
   exit: (direction: "left" | "right") => ({
     x: direction === "right" ? "-100%" : "100%",
+    opacity: 0,
   }),
 };
 
@@ -81,17 +84,26 @@ export function ProjectsGrid() {
   }, [totalPages]);
 
   return (
-    <section className="py-20 bg-background-dark" id="projects">
-      <div className="max-w-7xl mx-auto px-6">
+    <section className="py-20 relative overflow-hidden" id="projects">
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="flex items-end justify-between mb-12">
           <div>
-            <h2 className="text-3xl font-bold text-white">Selected Projects</h2>
-            <p className="text-slate-400 mt-2">
-              A showcase of my recent development work.
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 relative inline-block">
+              <span className="text-[#e5c07b]">&lt;</span>
+              <span className="text-[#e5c07b] relative">
+                Projects
+                <span className="absolute -bottom-1 left-0 right-0 h-0.5 bg-[#e5c07b] opacity-50"></span>
+              </span>
+              <span className="text-[#e5c07b]">/&gt;</span>
+            </h2>
+            <p className="text-slate-400 mt-4 font-mono text-sm">
+              <span className="text-[#98c379]">$</span>{" "}
+              <span className="text-white">ls</span>{" "}
+              <span className="text-white">projects/</span>
             </p>
           </div>
           <a
-            className="hidden md:flex items-center gap-1 text-primary font-medium hover:text-primary-hover transition-colors"
+            className="hidden md:flex items-center gap-1 text-white font-medium hover:text-gray-300 transition-colors"
             href="https://github.com/AndrewN04"
             target="_blank"
             rel="noopener noreferrer"
@@ -107,102 +119,72 @@ export function ProjectsGrid() {
           </a>
         </div>
 
-        {/* Rounded container box for projects */}
-        <div
-          ref={containerRef}
-          className="rounded-2xl border border-slate-700/50 bg-[#0c0e1a] p-4 md:p-6"
-        >
-          <div className="relative overflow-hidden min-h-105">
-            <AnimatePresence mode="wait" initial={false} custom={direction}>
-              <motion.div
-                key={safePage}
-                custom={direction}
-                variants={slideVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
-                drag="x"
-                dragConstraints={{ left: 0, right: 0 }}
-                dragElastic={0.2}
-                onDragEnd={handleDragEnd}
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 cursor-grab active:cursor-grabbing"
-              >
-                {visibleProjects.map((project) => (
-                  <article
+        {/* Stacked box grid container */}
+        <div ref={containerRef} className="relative overflow-visible py-2">
+          <AnimatePresence mode="wait" initial={false} custom={direction}>
+            <motion.div
+              key={safePage}
+              custom={direction}
+              variants={slideVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{
+                type: "tween",
+                duration: 0.6,
+                ease: [0.16, 1, 0.3, 1],
+                opacity: { duration: 0.4 },
+              }}
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.2}
+              onDragEnd={handleDragEnd}
+              className="space-y-2 cursor-grab active:cursor-grabbing"
+            >
+              {visibleProjects.map((project, index) => {
+                const globalIndex = startIndex + index;
+                return (
+                  <motion.article
                     key={project.title}
-                    className="group bg-surface-dark rounded-xl overflow-hidden border border-slate-800 hover:border-slate-600 transition-all hover:shadow-xl hover:shadow-primary/5 flex flex-col h-full"
+                    className="group relative border border-white/20 bg-black hover:bg-white/5 hover:border-white/30 transition-all"
+                    whileHover={{ scale: 1.02 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 25 }}
                   >
-                    <div className="relative h-48 overflow-hidden bg-slate-800">
-                      <div className="absolute inset-0 bg-linear-to-br from-slate-700 to-slate-900 group-hover:scale-105 transition-transform duration-500"></div>
-                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/40 backdrop-blur-[2px]">
-                        {project.link && (
-                          <a
-                            href={project.link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="bg-white text-black text-sm font-bold py-2 px-4 rounded-full hover:bg-slate-100 transition-colors"
-                            aria-label={`View ${project.title} repository (opens in new tab)`}
-                          >
-                            View Repository
-                          </a>
-                        )}
-                      </div>
-                    </div>
+                    <a
+                      href={project.link || "#"}
+                      target={project.link ? "_blank" : undefined}
+                      rel={project.link ? "noopener noreferrer" : undefined}
+                      className="flex items-center justify-between px-6 py-8 md:py-10"
+                    >
+                      <div className="flex items-center gap-6 flex-1 min-w-0">
+                        {/* Project number */}
+                        <span className="text-sm font-mono text-white/40">
+                          {String(globalIndex + 1).padStart(2, "0")}
+                        </span>
 
-                    <div className="p-6 flex flex-col flex-1">
-                      <div className="flex items-center justify-between mb-3">
-                        <h3 className="text-xl font-bold text-white group-hover:text-primary transition-colors">
-                          {project.title}
-                        </h3>
-                        <div className="flex gap-2">
-                          {project.link && (
-                            <a
-                              href={project.link}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-slate-500 hover:text-white cursor-pointer transition-colors"
-                              aria-label={`View ${project.title} on GitHub (opens in new tab)`}
-                            >
-                              <span
-                                className="material-symbols-outlined"
-                                aria-hidden="true"
-                              >
-                                code
-                              </span>
-                            </a>
-                          )}
+                        <div className="flex-1 min-w-0">
+                          {/* Project title */}
+                          <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold uppercase tracking-tight mb-2 text-white">
+                            {project.title}
+                          </h3>
+
+                          {/* Project description */}
+                          <p className="text-sm md:text-base text-white/60 font-mono">
+                            {project.description}
+                          </p>
                         </div>
                       </div>
 
-                      <p className="text-slate-400 text-sm mb-4 flex-1 line-clamp-3">
-                        {project.description}
-                      </p>
-
-                      {/* Language Icons - Preserved from original */}
-                      <div className="flex flex-wrap gap-2 mt-auto">
-                        {project.tech.map((techKey) => {
-                          const tech = techRegistry[techKey];
-                          if (!tech) return null;
-                          const Icon = tech.icon;
-                          return (
-                            <span
-                              key={`${project.title}-${techKey}`}
-                              className={`flex h-8 w-8 items-center justify-center rounded-lg border border-slate-700 tech-badge-${techKey}`}
-                              title={tech.label}
-                            >
-                              <Icon className="h-4 w-4 tech-icon" aria-hidden />
-                              <span className="sr-only">{tech.label}</span>
-                            </span>
-                          );
-                        })}
+                      {/* Arrow icon */}
+                      <div className="shrink-0 ml-6 text-white/60 group-hover:text-white transition-all group-hover:translate-x-1">
+                        <ArrowRight className="h-5 w-5 md:h-6 md:w-6" />
                       </div>
-                    </div>
-                  </article>
-                ))}
-              </motion.div>
-            </AnimatePresence>
-          </div>
+                    </a>
+                  </motion.article>
+                );
+              })}
+            </motion.div>
+          </AnimatePresence>
         </div>
 
         {totalPages > 1 && (
@@ -247,7 +229,7 @@ export function ProjectsGrid() {
 
         <div className="mt-8 text-center md:hidden">
           <a
-            className="inline-flex items-center gap-1 text-primary font-medium hover:text-primary-hover transition-colors"
+            className="inline-flex items-center gap-1 text-white font-medium hover:text-gray-300 transition-colors"
             href="https://github.com/AndrewN04"
             target="_blank"
             rel="noopener noreferrer"

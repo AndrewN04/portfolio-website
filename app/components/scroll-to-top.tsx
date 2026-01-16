@@ -33,13 +33,13 @@ export function ScrollToTopButton() {
         <motion.button
           type="button"
           onClick={scrollToTop}
-          className="fixed bottom-20 right-6 z-50 inline-flex items-center justify-center rounded-full border border-white/15 bg-slate-900/80 p-3 text-white shadow-2xl backdrop-blur transition hover:border-white/40 hover:text-teal-200"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 20 }}
+          className="fixed bottom-20 right-6 z-50 inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/30 text-white transition hover:border-white/60"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
           aria-label="Back to top"
         >
-          <ArrowUp className="h-5 w-5" />
+          <ArrowUp className="h-4 w-4" />
         </motion.button>
       )}
     </AnimatePresence>

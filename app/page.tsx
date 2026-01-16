@@ -17,7 +17,7 @@ export default function Home() {
       <RevealFooter />
 
       {/* Main Page Content */}
-      <div className="relative z-10 bg-background-dark text-white overflow-x-hidden flex flex-col min-h-screen mb-[400px]">
+      <div className="relative z-10 bg-black text-white overflow-x-hidden flex flex-col min-h-screen mb-[400px]">
         {/* Skip to main content link for keyboard users */}
         <a
           href="#main-content"
@@ -30,14 +30,9 @@ export default function Home() {
         {/* Main Content Wrapper */}
         <main
           id="main-content"
-          className="grow pt-[72px] relative"
+          className="grow relative"
           tabIndex={-1}
         >
-          {/* Background Grid - Decorative */}
-          <div
-            className="absolute inset-0 bg-grid-pattern opacity-[0.15] pointer-events-none z-0"
-            aria-hidden="true"
-          />
 
           {/* Hero Section */}
           <HeroSection />
@@ -53,7 +48,7 @@ export default function Home() {
         </main>
 
         {/* Bottom edge with shadow for depth effect */}
-        <div className="h-8 bg-linear-to-b from-background-dark to-[#0a0c15] shadow-[0_20px_50px_rgba(0,0,0,0.8)]" />
+        <div className="h-8 bg-black shadow-[0_20px_50px_rgba(0,0,0,0.8)]" />
       </div>
 
       <ScrollToTopButton />

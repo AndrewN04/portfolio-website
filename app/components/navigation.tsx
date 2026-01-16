@@ -14,53 +14,44 @@ export function Navigation() {
   };
 
   return (
-    <nav className="fixed top-4 left-1/2 -translate-x-1/2 z-50 glass-nav-pale rounded-2xl border border-[#3d4259]/50 shadow-lg shadow-black/20 w-[90%] md:w-110 lg:w-130">
-      <div className="px-6 py-3">
+    <nav className="static top-0 left-0 right-0 z-50 bg-black border-b border-white/10">
+      <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-3">
-            <span className="text-xl font-bold tracking-tight text-white">
-              a04.dev
+          <Link href="/" className="flex items-center gap-3 group">
+            <span className="text-lg font-mono tracking-tight relative">
+              <span className="text-[#61afef]">./</span>
+              <span className="text-white">a04</span>
+              <span className="text-[#98c379]">.dev</span>
+              <span className="absolute inset-0 bg-linear-to-r from-white via-white to-white opacity-0 group-hover:opacity-10 blur-xl transition-opacity duration-300"></span>
             </span>
           </Link>
 
-          {/* Separator */}
-          <div className="hidden lg:block h-6 w-px bg-white/15" />
-
           {/* Desktop Menu */}
-          <div className="hidden lg:flex items-center gap-4 lg:gap-6">
+          <div className="hidden lg:flex items-center gap-8">
             <button
               onClick={() => scrollToSection("skills")}
-              className="text-sm font-medium text-slate-400 hover:text-white transition-colors"
+              className="text-sm font-mono text-slate-400 hover:text-[#61afef] transition-all relative group/nav"
             >
-              Skills
+              <span className="text-[#5c6370]">#</span>
+              <span className="relative z-10 ml-1">skills</span>
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#61afef] group-hover/nav:w-full transition-all duration-300"></span>
             </button>
             <button
               onClick={() => scrollToSection("projects")}
-              className="text-sm font-medium text-slate-400 hover:text-white transition-colors"
+              className="text-sm font-mono text-slate-400 hover:text-[#61afef] transition-all relative group/nav"
             >
-              Projects
+              <span className="text-[#5c6370]">#</span>
+              <span className="relative z-10 ml-1">projects</span>
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#61afef] group-hover/nav:w-full transition-all duration-300"></span>
             </button>
             <button
               onClick={() => scrollToSection("contact")}
-              className="text-sm font-medium text-slate-400 hover:text-white transition-colors"
+              className="text-sm font-mono text-slate-400 hover:text-[#61afef] transition-all relative group/nav"
             >
-              Contact
+              <span className="text-[#5c6370]">#</span>
+              <span className="relative z-10 ml-1">contact</span>
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#61afef] group-hover/nav:w-full transition-all duration-300"></span>
             </button>
-            <a
-              href="/Andrew-CV.pdf"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="Download Resume (PDF, opens in new tab)"
-              className="bg-primary hover:bg-primary-hover text-white text-sm font-bold py-2 px-5 rounded-lg transition-colors flex items-center gap-2"
-            >
-              <span>Resume</span>
-              <span
-                className="material-symbols-outlined text-[16px]"
-                aria-hidden="true"
-              >
-                download
-              </span>
-            </a>
           </div>
 
           {/* Mobile Menu Icon */}
@@ -94,28 +85,26 @@ export function Navigation() {
                   onClick={() => handleNavClick("skills")}
                   className="block text-sm font-medium text-slate-400 hover:text-white transition-colors"
                 >
-                  Skills
+                  <span className="text-[#5c6370]">#</span>
+                  <span className="relative z-10 ml-1">skills</span>
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#61afef] group-hover/nav:w-full transition-all duration-300"></span>
                 </button>
                 <button
                   onClick={() => handleNavClick("projects")}
                   className="block text-sm font-medium text-slate-400 hover:text-white transition-colors"
                 >
-                  Projects
+                  <span className="text-[#5c6370]">#</span>
+                  <span className="relative z-10 ml-1">projects</span>
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#61afef] group-hover/nav:w-full transition-all duration-300"></span>
                 </button>
                 <button
                   onClick={() => handleNavClick("contact")}
                   className="block text-sm font-medium text-slate-400 hover:text-white transition-colors"
                 >
-                  Contact
+                  <span className="text-[#5c6370]">#</span>
+                  <span className="relative z-10 ml-1">contact</span>
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#61afef] group-hover/nav:w-full transition-all duration-300"></span>
                 </button>
-                <a
-                  href="/Andrew-CV.pdf"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="block bg-primary hover:bg-primary-hover text-white text-sm font-bold py-2 px-5 rounded-lg transition-colors w-fit"
-                >
-                  Resume
-                </a>
               </div>
             </motion.div>
           )}

@@ -44,18 +44,18 @@ export function RevealFooter() {
   }, [isTouchDevice, mouseX, mouseY]);
 
   return (
-    <footer className="fixed bottom-0 left-0 right-0 h-100 bg-surface-dark flex flex-col justify-center items-center -z-10 overflow-hidden">
+    <footer className="fixed bottom-0 left-0 right-0 h-100 bg-[#0a0a0a] flex flex-col justify-center items-center -z-10 overflow-hidden">
       {/* Text Container - Relative positioning for layers */}
       <div ref={textContainerRef} className="relative">
         {/* Base Text Layer - Semi-transparent muted */}
         <div
           id="footer-brand-text"
-          className="text-[15vw] md:text-[12vw] font-bold text-[#3D4559]/50 select-none tracking-tight leading-none cursor-default footer-brand-text"
+          className="text-[15vw] md:text-[12vw] font-bold text-[#1a1a1a] select-none tracking-tight leading-none cursor-default footer-brand-text"
         >
           a04.dev
         </div>
 
-        {/* Reveal Text Layer - Clipped by cursor circle (white for dark bg) */}
+        {/* Reveal Text Layer - Clipped by cursor circle (white on hover) */}
         {!isTouchDevice && (
           <motion.div
             style={{ clipPath }}
@@ -68,66 +68,16 @@ export function RevealFooter() {
 
       {/* Bottom Bar */}
       <div className="absolute bottom-0 left-0 right-0 px-6 py-6">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 items-center gap-4 text-sm">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-sm">
           {/* Left: Copyright */}
-          <p className="text-[#8891A5]/70 text-center md:text-left">
+          <p className="text-gray-400 text-center md:text-left">
             © {new Date().getFullYear()} Andrew Nguyen
-          </p>
-
-          {/* Center: Tech Stack */}
-          <p className="text-[#8891A5]/70 text-center">
-            Built with{" "}
-            <a
-              href="https://nextjs.org"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline hover:text-[#C5CBD8] transition-colors"
-            >
-              Next.js
-            </a>
-            ,{" "}
-            <a
-              href="https://react.dev"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline hover:text-[#C5CBD8] transition-colors"
-            >
-              React
-            </a>
-            ,{" "}
-            <a
-              href="https://www.typescriptlang.org"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline hover:text-[#C5CBD8] transition-colors"
-            >
-              TypeScript
-            </a>
-            ,{" "}
-            <a
-              href="https://tailwindcss.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline hover:text-[#C5CBD8] transition-colors"
-            >
-              Tailwind
-            </a>
-            , and{" "}
-            <a
-              href="https://motion.dev"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline hover:text-[#C5CBD8] transition-colors"
-            >
-              Motion.dev
-            </a>
-            .
           </p>
 
           {/* Right: Socials */}
           <div className="flex items-center gap-6 justify-center md:justify-end">
             <a
-              className="text-[#8891A5]/70 hover:text-[#C5CBD8] transition-colors"
+              className="text-gray-400 hover:text-white transition-colors"
               href="https://github.com/AndrewN04"
               target="_blank"
               rel="noopener noreferrer"
@@ -147,7 +97,7 @@ export function RevealFooter() {
               </svg>
             </a>
             <a
-              className="text-[#8891A5]/70 hover:text-[#C5CBD8] transition-colors"
+              className="text-gray-400 hover:text-white transition-colors"
               href="https://www.linkedin.com/in/adn2004/"
               target="_blank"
               rel="noopener noreferrer"
