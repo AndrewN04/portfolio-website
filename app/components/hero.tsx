@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useReducedMotion } from "framer-motion";
 import { ArrowRight, GitBranch, Mail, X } from "lucide-react";
 
 const heroRoles = ["Developer", "Designer", "Innovator"] as const;
@@ -9,15 +8,13 @@ const heroRoles = ["Developer", "Designer", "Innovator"] as const;
 const useTypewriter = (
   words: readonly string[],
   typingSpeed = 120,
-  pauseDuration = 1500,
-  reducedMotion = false
+  pauseDuration = 1500
 ) => {
   const [index, setIndex] = useState(0);
   const [subIndex, setSubIndex] = useState(words[0].length);
   const [direction, setDirection] = useState<"forward" | "backward">("forward");
 
   useEffect(() => {
-    if (reducedMotion) return;
     const currentWord = words[index];
     const isCompleted =
       direction === "forward" && subIndex === currentWord.length;
@@ -46,17 +43,16 @@ const useTypewriter = (
     );
 
     return () => clearTimeout(timeout);
-  }, [words, index, subIndex, direction, typingSpeed, pauseDuration, reducedMotion]);
+  }, [words, index, subIndex, direction, typingSpeed, pauseDuration]);
 
   const currentWord = words[index];
   const isTyping = direction === "forward" && subIndex < currentWord.length;
 
-  return { text: reducedMotion ? words[0] : words[index].slice(0, subIndex), isTyping };
+  return { text: words[index].slice(0, subIndex), isTyping };
 };
 
 export function HeroSection() {
-  const reducedMotion = useReducedMotion();
-  const { text: typedRole, isTyping } = useTypewriter(heroRoles, 120, 1500, !!reducedMotion);
+  const { text: typedRole, isTyping } = useTypewriter(heroRoles);
   return (
     <section
       className="relative z-10 min-h-[calc(100svh-76px)] lg:min-h-[calc(100vh-80px)] flex items-center pt-8 lg:pt-20"
