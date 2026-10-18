@@ -69,24 +69,10 @@ export const projects: Project[] = [
         tech: ["docker", "linux"],
     },
     {
-        title: "Task Management Web App (Planned)",
+        title: "A04 Agent",
         description:
-            "Productivity suite for task prioritization with real-time collaboration. Will feature intelligent task scheduling and team coordination with live updates.",
+            "AI-powered IT support copilot with knowledge retrieval, structured troubleshooting, and source-cited answers. Planned with Python, FastAPI, and PostgreSQL/pgvector.",
         link: "",
-        tech: ["nextjs", "typescript", "postgres", "prisma"],
-    },
-    {
-        title: "Data Visualization Tool (Planned)",
-        description:
-            "Analytics playground with custom dashboards and FastAPI pipelines. Will enable interactive data exploration with real-time processing and visualization capabilities.",
-        link: "",
-        tech: ["nextjs", "python", "fastapi"],
-    },
-    {
-        title: "Personal Finance Tracker (Planned)",
-        description:
-            "Privacy-first budgeting app with lightweight native modules. Will provide local-first data storage with high-performance calculations using C++ modules.",
-        link: "",
-        tech: ["sqlite", "cplusplus"],
+        tech: ["nextjs", "python", "fastapi", "postgres"],
     },
 ];

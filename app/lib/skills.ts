@@ -24,7 +24,15 @@ export type SkillKey =
     | "langchain"
     | "aws"
     | "vite"
-    | "playwright";
+    | "playwright"
+    | "fastapi"
+    | "pydantic"
+    | "powershell"
+    | "windows"
+    | "githubactions"
+    | "vercel"
+    | "vitest"
+    | "pytest";
 
 export const skillsRegistry: Record<SkillKey, { label: string; svg: string }> =
 {
@@ -132,4 +140,19 @@ export const skillsRegistry: Record<SkillKey, { label: string; svg: string }> =
         label: "Playwright",
         svg: "/playwright.svg",
     },
+    fastapi: { label: "FastAPI", svg: "/fastapi.svg" },
+    pydantic: { label: "Pydantic", svg: "/pydantic.svg" },
+    powershell: { label: "PowerShell", svg: "/powershell.svg" },
+    windows: { label: "Windows Server / AD", svg: "/windows11.svg" },
+    githubactions: { label: "GitHub Actions", svg: "/githubactions.svg" },
+    vercel: { label: "Vercel", svg: "/vercel.svg" },
+    vitest: { label: "Vitest", svg: "/vitest.svg" },
+    pytest: { label: "pytest", svg: "/pytest.svg" },
 };
+
+export const skillCategories = [
+    { name: "Frontend", command: "./list_frontend.sh", skills: ["html", "css", "javascript", "typescript", "react", "nextjs", "tailwind"] },
+    { name: "Backend & AI", command: "python inspect_backend.py", skills: ["nodejs", "python", "fastapi", "pydantic", "cplusplus", "postgres", "mongodb", "supabase", "convex", "firebase", "langchain"] },
+    { name: "Infrastructure", command: "Get-LabEnvironment", skills: ["docker", "linux", "windows", "powershell", "git", "github", "githubactions", "vercel", "aws"] },
+    { name: "Tools & testing", command: "npm run test", skills: ["prisma", "figma", "postman", "vite", "playwright", "vitest", "pytest"] },
+] satisfies { name: string; command: string; skills: SkillKey[] }[];

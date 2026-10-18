@@ -1,12 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, useMotionValue, useSpring } from "framer-motion";
+import { useReducedMotion, motion, useMotionValue, useSpring } from "framer-motion";
 import { useTouchDevice } from "../lib/hooks/use-touch-device";
 
 export function CustomCursor() {
   const [isVisible, setIsVisible] = useState(false);
   const isTouchDevice = useTouchDevice();
+  const reducedMotion = useReducedMotion();
 
   // Use motion values for instant tracking (no React re-renders)
   const mouseX = useMotionValue(0);
@@ -18,7 +19,7 @@ export function CustomCursor() {
   const cursorY = useSpring(mouseY, springConfig);
 
   useEffect(() => {
-    if (isTouchDevice) return;
+    if (isTouchDevice || reducedMotion) return;
 
     const controller = new AbortController();
     const { signal } = controller;
@@ -40,10 +41,10 @@ export function CustomCursor() {
     document.addEventListener("mouseenter", handleMouseEnter, { signal });
 
     return () => controller.abort();
-  }, [mouseX, mouseY, isTouchDevice]);
+  }, [mouseX, mouseY, isTouchDevice, reducedMotion]);
 
   // Don't render on touch devices
-  if (isTouchDevice) return null;
+  if (isTouchDevice || reducedMotion) return null;
 
   return (
     <motion.div

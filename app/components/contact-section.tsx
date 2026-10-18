@@ -1,36 +1,14 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { AlignLeft, AtSign, User } from "lucide-react";
 
 const FORM_ENDPOINT = "https://formspree.io/f/mjkjlqdn";
-
-// Format date like macOS terminal: "Fri Dec 26 14:30:45 2024"
-const formatLoginTime = (date: Date): string => {
-  return date
-    .toLocaleString("en-US", {
-      weekday: "short",
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-      hour12: false,
-      year: "numeric",
-    })
-    .replace(",", "");
-};
 
 export function ContactSection() {
   const [status, setStatus] = useState<
     "idle" | "sending" | "success" | "error"
   >("idle");
-  const [loginTime, setLoginTime] = useState<string | null>(null);
-
-  // Set login time on client only to avoid hydration mismatch
-  useEffect(() => {
-    setLoginTime(formatLoginTime(new Date()));
-  }, []);
-
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;
@@ -44,6 +22,7 @@ export function ContactSection() {
           Accept: "application/json",
         },
         body: formData,
+        signal: AbortSignal.timeout(15000),
       });
 
       if (!response.ok) {
@@ -52,22 +31,18 @@ export function ContactSection() {
 
       setStatus("success");
       form.reset();
-      // Reset to idle state after 4 seconds
-      setTimeout(() => setStatus("idle"), 4000);
     } catch (error) {
       console.error(error);
       setStatus("error");
-      // Reset to idle state after 4 seconds so user can retry
-      setTimeout(() => setStatus("idle"), 4000);
     }
   };
 
   return (
-    <section className="py-24 relative overflow-hidden" id="contact">
-      <div className="max-w-3xl mx-auto px-6 relative z-10">
+    <section className="py-12 sm:py-24 relative overflow-hidden" id="contact" tabIndex={-1}>
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 relative z-10">
         {/* Header */}
         <div className="text-center mb-10">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 relative inline-block">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 relative inline-block">
             <span className="text-[#e5c07b]">&lt;</span>
             <span className="text-[#e5c07b] relative">
               Contact
@@ -110,9 +85,9 @@ export function ContactSection() {
           <div className="p-5 md:p-6 font-mono text-sm">
             {/* Terminal Output */}
             <div className="text-slate-500 mb-1">
-              Last login: {loginTime ?? "..."}
+              Contact terminal ready
             </div>
-            <div className="mb-1">
+            <div className="mb-1 break-words">
               <span className="text-[#61afef]">system@portfolio</span>
               <span className="text-slate-500">:</span>
               <span className="text-[#98c379]">~/contact</span>
@@ -121,23 +96,17 @@ export function ContactSection() {
               </span>
             </div>
             <div className="text-slate-400 mb-6">
-              Initializing secure connection...{" "}
-              <span className="text-white">Done.</span>
+              Ready for your message.
             </div>
 
             {/* Form */}
-            <form onSubmit={handleSubmit} className="space-y-5">
+            <form aria-busy={status === "sending"} onSubmit={handleSubmit} className="space-y-5">
               {/* Name Field */}
               <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-black border border-white/20 rounded-md mb-2">
-                  <span
-                    className="material-symbols-outlined text-slate-400 text-base"
-                    aria-hidden="true"
-                  >
-                    person
-                  </span>
-                  <span className="text-slate-300 text-xs">--name-string</span>
-                </div>
+                <label htmlFor="contact-name" className="inline-flex items-center gap-2 px-3 py-1.5 bg-black border border-white/20 rounded-md mb-2">
+                  <User aria-hidden="true" className="h-4 w-4 text-slate-400" />
+                  <span className="text-slate-300 text-xs">Name</span>
+                </label>
                 <div className="flex items-center gap-3 pl-2">
                   <span className="text-emerald-400" aria-hidden="true">
                     →
@@ -146,10 +115,10 @@ export function ContactSection() {
                     id="contact-name"
                     name="name"
                     type="text"
+                    autoComplete="name"
                     placeholder="Your Name"
                     required
-                    className="flex-1 bg-transparent border-none outline-none text-slate-300 placeholder:text-slate-600 py-2"
-                    aria-label="Your name"
+                    className="min-w-0 flex-1 text-base sm:text-sm bg-transparent border-none outline-none text-slate-300 placeholder:text-slate-400 py-2"
                   />
                 </div>
                 <div className="h-px bg-white/20 ml-6 mt-1" />
@@ -157,17 +126,12 @@ export function ContactSection() {
 
               {/* Email Field */}
               <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-black border border-white/20 rounded-md mb-2">
-                  <span
-                    className="material-symbols-outlined text-slate-400 text-base"
-                    aria-hidden="true"
-                  >
-                    alternate_email
-                  </span>
+                <label htmlFor="contact-email" className="inline-flex items-center gap-2 px-3 py-1.5 bg-black border border-white/20 rounded-md mb-2">
+                  <AtSign aria-hidden="true" className="h-4 w-4 text-slate-400" />
                   <span className="text-slate-300 text-xs">
-                    --email-address
+                    Email
                   </span>
-                </div>
+                </label>
                 <div className="flex items-center gap-3 pl-2">
                   <span className="text-emerald-400" aria-hidden="true">
                     →
@@ -176,10 +140,10 @@ export function ContactSection() {
                     id="contact-email"
                     name="email"
                     type="email"
+                    autoComplete="email"
                     placeholder="user@domain.com"
                     required
-                    className="flex-1 bg-transparent border-none outline-none text-slate-300 placeholder:text-slate-600 py-2"
-                    aria-label="Your email address"
+                    className="min-w-0 flex-1 text-base sm:text-sm bg-transparent border-none outline-none text-slate-300 placeholder:text-slate-400 py-2"
                   />
                 </div>
                 <div className="h-px bg-white/20 ml-6 mt-1" />
@@ -187,15 +151,10 @@ export function ContactSection() {
 
               {/* Message Field */}
               <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-black border border-white/20 rounded-md mb-2">
-                  <span
-                    className="material-symbols-outlined text-slate-400 text-base"
-                    aria-hidden="true"
-                  >
-                    notes
-                  </span>
-                  <span className="text-slate-300 text-xs">--message-body</span>
-                </div>
+                <label htmlFor="contact-message" className="inline-flex items-center gap-2 px-3 py-1.5 bg-black border border-white/20 rounded-md mb-2">
+                  <AlignLeft aria-hidden="true" className="h-4 w-4 text-slate-400" />
+                  <span className="text-slate-300 text-xs">Message</span>
+                </label>
                 <div className="flex items-start gap-3 pl-2">
                   <span className="text-emerald-400 mt-2" aria-hidden="true">
                     →
@@ -206,8 +165,7 @@ export function ContactSection() {
                     rows={4}
                     placeholder="Type your message here..."
                     required
-                    className="flex-1 bg-transparent border-none outline-none text-slate-300 placeholder:text-slate-600 py-2 resize-none"
-                    aria-label="Your message"
+                    className="min-w-0 flex-1 text-base sm:text-sm bg-transparent border-none outline-none text-slate-300 placeholder:text-slate-400 py-2 resize-none"
                   />
                 </div>
                 <div className="h-px bg-white/20 ml-6 mt-1" />
@@ -222,9 +180,12 @@ export function ContactSection() {
                 >
                   {/* Shimmer effect */}
                   <span className="absolute inset-0 bg-linear-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></span>
-                  <div className="flex items-center gap-3">
+                  <div className="min-w-0 flex items-center gap-2 sm:gap-3">
                     <span className="text-[#98c379] font-bold">$</span>
-                    <span className="text-slate-300">
+                    <span className="sm:hidden text-slate-300">
+                      {status === "sending" ? "Sending…" : status === "success" ? "Message sent" : "Send message"}
+                    </span>
+                    <span className="hidden sm:inline text-slate-300">
                       {status === "sending"
                         ? "sending_message.sh"
                         : status === "success"
@@ -232,12 +193,12 @@ export function ContactSection() {
                         : "sh send_message.sh"}
                     </span>
                     <span
-                      className="w-2 h-4 bg-slate-400 animate-pulse"
+                      className="hidden sm:inline-block w-2 h-4 bg-slate-400 animate-pulse"
                       aria-hidden="true"
                     />
                   </div>
                   <span
-                    className={`text-xs px-2 py-0.5 rounded uppercase tracking-wider font-bold ${
+                    className={`shrink-0 text-xs px-2 py-0.5 rounded uppercase tracking-wider font-bold ${
                       status === "success"
                         ? "bg-white/20 text-white"
                         : status === "error"
@@ -257,7 +218,7 @@ export function ContactSection() {
               </div>
 
               {/* Status Message */}
-              <div className="text-center text-sm" aria-live="polite">
+              <div className="text-center text-sm" role="status" aria-live="polite" aria-atomic="true">
                 {status === "success" && (
                   <p className="text-white">
                     <span className="text-slate-500">[SUCCESS]</span> Message

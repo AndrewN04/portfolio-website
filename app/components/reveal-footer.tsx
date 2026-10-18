@@ -48,6 +48,7 @@ export function RevealFooter() {
         {!isTouchDevice && (
           <motion.div
             style={{ clipPath }}
+            aria-hidden="true"
             className="absolute inset-0 text-[15vw] md:text-[12vw] font-bold text-white select-none tracking-tight leading-none cursor-default footer-brand-text"
           >
             a04.dev

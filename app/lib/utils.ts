@@ -2,7 +2,10 @@
  * Smoothly scrolls to a section by ID without updating the browser URL
  */
 export const scrollToSection = (id: string): void => {
-  document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  const section = document.getElementById(id);
+  if (!section) return;
+  section.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" });
+  section.focus({ preventScroll: true });
 };
 
 /**

@@ -50,6 +50,7 @@ html {
 /* Custom scrollbar for code editor */
 .custom-scrollbar::-webkit-scrollbar {
   width: 8px;
+  height: 6px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
@@ -88,6 +89,35 @@ html {
   }
   50% {
     opacity: 0;
+  }
+}
+
+
+/* Shared keyboard focus, including terminal form inputs. */
+:focus-visible {
+  outline: 2px solid #61afef;
+  outline-offset: 4px;
+}
+
+.hero-gradient {
+  background: linear-gradient(90deg, #ff6680 0%, #ffd166 16.6667%, #8de48b 33.3333%, #70dfe6 50%, #7d9fff 66.6667%, #d18fff 83.3333%, #ff6680 100%);
+  background-size: 18ch 100%;
+  animation: hero-gradient 8s linear infinite;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@keyframes hero-gradient {
+  from { background-position: 0 0; }
+  to { background-position: -18ch 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
   }
 }
 
