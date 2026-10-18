@@ -15,30 +15,27 @@ const firaCode = Fira_Code({
 });
 
 export const metadata: Metadata = {
-  title: "Andrew Nguyen | Web Dev",
+  title: "a04.dev",
   description:
     "Portfolio website for Andrew Nguyen, a software engineer and web developer crafting thoughtful, modern web experiences.",
-  metadataBase: new URL("https://andrew-nguyen.dev"),
+  metadataBase: new URL("https://a04.dev"),
+  alternates: { canonical: "/" },
   openGraph: {
-    title: "Andrew Nguyen | Web Dev",
+    title: "a04.dev",
     description:
       "Modern portfolio showcasing full-stack and front-end projects by Andrew Nguyen.",
-    url: "https://andrew-nguyen.dev",
+    url: "https://a04.dev",
     siteName: "Andrew Nguyen Portfolio",
     locale: "en_US",
     type: "website",
   },
   twitter: {
-    card: "summary_large_image",
-    title: "Andrew Nguyen | Web Dev",
+    card: "summary",
+    title: "a04.dev",
     description:
       "Modern portfolio showcasing full-stack and front-end projects by Andrew Nguyen.",
   },
 };
-
-// Optimized: Fixed values instead of variable ranges (reduces 7.7MB → ~50KB)
-const materialSymbolsFont =
-  "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap";
 
 export default function RootLayout({
   children,
@@ -47,15 +44,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link href={materialSymbolsFont} rel="stylesheet" />
-      </head>
       <body
         className={`${spaceGrotesk.variable} ${firaCode.variable} antialiased`}
       >
