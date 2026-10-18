@@ -33,13 +33,13 @@ export function RevealFooter() {
   }, [isTouchDevice, mouseX, mouseY]);
 
   return (
-    <footer className="fixed bottom-0 left-0 right-0 h-100 bg-[#0a0a0a] flex flex-col justify-center items-center -z-10 overflow-hidden">
+    <footer className="reveal-footer fixed bottom-0 left-0 right-0 flex flex-col justify-center items-center -z-10 overflow-hidden">
       {/* Text Container - Relative positioning for layers */}
       <div ref={textContainerRef} className="relative">
         {/* Base Text Layer - Semi-transparent muted */}
         <div
           id="footer-brand-text"
-          className="text-[15vw] md:text-[12vw] font-bold text-[#1a1a1a] select-none tracking-tight leading-none cursor-default footer-brand-text"
+          className="text-[clamp(4rem,14vw,11rem)] font-bold text-[#252930] select-none tracking-tight leading-none cursor-default footer-brand-text"
         >
           a04.dev
         </div>
@@ -49,7 +49,7 @@ export function RevealFooter() {
           <motion.div
             style={{ clipPath }}
             aria-hidden="true"
-            className="absolute inset-0 text-[15vw] md:text-[12vw] font-bold text-white select-none tracking-tight leading-none cursor-default footer-brand-text"
+            className="absolute inset-0 text-[clamp(4rem,14vw,11rem)] font-bold text-white select-none tracking-tight leading-none cursor-default footer-brand-text"
           >
             a04.dev
           </motion.div>
@@ -57,17 +57,17 @@ export function RevealFooter() {
       </div>
 
       {/* Bottom Bar */}
-      <div className="absolute bottom-0 left-0 right-0 px-6 py-6">
+      <div className="absolute bottom-0 left-0 right-0 px-4 py-5 sm:px-6 sm:py-6">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-sm">
           {/* Left: Copyright */}
-          <p className="text-gray-400 text-center md:text-left">
+          <p className="text-[var(--text-muted)] text-center md:text-left">
             © {new Date().getFullYear()} Andrew Nguyen
           </p>
 
           {/* Right: Socials */}
           <div className="flex items-center gap-6 justify-center md:justify-end">
             <a
-              className="text-gray-400 hover:text-white transition-colors"
+              className="inline-flex min-h-11 min-w-11 items-center justify-center text-[var(--text-muted)] hover:text-white transition-colors"
               href="https://github.com/AndrewN04"
               target="_blank"
               rel="noopener noreferrer"
@@ -87,7 +87,7 @@ export function RevealFooter() {
               </svg>
             </a>
             <a
-              className="text-gray-400 hover:text-white transition-colors"
+              className="inline-flex min-h-11 min-w-11 items-center justify-center text-[var(--text-muted)] hover:text-white transition-colors"
               href="https://www.linkedin.com/in/adn2004/"
               target="_blank"
               rel="noopener noreferrer"

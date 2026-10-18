@@ -10,47 +10,19 @@ import { CustomCursor } from "./components/custom-cursor";
 export default function Home() {
   return (
     <>
-      {/* Custom Cursor */}
       <CustomCursor />
-
-      {/* Reveal Footer - Fixed behind content */}
-      <RevealFooter />
-
-      {/* Main Page Content */}
-      <div className="relative z-10 bg-black text-white overflow-x-hidden flex flex-col min-h-screen mb-[400px]">
-        {/* Skip to main content link for keyboard users */}
-        <a
-          href="#main-content"
-          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-100 focus:bg-black focus:text-white focus:px-4 focus:py-2 focus:rounded-lg focus:font-bold"
-        >
-          Skip to main content
-        </a>
+      <div className="relative z-10 mb-[320px] flex min-h-screen flex-col bg-[var(--canvas)] text-[var(--text)] sm:mb-[360px]">
+        <a href="#main-content" className="skip-link">Skip to main content</a>
         <Navigation />
-
-        {/* Main Content Wrapper */}
-        <main
-          id="main-content"
-          className="grow relative"
-          tabIndex={-1}
-        >
-
-          {/* Hero Section */}
+        <main id="main-content" className="grow" tabIndex={-1}>
           <HeroSection />
-
-          {/* Technical Skills Section */}
           <SkillsSection />
-
-          {/* Projects Section */}
           <ProjectsGrid />
-
-          {/* Contact Section */}
           <ContactSection />
         </main>
-
-        {/* Bottom edge with shadow for depth effect */}
-        <div className="h-8 bg-black shadow-[0_20px_50px_rgba(0,0,0,0.8)]" />
+        <div className="h-6 bg-[var(--canvas)]" aria-hidden="true" />
       </div>
-
+      <RevealFooter />
       <ScrollToTopButton />
     </>
   );

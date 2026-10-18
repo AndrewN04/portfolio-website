@@ -3,109 +3,70 @@
 import Link from "next/link";
 import { useRef, useState } from "react";
 import { Menu, X } from "lucide-react";
-import { scrollToSection } from "../lib/utils";
+
+const items = [
+  { id: "skills", label: "skills" },
+  { id: "projects", label: "projects" },
+  { id: "contact", label: "contact" },
+] as const;
 
 export function Navigation() {
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const handleNavClick = (id: string) => {
-    scrollToSection(id);
-    setMobileMenuOpen(false);
-  };
-
   return (
-    <nav onKeyDown={(event) => { if (event.key === "Escape" && mobileMenuOpen) { setMobileMenuOpen(false); menuButtonRef.current?.focus(); } }} aria-label="Main navigation" className="static top-0 left-0 right-0 z-50 bg-black border-b border-white/10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
-        <div className="flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-3 group">
-            <span className="text-lg font-mono tracking-tight relative">
-              <span className="text-[#61afef]">./</span>
-              <span className="text-white">a04</span>
-              <span className="text-[#98c379]">.dev</span>
-              <span className="absolute inset-0 bg-linear-to-r from-white via-white to-white opacity-0 group-hover:opacity-10 blur-xl transition-opacity duration-300"></span>
-            </span>
-          </Link>
+    <nav
+      aria-label="Main navigation"
+      onKeyDown={(event) => {
+        if (event.key === "Escape" && mobileMenuOpen) {
+          setMobileMenuOpen(false);
+          menuButtonRef.current?.focus();
+        }
+      }}
+      className="site-nav sticky top-0 z-50 border-b border-[var(--rule)] bg-[var(--canvas)]"
+    >
+      <div className="mx-auto flex min-h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
+        <Link href="/" className="brand-mark" aria-label="a04.dev home">
+          <span className="syntax-blue">./</span>a04<span className="syntax-green">.dev</span>
+        </Link>
 
-          {/* Desktop Menu */}
-          <div className="hidden lg:flex items-center gap-8">
-            <button
-              onClick={() => scrollToSection("skills")}
-              className="text-sm font-mono text-slate-400 hover:text-[#61afef] transition-all relative group/nav"
-            >
-              <span className="text-[#5c6370]">#</span>
-              <span className="relative z-10 ml-1">skills</span>
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#61afef] group-hover/nav:w-full transition-all duration-300"></span>
-            </button>
-            <button
-              onClick={() => scrollToSection("projects")}
-              className="text-sm font-mono text-slate-400 hover:text-[#61afef] transition-all relative group/nav"
-            >
-              <span className="text-[#5c6370]">#</span>
-              <span className="relative z-10 ml-1">projects</span>
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#61afef] group-hover/nav:w-full transition-all duration-300"></span>
-            </button>
-            <button
-              onClick={() => scrollToSection("contact")}
-              className="text-sm font-mono text-slate-400 hover:text-[#61afef] transition-all relative group/nav"
-            >
-              <span className="text-[#5c6370]">#</span>
-              <span className="relative z-10 ml-1">contact</span>
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#61afef] group-hover/nav:w-full transition-all duration-300"></span>
-            </button>
-          </div>
-
-          {/* Mobile Menu Icon */}
-          <button
-            ref={menuButtonRef}
-            className="lg:hidden text-white p-2 min-h-11 min-w-11"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
-            {...(mobileMenuOpen
-              ? { "aria-expanded": "true", "aria-controls": "mobile-menu" }
-              : { "aria-expanded": "false" })}
-          >
-            {mobileMenuOpen ? <X aria-hidden="true" /> : <Menu aria-hidden="true" />}
-          </button>
+        <div className="hidden items-center gap-8 md:flex">
+          {items.map(({ id, label }, index) => (
+            <a key={id} href={`#${id}`} className="nav-link">
+              <span className="text-[var(--text-dim)]">0{index + 1}</span>
+              <span className="syntax-green">$</span> {label}
+            </a>
+          ))}
         </div>
 
-        {/* Mobile Menu */}
-
-          {mobileMenuOpen && (
-            <div
-              id="mobile-menu"
-              className="lg:hidden overflow-hidden"
-            >
-              <div className="pt-3 pb-1 space-y-1">
-                <button
-                  onClick={() => handleNavClick("skills")}
-                  className="block w-full text-left min-h-12 text-sm font-medium text-slate-400 hover:text-white transition-colors"
-                >
-                  <span className="text-[#5c6370]">#</span>
-                  <span className="relative z-10 ml-1">skills</span>
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#61afef] group-hover/nav:w-full transition-all duration-300"></span>
-                </button>
-                <button
-                  onClick={() => handleNavClick("projects")}
-                  className="block w-full text-left min-h-12 text-sm font-medium text-slate-400 hover:text-white transition-colors"
-                >
-                  <span className="text-[#5c6370]">#</span>
-                  <span className="relative z-10 ml-1">projects</span>
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#61afef] group-hover/nav:w-full transition-all duration-300"></span>
-                </button>
-                <button
-                  onClick={() => handleNavClick("contact")}
-                  className="block w-full text-left min-h-12 text-sm font-medium text-slate-400 hover:text-white transition-colors"
-                >
-                  <span className="text-[#5c6370]">#</span>
-                  <span className="relative z-10 ml-1">contact</span>
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#61afef] group-hover/nav:w-full transition-all duration-300"></span>
-                </button>
-              </div>
-            </div>
-          )}
-
+        <button
+          ref={menuButtonRef}
+          type="button"
+          className="inline-flex h-11 w-11 items-center justify-center text-white focus-visible:outline md:hidden"
+          onClick={() => setMobileMenuOpen((open) => !open)}
+          aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+          aria-expanded={mobileMenuOpen}
+          aria-controls="mobile-menu"
+        >
+          {mobileMenuOpen ? <X aria-hidden="true" /> : <Menu aria-hidden="true" />}
+        </button>
       </div>
+
+      {mobileMenuOpen && (
+        <div id="mobile-menu" className="border-t border-[var(--rule)] px-4 py-2 md:hidden">
+          {items.map(({ id, label }, index) => (
+            <a
+              key={id}
+              href={`#${id}`}
+              onClick={() => setMobileMenuOpen(false)}
+              className="nav-link flex min-h-12 items-center gap-2"
+            >
+              <span className="text-[var(--text-dim)]">0{index + 1}</span>
+              <span className="syntax-green">$</span> {label}
+            </a>
+          ))}
+        </div>
+      )}
     </nav>
   );
 }

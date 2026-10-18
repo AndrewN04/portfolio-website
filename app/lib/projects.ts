@@ -23,6 +23,7 @@ export type Project = {
     description: string;
     link: string;
     tech: TechKey[];
+    status?: string;
 };
 
 export const projects: Project[] = [
@@ -71,8 +72,9 @@ export const projects: Project[] = [
     {
         title: "A04 Agent",
         description:
-            "AI-powered IT support copilot with knowledge retrieval, structured troubleshooting, and source-cited answers. Planned with Python, FastAPI, and PostgreSQL/pgvector.",
+            "IT support copilot prototype with conversation history and structured troubleshooting. Its preview uses sample answers; live knowledge retrieval and Gemini integration remain in progress.",
         link: "",
-        tech: ["nextjs", "python", "fastapi", "postgres"],
+        tech: ["nextjs", "typescript", "supabase"],
+        status: "In development",
     },
 ];

@@ -6,29 +6,20 @@ import { AlignLeft, AtSign, User } from "lucide-react";
 const FORM_ENDPOINT = "https://formspree.io/f/mjkjlqdn";
 
 export function ContactSection() {
-  const [status, setStatus] = useState<
-    "idle" | "sending" | "success" | "error"
-  >("idle");
+  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;
-    const formData = new FormData(form);
-
     setStatus("sending");
     try {
       const response = await fetch(FORM_ENDPOINT, {
         method: "POST",
-        headers: {
-          Accept: "application/json",
-        },
-        body: formData,
+        headers: { Accept: "application/json" },
+        body: new FormData(form),
         signal: AbortSignal.timeout(15000),
       });
-
-      if (!response.ok) {
-        throw new Error("Form submission failed");
-      }
-
+      if (!response.ok) throw new Error("Form submission failed");
       setStatus("success");
       form.reset();
     } catch (error) {
@@ -38,202 +29,48 @@ export function ContactSection() {
   };
 
   return (
-    <section className="py-12 sm:py-24 relative overflow-hidden" id="contact" tabIndex={-1}>
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 relative z-10">
-        {/* Header */}
-        <div className="text-center mb-10">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 relative inline-block">
-            <span className="text-[#e5c07b]">&lt;</span>
-            <span className="text-[#e5c07b] relative">
-              Contact
-              <span className="absolute -bottom-1 left-0 right-0 h-0.5 bg-[#e5c07b] opacity-50"></span>
-            </span>
-            <span className="text-[#e5c07b]">/&gt;</span>
-          </h2>
-          <p className="font-mono text-slate-400 text-sm md:text-base mt-6">
-            <span className="code-syntax-keyword">const</span>{" "}
-            <span className="code-syntax-prop">status</span>{" "}
-            <span className="text-slate-500">=</span>{" "}
-            <span className="code-syntax-string">
-              &quot;Open for opportunities&quot;
-            </span>
-            <span className="text-slate-500">;</span>
-          </p>
+    <section id="contact" tabIndex={-1} aria-labelledby="contact-heading" className="section-shell pb-20 sm:pb-28">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="section-heading">
+          <span className="section-index">03</span>
+          <div>
+            <h2 id="contact-heading" className="section-title">Contact</h2>
+            <p className="section-command"><span className="syntax-green">$</span> ./init_contact_form.sh</p>
+          </div>
         </div>
 
-        {/* Enhanced Terminal Window */}
-        <div className="rounded-xl overflow-hidden border border-white/20 bg-black shadow-2xl relative">
-          {/* Terminal Header */}
-          <div className="flex items-center px-4 py-3 bg-black border-b border-white/10 relative z-10">
-            <div className="flex gap-2">
-              <div
-                className="w-3 h-3 rounded-full bg-[#ff5f56]"
-                aria-hidden="true"
-              />
-              <div
-                className="w-3 h-3 rounded-full bg-[#ffbd2e]"
-                aria-hidden="true"
-              />
-              <div
-                className="w-3 h-3 rounded-full bg-[#27c93f]"
-                aria-hidden="true"
-              />
-            </div>
+        <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+          <div>
+            <p className="max-w-md text-xl leading-relaxed text-[var(--text)] sm:text-2xl">Open for opportunities.</p>
+            <p className="mt-4 max-w-md text-sm leading-relaxed text-[var(--text-muted)]">Ready for your message. Use the form to get in touch.</p>
           </div>
 
-          {/* Terminal Body */}
-          <div className="p-5 md:p-6 font-mono text-sm">
-            {/* Terminal Output */}
-            <div className="text-slate-500 mb-1">
-              Contact terminal ready
+          <form aria-busy={status === "sending"} onSubmit={handleSubmit} className="contact-form">
+            <div className="grid gap-6 sm:grid-cols-2">
+              <div className="form-field">
+                <label htmlFor="contact-name"><User size={15} aria-hidden="true" /> Name</label>
+                <input id="contact-name" name="name" type="text" autoComplete="name" placeholder="Your Name" required />
+              </div>
+              <div className="form-field">
+                <label htmlFor="contact-email"><AtSign size={15} aria-hidden="true" /> Email</label>
+                <input id="contact-email" name="email" type="email" autoComplete="email" placeholder="user@domain.com" required />
+              </div>
             </div>
-            <div className="mb-1 break-words">
-              <span className="text-[#61afef]">system@portfolio</span>
-              <span className="text-slate-500">:</span>
-              <span className="text-[#98c379]">~/contact</span>
-              <span className="text-slate-400">
-                <span className="text-[#98c379]">$</span> ./init_contact_form.sh
-              </span>
+            <div className="form-field mt-6">
+              <label htmlFor="contact-message"><AlignLeft size={15} aria-hidden="true" /> Message</label>
+              <textarea id="contact-message" name="message" rows={5} placeholder="Type your message here..." required />
             </div>
-            <div className="text-slate-400 mb-6">
-              Ready for your message.
+            <div className="mt-6 flex flex-wrap items-center gap-4">
+              <button type="submit" disabled={status === "sending"} className="button-primary min-w-44 disabled:cursor-not-allowed disabled:opacity-60">
+                <span className="syntax-green">$</span> {status === "sending" ? "Sending…" : status === "success" ? "Message sent" : "Send message"}
+              </button>
+              <span className="font-mono text-xs text-[var(--text-muted)]" aria-hidden="true">{status === "sending" ? "running" : status === "success" ? "sent" : status === "error" ? "error" : "ready"}</span>
             </div>
-
-            {/* Form */}
-            <form aria-busy={status === "sending"} onSubmit={handleSubmit} className="space-y-5">
-              {/* Name Field */}
-              <div>
-                <label htmlFor="contact-name" className="inline-flex items-center gap-2 px-3 py-1.5 bg-black border border-white/20 rounded-md mb-2">
-                  <User aria-hidden="true" className="h-4 w-4 text-slate-400" />
-                  <span className="text-slate-300 text-xs">Name</span>
-                </label>
-                <div className="flex items-center gap-3 pl-2">
-                  <span className="text-emerald-400" aria-hidden="true">
-                    →
-                  </span>
-                  <input
-                    id="contact-name"
-                    name="name"
-                    type="text"
-                    autoComplete="name"
-                    placeholder="Your Name"
-                    required
-                    className="min-w-0 flex-1 text-base sm:text-sm bg-transparent border-none outline-none text-slate-300 placeholder:text-slate-400 py-2"
-                  />
-                </div>
-                <div className="h-px bg-white/20 ml-6 mt-1" />
-              </div>
-
-              {/* Email Field */}
-              <div>
-                <label htmlFor="contact-email" className="inline-flex items-center gap-2 px-3 py-1.5 bg-black border border-white/20 rounded-md mb-2">
-                  <AtSign aria-hidden="true" className="h-4 w-4 text-slate-400" />
-                  <span className="text-slate-300 text-xs">
-                    Email
-                  </span>
-                </label>
-                <div className="flex items-center gap-3 pl-2">
-                  <span className="text-emerald-400" aria-hidden="true">
-                    →
-                  </span>
-                  <input
-                    id="contact-email"
-                    name="email"
-                    type="email"
-                    autoComplete="email"
-                    placeholder="user@domain.com"
-                    required
-                    className="min-w-0 flex-1 text-base sm:text-sm bg-transparent border-none outline-none text-slate-300 placeholder:text-slate-400 py-2"
-                  />
-                </div>
-                <div className="h-px bg-white/20 ml-6 mt-1" />
-              </div>
-
-              {/* Message Field */}
-              <div>
-                <label htmlFor="contact-message" className="inline-flex items-center gap-2 px-3 py-1.5 bg-black border border-white/20 rounded-md mb-2">
-                  <AlignLeft aria-hidden="true" className="h-4 w-4 text-slate-400" />
-                  <span className="text-slate-300 text-xs">Message</span>
-                </label>
-                <div className="flex items-start gap-3 pl-2">
-                  <span className="text-emerald-400 mt-2" aria-hidden="true">
-                    →
-                  </span>
-                  <textarea
-                    id="contact-message"
-                    name="message"
-                    rows={4}
-                    placeholder="Type your message here..."
-                    required
-                    className="min-w-0 flex-1 text-base sm:text-sm bg-transparent border-none outline-none text-slate-300 placeholder:text-slate-400 py-2 resize-none"
-                  />
-                </div>
-                <div className="h-px bg-white/20 ml-6 mt-1" />
-              </div>
-
-              {/* Submit Button */}
-              <div className="pt-2">
-                <button
-                  type="submit"
-                  disabled={status === "sending"}
-                  className="w-full flex items-center justify-between px-4 py-3 bg-black hover:bg-gray-900 border border-white/20 hover:border-white/40 rounded-lg transition-all group disabled:opacity-60 disabled:cursor-not-allowed relative overflow-hidden"
-                >
-                  {/* Shimmer effect */}
-                  <span className="absolute inset-0 bg-linear-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></span>
-                  <div className="min-w-0 flex items-center gap-2 sm:gap-3">
-                    <span className="text-[#98c379] font-bold">$</span>
-                    <span className="sm:hidden text-slate-300">
-                      {status === "sending" ? "Sending…" : status === "success" ? "Message sent" : "Send message"}
-                    </span>
-                    <span className="hidden sm:inline text-slate-300">
-                      {status === "sending"
-                        ? "sending_message.sh"
-                        : status === "success"
-                        ? "message_sent.sh"
-                        : "sh send_message.sh"}
-                    </span>
-                    <span
-                      className="hidden sm:inline-block w-2 h-4 bg-slate-400 animate-pulse"
-                      aria-hidden="true"
-                    />
-                  </div>
-                  <span
-                    className={`shrink-0 text-xs px-2 py-0.5 rounded uppercase tracking-wider font-bold ${
-                      status === "success"
-                        ? "bg-white/20 text-white"
-                        : status === "error"
-                        ? "bg-red-500/20 text-red-400"
-                        : "bg-white/20 text-white group-hover:bg-white/30"
-                    }`}
-                  >
-                    {status === "success"
-                      ? "sent"
-                      : status === "error"
-                      ? "error"
-                      : status === "sending"
-                      ? "running"
-                      : "active"}
-                  </span>
-                </button>
-              </div>
-
-              {/* Status Message */}
-              <div className="text-center text-sm" role="status" aria-live="polite" aria-atomic="true">
-                {status === "success" && (
-                  <p className="text-white">
-                    <span className="text-slate-500">[SUCCESS]</span> Message
-                    transmitted. I&apos;ll get back to you shortly.
-                  </p>
-                )}
-                {status === "error" && (
-                  <p className="text-red-400">
-                    <span className="text-slate-500">[ERROR]</span> Transmission
-                    failed. Please try again.
-                  </p>
-                )}
-              </div>
-            </form>
-          </div>
+            <div className="mt-4 min-h-6 text-sm" role="status" aria-live="polite" aria-atomic="true">
+              {status === "success" && <p className="text-[var(--green)]">[SUCCESS] Message transmitted. I&apos;ll get back to you shortly.</p>}
+              {status === "error" && <p className="text-[#ff8b85]">[ERROR] Transmission failed. Please try again.</p>}
+            </div>
+          </form>
         </div>
       </div>
     </section>
