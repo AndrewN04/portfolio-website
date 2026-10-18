@@ -1,15 +1,26 @@
 # a04.dev
 
-Andrew Nguyen's portfolio, built with Next.js App Router, TypeScript, Tailwind CSS, and Lucide icons. Existing interactive effects use Framer Motion.
+Andrew Nguyen's portfolio. Built with Next.js, TypeScript, Tailwind CSS, Lucide icons, and Framer Motion.
 
-## Local development
+The design keeps a terminal feel: dark surfaces, code-style labels, a typing headline, compact project lists, and a contact form.
 
-Use a supported Node.js LTS release (Node 24 was used for this audit).
+## Run locally
+
+Use Node.js 24 LTS and npm.
 
 ```powershell
 npm ci
 npm run dev -- --hostname 127.0.0.1
 ```
+
+Open [localhost:3000](http://127.0.0.1:3000).
+
+## Edit content
+
+- Projects: `app/lib/projects.ts`
+- Skills and icon paths: `app/lib/skills.ts`
+- Design notes: [DESIGN.md](DESIGN.md)
+- Icon credits: [public/ICONS.md](public/ICONS.md)
 
 ## Checks
 
@@ -18,9 +29,8 @@ npm test
 npm run lint
 npx tsc --noEmit
 npm run build
-npm audit --omit=dev
 ```
 
-Project content is in `app/lib/projects.ts`; skill categories and local icon paths are in `app/lib/skills.ts`. Icon sources are documented in [public/ICONS.md](public/ICONS.md).
+Both tests, lint, and types pass. The build passed before the final wheel-navigation change, which passed lint and type checks. Desktop and mobile navigation, layout, and animations were checked. Live contact-form delivery was not tested.
 
-Keep this checkout independent from sibling projects; initialize and run Git commands inside the individual repository. The production site is [a04.dev](https://a04.dev/); local edits do not publish automatically.
+The public site is [a04.dev](https://a04.dev/). Local changes do not publish themselves.
