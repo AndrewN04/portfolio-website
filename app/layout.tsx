@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Archivo, Martian_Mono } from "next/font/google";
-import "lenis/dist/lenis.css";
 import "./globals.css";
 
 const archivo = Archivo({

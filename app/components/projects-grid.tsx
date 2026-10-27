@@ -1,22 +1,15 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion, type PanInfo, type Variants } from "framer-motion";
-import { ArrowLeft, ArrowRight, ArrowUpRight, Clock3 } from "lucide-react";
-import { projects } from "../lib/projects";
+import { useRef, useState } from "react";
+import Image from "next/image";
+import { AnimatePresence, motion, useReducedMotion, type PanInfo } from "framer-motion";
+import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
+import { projects, type TechKey } from "../lib/projects";
+import { skillsRegistry, type SkillKey } from "../lib/skills";
 
-const ITEMS_PER_PAGE = 5;
-const TOTAL_PAGES = Math.ceil(projects.length / ITEMS_PER_PAGE);
-const pageVariants: Variants = {
-  enter: {},
-  center: { transition: { staggerChildren: 0.05 } },
-  exit: { transition: { staggerChildren: 0.03, staggerDirection: -1 } },
-};
-const rowVariants: Variants = {
-  enter: (direction: number) => ({ rotateX: -75, y: direction * 18, opacity: 0 }),
-  center: { rotateX: 0, y: 0, opacity: 1 },
-  exit: (direction: number) => ({ rotateX: 75, y: direction * -18, opacity: 0 }),
-};
+const extraLabels: Partial<Record<TechKey, string>> = { opencv: "OpenCV", tensorflow: "TensorFlow", sqlite: "SQLite", neon: "Neon" };
+const registered = (key: TechKey): key is TechKey & SkillKey => key in skillsRegistry;
+const steps: Record<string, number> = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 };
 
 function repoPath(link: string) {
   return link.replace("https://github.com/", "");
@@ -24,132 +17,104 @@ function repoPath(link: string) {
 
 export function ProjectsGrid() {
   const reducedMotion = useReducedMotion();
-  const [{ page, direction }, setSlide] = useState({ page: 0, direction: 1 });
-  const startIndex = page * ITEMS_PER_PAGE;
-  const visibleProjects = projects.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  const [{ index, direction }, setSelection] = useState({ index: 0, direction: 1 });
+  const tabs = useRef<(HTMLButtonElement | null)[]>([]);
+  const project = projects[index];
 
-  const navigate = useCallback((step: 1 | -1) => {
-    setSlide((current) => ({
-      page: (current.page + step + TOTAL_PAGES) % TOTAL_PAGES,
-      direction: step,
-    }));
-  }, []);
-
-  const selectPage = (nextPage: number) => {
-    setSlide((current) => nextPage === current.page ? current : {
-      page: nextPage,
-      direction: nextPage > current.page ? 1 : -1,
-    });
+  const select = (next: number, focus = false) => {
+    const target = (next + projects.length) % projects.length;
+    setSelection((current) => ({ index: target, direction: next >= current.index ? 1 : -1 }));
+    if (focus) tabs.current[target]?.focus();
   };
 
   const handleDragEnd = (_: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    if (Math.abs(info.offset.x) >= 50) navigate(info.offset.x < 0 ? 1 : -1);
+    if (Math.abs(info.offset.x) >= 50) select(index + (info.offset.x < 0 ? 1 : -1));
   };
 
-  const carouselRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const carousel = carouselRef.current;
-    if (!carousel) return;
-    let lastSwipeTime = -Infinity;
-    const handleWheel = (event: WheelEvent) => {
-      if (event.ctrlKey || Math.abs(event.deltaX) <= Math.max(30, Math.abs(event.deltaY))) return;
-      event.preventDefault();
-      const now = performance.now();
-      if (now - lastSwipeTime < 450) return;
-      lastSwipeTime = now;
-      navigate(event.deltaX > 0 ? 1 : -1);
-    };
-    carousel.addEventListener("wheel", handleWheel, { passive: false });
-    return () => carousel.removeEventListener("wheel", handleWheel);
-  }, [navigate]);
-
   return (
-    <section id="projects" tabIndex={-1} aria-label="Projects" aria-roledescription="carousel" className="section-shell" style={{ "--layer": "var(--z2)" } as React.CSSProperties}>
-      <div className="settle mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="section-head">
-          <h2 className="section-title"><span className="mask"><span>Projects</span></span></h2>
-          <a className="keycap" href="https://github.com/AndrewN04" target="_blank" rel="noopener noreferrer">
-            GitHub <ArrowUpRight size={16} aria-hidden="true" /><span className="sr-only"> (opens in a new tab)</span>
-          </a>
-        </div>
+    <section aria-labelledby="vm-heading-projects">
+      <div className="vm-head">
+        <h2 id="vm-heading-projects" tabIndex={-1} className="vm-heading">Projects</h2>
+        <a className="btn btn-quiet" href="https://github.com/AndrewN04" target="_blank" rel="noopener noreferrer">
+          GitHub <ArrowUpRight size={16} aria-hidden="true" /><span className="sr-only"> (opens in a new tab)</span>
+        </a>
+      </div>
 
+      <div className="guests">
         <div
-          ref={carouselRef}
-          className="carousel-stage relative"
-          tabIndex={0}
-          aria-label="Project slides; use left and right arrow keys to browse"
+          role="tablist"
+          aria-orientation="vertical"
+          aria-label="Projects"
+          className="guest-list"
           onKeyDown={(event) => {
-            if (event.target !== event.currentTarget) return;
-            if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return;
+            if (event.key in steps) select(index + steps[event.key], true);
+            else if (event.key === "Home") select(0, true);
+            else if (event.key === "End") select(projects.length - 1, true);
+            else return;
             event.preventDefault();
-            navigate(event.key === "ArrowRight" ? 1 : -1);
           }}
         >
+          {projects.map((item, i) => (
+            <button
+              key={item.title}
+              ref={(element) => { tabs.current[i] = element; }}
+              type="button"
+              role="tab"
+              id={`guest-tab-${i}`}
+              aria-selected={i === index}
+              aria-controls="guest-panel"
+              tabIndex={i === index ? 0 : -1}
+              className="guest"
+              onClick={() => select(i)}
+            >
+              <span className="guest-dot" data-dev={Boolean(item.status)} aria-hidden="true" />
+              <span className="guest-name">{item.title}</span>
+              <span className="guest-meta">{item.link ? repoPath(item.link) : item.status}</span>
+            </button>
+          ))}
+        </div>
+
+        <div role="tabpanel" id="guest-panel" aria-labelledby={`guest-tab-${index}`} className="guest-panel">
           <AnimatePresence mode="wait" initial={false} custom={direction}>
-            <motion.div
-              key={page}
-              custom={direction}
-              variants={pageVariants}
-              initial="enter"
-              animate="center"
-              exit="exit"
+            <motion.article
+              key={index}
+              initial={{ opacity: 0, x: direction * 28 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: direction * -28 }}
+              transition={{ duration: reducedMotion ? 0 : 0.35, ease: [0.16, 1, 0.3, 1] }}
               drag="x"
               dragConstraints={{ left: 0, right: 0 }}
               dragElastic={0.08}
               onDragEnd={handleDragEnd}
               style={{ touchAction: "pan-y" }}
-              className="flex flex-col gap-2"
+              className="guest-detail"
             >
-              {visibleProjects.map((project) => {
-                const ProjectElement = project.link ? "a" : "div";
-                return (
-                  <motion.article
-                    key={project.title}
-                    custom={direction}
-                    variants={rowVariants}
-                    transition={{ duration: reducedMotion ? 0 : 0.5, ease: [0.16, 1, 0.3, 1] }}
-                    className="project-row"
-                  >
-                    <ProjectElement
-                      href={project.link || undefined}
-                      target={project.link ? "_blank" : undefined}
-                      rel={project.link ? "noopener noreferrer" : undefined}
-                      draggable={false}
-                      className="project-link flex min-h-[92px] items-center gap-4 px-4 py-4 sm:gap-6 sm:px-6"
-                    >
-                      <div className="min-w-0 flex-1">
-                        <div className="mb-1 flex flex-wrap items-baseline gap-x-4 gap-y-1">
-                          <h3 className="text-lg font-bold leading-snug sm:text-xl" title={project.title}>{project.title}</h3>
-                          {project.link
-                            ? <span className="mono text-[11px] text-[var(--text-dim)]">{repoPath(project.link)}</span>
-                            : <span className="mono inline-flex items-center gap-1.5 text-[11px] text-[var(--z1)]"><Clock3 size={12} aria-hidden="true" /> {project.status ?? "Planned"}</span>}
-                        </div>
-                        <p className="text-sm leading-relaxed text-[var(--text-muted)]">{project.description}</p>
-                      </div>
-                      {project.link && <span className="project-open" aria-hidden="true">Repo <ArrowUpRight size={14} /></span>}
-                    </ProjectElement>
-                  </motion.article>
-                );
-              })}
-            </motion.div>
+              <h3>{project.title}</h3>
+              <p className="guest-repo">
+                {project.link ? repoPath(project.link) : <span className="status-chip">{project.status ?? "Planned"}</span>}
+              </p>
+              <p className="guest-description">{project.description}</p>
+              <ul className="chips" aria-label="Built with">
+                {project.tech.map((key) => (
+                  <li key={key} className="chip">
+                    {registered(key) && <Image src={skillsRegistry[key].svg} alt="" width={16} height={16} />}
+                    <span>{registered(key) ? skillsRegistry[key].label : extraLabels[key] ?? key}</span>
+                  </li>
+                ))}
+              </ul>
+              {project.link && (
+                <a className="btn btn-primary" href={project.link} target="_blank" rel="noopener noreferrer" draggable={false}>
+                  Open repo <ArrowUpRight size={16} aria-hidden="true" /><span className="sr-only"> (opens in a new tab)</span>
+                </a>
+              )}
+            </motion.article>
           </AnimatePresence>
-        </div>
-
-        <p className="sr-only" aria-live="polite" aria-atomic="true">Project set {page + 1} of {TOTAL_PAGES}</p>
-        {TOTAL_PAGES > 1 && (
-          <div className="mt-5 flex items-center justify-center gap-3" aria-label="Project carousel pagination">
-            <button type="button" onClick={() => navigate(-1)} className="keycap keycap-square" aria-label="View previous projects"><ArrowLeft size={16} aria-hidden="true" /></button>
-            <div className="flex items-center gap-1">
-              {Array.from({ length: TOTAL_PAGES }, (_, index) => (
-                <button key={index} type="button" onClick={() => selectPage(index)} className="inline-flex h-11 min-w-11 items-center justify-center" aria-label={`Go to project set ${index + 1}`} aria-current={index === page ? "page" : undefined}>
-                  <span aria-hidden="true" className={`h-2 rounded-[1px] transition-all duration-500 ${index === page ? "w-8 bg-[var(--z2)]" : "w-2 bg-white/35 hover:bg-white/70"}`} />
-                </button>
-              ))}
-            </div>
-            <button type="button" onClick={() => navigate(1)} className="keycap keycap-square" aria-label="View next projects"><ArrowRight size={16} aria-hidden="true" /></button>
+          <div className="guest-pager">
+            <button type="button" className="icon-btn" onClick={() => select(index - 1)} aria-label="Previous project"><ArrowLeft size={16} aria-hidden="true" /></button>
+            <span className="mono" aria-hidden="true">{index + 1} / {projects.length}</span>
+            <button type="button" className="icon-btn" onClick={() => select(index + 1)} aria-label="Next project"><ArrowRight size={16} aria-hidden="true" /></button>
           </div>
-        )}
+        </div>
       </div>
     </section>
   );

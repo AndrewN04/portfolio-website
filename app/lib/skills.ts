@@ -151,8 +151,8 @@ export const skillsRegistry: Record<SkillKey, { label: string; svg: string }> =
 };
 
 export const skillCategories = [
-    { name: "Frontend", command: "./list_frontend.sh", skills: ["html", "css", "javascript", "typescript", "react", "nextjs", "tailwind"] },
-    { name: "Backend & AI", command: "python inspect_backend.py", skills: ["nodejs", "python", "fastapi", "pydantic", "cplusplus", "postgres", "mongodb", "supabase", "convex", "firebase", "langchain"] },
-    { name: "Infrastructure", command: "Get-LabEnvironment", skills: ["docker", "linux", "windows", "powershell", "git", "github", "githubactions", "vercel", "aws"] },
-    { name: "Tools & testing", command: "npm run test", skills: ["prisma", "figma", "postman", "vite", "playwright", "vitest", "pytest"] },
-] satisfies { name: string; command: string; skills: SkillKey[] }[];
+    { name: "Frontend", skills: ["html", "css", "javascript", "typescript", "react", "nextjs", "tailwind"] },
+    { name: "Backend & AI", skills: ["nodejs", "python", "fastapi", "pydantic", "cplusplus", "postgres", "mongodb", "supabase", "convex", "firebase", "langchain"] },
+    { name: "Infrastructure", skills: ["docker", "linux", "windows", "powershell", "git", "github", "githubactions", "vercel", "aws"] },
+    { name: "Tools & testing", skills: ["prisma", "figma", "postman", "vite", "playwright", "vitest", "pytest"] },
+] satisfies { name: string; skills: SkillKey[] }[];

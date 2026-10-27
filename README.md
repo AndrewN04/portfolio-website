@@ -1,8 +1,8 @@
 # a04.dev
 
-Andrew Nguyen's portfolio. Built with Next.js, TypeScript, Tailwind CSS, Lucide icons, and Framer Motion.
+Andrew Nguyen's portfolio. Built with Next.js, TypeScript, Tailwind CSS, three.js, Lucide icons, and Framer Motion.
 
-The design keeps a terminal feel: dark surfaces, code-style labels, a typing headline, compact project lists, and a contact form.
+The site is one screen: a 3D server rack whose four servers open About, Skills, Projects, and Contact as windows, with particles spelling out the current role. Without WebGL the rack falls back to plain links.
 
 ## Run locally
 

@@ -1,4 +1,4 @@
-// Tech key type for project tech stacks (currently unused in UI but kept for data structure)
+// Tech stack keys, shown as chips in the Projects window
 export type TechKey =
     | "nextjs"
     | "postgres"
