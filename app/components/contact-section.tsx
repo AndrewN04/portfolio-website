@@ -4,7 +4,9 @@ import { useState } from "react";
 import { AlignLeft, AtSign, User } from "lucide-react";
 import { SocialLinks } from "./social-links";
 
-const FORM_ENDPOINT = "https://formspree.io/f/mjkjlqdn";
+const FORM_ENDPOINT = "https://api.web3forms.com/submit";
+// Web3Forms access keys are public by design: they only route submissions to the owner's inbox.
+const ACCESS_KEY = "132e9e22-85eb-480c-8601-65ad2b2f115e";
 
 export function ContactSection() {
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
@@ -20,7 +22,8 @@ export function ContactSection() {
         body: new FormData(form),
         signal: AbortSignal.timeout(15000),
       });
-      if (!response.ok) throw new Error("Form submission failed");
+      const result = await response.json();
+      if (!response.ok || !result.success) throw new Error(result.message ?? "Form submission failed");
       setStatus("success");
       form.reset();
     } catch (error) {
@@ -55,8 +58,10 @@ export function ContactSection() {
             <label htmlFor="contact-message"><AlignLeft size={15} aria-hidden="true" /> Message</label>
             <textarea id="contact-message" name="message" rows={5} placeholder="Type your message here..." maxLength={5000} required />
           </div>
-          {/* Formspree's honeypot: bots fill it and Formspree drops the submission. Hidden from people and assistive tech. */}
-          <input type="text" name="_gotcha" className="form-gotcha" tabIndex={-1} autoComplete="off" aria-hidden="true" />
+          <input type="hidden" name="access_key" value={ACCESS_KEY} />
+          <input type="hidden" name="subject" value="New message from a04.dev" />
+          {/* Web3Forms' honeypot: bots tick it and Web3Forms drops the submission. Hidden from people and assistive tech. */}
+          <input type="checkbox" name="botcheck" className="form-honeypot" tabIndex={-1} autoComplete="off" aria-hidden="true" />
           <div className="form-actions">
             <button type="submit" disabled={status === "sending"} className="btn btn-primary">
               {status === "sending" ? "Sending…" : status === "success" ? "Message sent" : "Send message"}
@@ -67,7 +72,7 @@ export function ContactSection() {
             {status === "success" && <p className="form-ok">Message sent. I&apos;ll get back to you shortly.</p>}
             {status === "error" && <p className="form-error">The message could not be sent. Please try again.</p>}
           </div>
-          <p className="form-note">Sent through Formspree and only used to reply to you.</p>
+          <p className="form-note">Sent through Web3Forms and only used to reply to you.</p>
         </form>
       </div>
     </section>

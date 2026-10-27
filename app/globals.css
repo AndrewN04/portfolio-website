@@ -625,7 +625,7 @@ a { text-underline-offset: 0.2em; }
 .form-ok { color: var(--z3); }
 .form-error { color: var(--z2); }
 .form-note { font-size: 13px; color: var(--text-muted); }
-.form-gotcha { display: none; }
+.form-honeypot { display: none; }
 @media (min-width: 640px) { .form-pair { grid-template-columns: 1fr 1fr; } }
 @media (min-width: 900px) { .contact-grid { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 44px; } }
 

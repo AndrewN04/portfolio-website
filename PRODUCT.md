@@ -18,7 +18,7 @@ The portfolio presents Andrew Nguyen, a Texas-based full-stack developer, his sk
 
 - A single-page portfolio with About, Skills, Projects, and Contact sections.
 - Projects link to their existing public repositories; A04 Agent is identified as planned and has no public project link.
-- Contact form posts to its existing Formspree endpoint.
+- Contact form posts to Web3Forms from the browser.
 - Preserve the terminal-inspired brand, Space Grotesk and Fira Code, automatic role typewriter and continuously moving RGB gradient, five-project carousel pages with keyboard/pagination controls, footer hover spotlight, and responsive accessible navigation.
 - The typewriter and RGB gradient intentionally continue under reduced-motion settings.
 
