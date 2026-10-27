@@ -373,6 +373,11 @@ a { text-underline-offset: 0.2em; }
 }
 .vm-close:hover { color: var(--text); border-color: var(--z2); }
 .vm-close kbd { padding: 1px 5px; border: 1px solid var(--edge-strong); border-radius: 3px; font-family: var(--mono); font-size: 10px; color: var(--text-muted); }
+/* Trim the text boxes to cap height so the label and key centre on the icon instead of sitting high. */
+@supports (text-box: trim-both cap alphabetic) {
+  .vm-close span, .vm-close kbd { text-box: trim-both cap alphabetic; }
+  .vm-close kbd { padding: 4px 5px; }
+}
 
 .vm-layout { display: grid; min-height: 0; flex: 1; grid-template-columns: 212px minmax(0, 1fr); }
 .vm-tree { overflow: auto; padding: 14px 10px; border-right: 1px solid var(--edge); background: var(--plane-sunk); }
