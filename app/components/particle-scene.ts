@@ -23,6 +23,7 @@ export function createParticles(canvas: HTMLCanvasElement, options: ParticleOpti
   const count = window.innerWidth < 768 ? 3600 : 6500;
   const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, powerPreference: "high-performance" });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+  renderer.debug.checkShaderErrors = process.env.NODE_ENV !== "production";
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(FOV, 1, 0.1, 100);
   camera.position.z = DISTANCE;
@@ -59,7 +60,9 @@ export function createParticles(canvas: HTMLCanvasElement, options: ParticleOpti
         return mix(a, b, smoothstep(0., 1., f));
       }
       void main() {
-        vec4 mv = modelViewMatrix * vec4(position, 1.);
+        // The idle drift lives here so the CPU physics can sleep once the word has formed.
+        vec3 drift = vec3(sin(uTime * 1.3 + seed * 40.), cos(uTime * 1.1 + seed * 30.), 0.) * .055;
+        vec4 mv = modelViewMatrix * vec4(position + drift, 1.);
         vColor = stop(position.x * .045 - uTime * .125 + seed * .03);
         vSeed = seed;
         gl_PointSize = (2. + seed * 2.4) * uRatio * (16. / -mv.z);
@@ -112,18 +115,23 @@ export function createParticles(canvas: HTMLCanvasElement, options: ParticleOpti
       target[i * 3 + 1] = middle - (points[p + 1] - h / 2) * unit + (Math.random() - 0.5) * unit * step;
       target[i * 3 + 2] = (Math.random() - 0.5) * 0.5;
     }
+    awake = true;
   }
 
   function scatter(strength: number) {
     for (let i = 0; i < count * 3; i++) vel[i] += (Math.random() - 0.5) * 0.9 * strength;
+    awake = true;
   }
 
+  // Physics runs only until the particles settle; a new word, a scatter or the pointer wakes it.
+  let awake = true;
   const mouse = { x: 999, y: 999 };
   const onPointer = (event: PointerEvent) => {
     mouse.x = ((event.clientX / width) * 2 - 1) * halfHeight * camera.aspect;
     mouse.y = -((event.clientY / height) * 2 - 1) * halfHeight;
+    awake = true;
   };
-  const onLeave = () => { mouse.x = mouse.y = 999; };
+  const onLeave = () => { mouse.x = mouse.y = 999; awake = true; };
   window.addEventListener("pointermove", onPointer, { passive: true });
   document.addEventListener("pointerleave", onLeave);
 
@@ -147,31 +155,40 @@ export function createParticles(canvas: HTMLCanvasElement, options: ParticleOpti
   observer.observe(options.slot);
   fit();
 
+  // Compile the shader off the main thread where the driver allows it, before the first frame needs it.
+  let compiled = false;
+  renderer.compileAsync(scene, camera).catch(() => undefined).then(() => { compiled = true; });
+
   let last = performance.now();
   renderer.setAnimationLoop((now) => {
     const dt = Math.min((now - last) / 1000, 0.05);
     last = now;
-    if (suspended || (paused && !needsFrame)) return;
+    if (!compiled || suspended || (paused && !needsFrame)) return;
     needsFrame = false;
     if (!paused) {
       time += dt;
       material.uniforms.uTime.value = time;
-      for (let i = 0; i < count; i++) {
-        const ix = i * 3, iy = ix + 1, iz = ix + 2;
-        const dx = pos[ix] - mouse.x, dy = pos[iy] - mouse.y, d2 = dx * dx + dy * dy;
-        if (d2 < 2.2) {
-          const force = (2.2 - d2) * 0.045;
-          vel[ix] += dx * force;
-          vel[iy] += dy * force;
-          vel[iz] += force * 0.6;
+      if (awake) {
+        let motion = 0;
+        for (let i = 0; i < count; i++) {
+          const ix = i * 3, iy = ix + 1, iz = ix + 2;
+          const dx = pos[ix] - mouse.x, dy = pos[iy] - mouse.y, d2 = dx * dx + dy * dy;
+          if (d2 < 2.2) {
+            const force = (2.2 - d2) * 0.045;
+            vel[ix] += dx * force;
+            vel[iy] += dy * force;
+            vel[iz] += force * 0.6;
+          }
+          vel[ix] += (target[ix] - pos[ix]) * 0.022;
+          vel[iy] += (target[iy] - pos[iy]) * 0.022;
+          vel[iz] += (target[iz] - pos[iz]) * 0.022;
+          vel[ix] *= 0.86; vel[iy] *= 0.86; vel[iz] *= 0.86;
+          pos[ix] += vel[ix]; pos[iy] += vel[iy]; pos[iz] += vel[iz];
+          motion = Math.max(motion, Math.abs(vel[ix]) + Math.abs(vel[iy]) + Math.abs(vel[iz]));
         }
-        vel[ix] += (target[ix] - pos[ix]) * 0.022 + Math.sin(time * 1.3 + seed[i] * 40) * 0.0012;
-        vel[iy] += (target[iy] - pos[iy]) * 0.022 + Math.cos(time * 1.1 + seed[i] * 30) * 0.0012;
-        vel[iz] += (target[iz] - pos[iz]) * 0.022;
-        vel[ix] *= 0.86; vel[iy] *= 0.86; vel[iz] *= 0.86;
-        pos[ix] += vel[ix]; pos[iy] += vel[iy]; pos[iz] += vel[iz];
+        geometry.attributes.position.needsUpdate = true;
+        if (motion < 0.0004) awake = false;
       }
-      geometry.attributes.position.needsUpdate = true;
     }
     renderer.render(scene, camera);
   });

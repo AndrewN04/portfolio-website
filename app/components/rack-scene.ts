@@ -66,13 +66,12 @@ export function createRack(canvas: HTMLCanvasElement, options: RackOptions): Rac
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.05;
+  // The per-program error check makes the main thread wait on the GPU driver (seconds on phones).
+  renderer.debug.checkShaderErrors = process.env.NODE_ENV !== "production";
 
   const scene = new THREE.Scene();
-  const pmrem = new THREE.PMREMGenerator(renderer);
-  const envTarget = pmrem.fromScene(new RoomEnvironment(), 0.04);
-  scene.environment = envTarget.texture;
   scene.environmentIntensity = 0.55;
-  pmrem.dispose();
+  let envTarget: THREE.WebGLRenderTarget | null = null;
 
   const camera = new THREE.PerspectiveCamera(26, 1, 0.1, 100);
   scene.add(new THREE.HemisphereLight(0xffffff, 0x0a0a0a, 0.35));
@@ -559,9 +558,18 @@ export function createRack(canvas: HTMLCanvasElement, options: RackOptions): Rac
   const nudge = options.paused ? -1 : 1.6;
   const PULLED = 1.15;
 
+  // LEDs step at 12 Hz like real activity lights, so an idle rack redraws only when one changes.
+  const setVisible = (led: Led, visible: boolean) => {
+    const changed = led.mesh.visible !== visible;
+    led.mesh.visible = visible;
+    return changed;
+  };
+
   function tick(dt: number) {
     if (!ready) return;
     clock += dt;
+    const blinkClock = Math.floor(clock * 12) / 12;
+    let blink = false;
     let moving = false;
     for (const server of servers) {
       // Opening: pull all the way out, then fade away. Closing: fade back in where it was, then slide home.
@@ -583,12 +591,11 @@ export function createRack(canvas: HTMLCanvasElement, options: RackOptions): Rac
       server.face.emissiveIntensity = lit * (0.85 + focus * 0.5);
       server.power.material.opacity = lit * (0.7 + focus * 0.3) * server.fade;
       server.outline.material.opacity = (server.vm.id === hover || opening ? focus : 0) * server.fade;
-      for (const led of server.activity) led.mesh.visible = lit > 0 && server.fade > 0.5 && (paused || Math.sin(clock * led.rate + led.seed) > -0.2 || Math.sin(clock * 3.1 + led.seed) > 0.7);
+      for (const led of server.activity) blink = setVisible(led, lit > 0 && server.fade > 0.5 && (paused || Math.sin(blinkClock * led.rate + led.seed) > -0.2 || Math.sin(blinkClock * 3.1 + led.seed) > 0.7)) || blink;
     }
     if (nudge > 0 && clock < nudge + 1) moving = true;
-    for (const led of ambientLeds) led.mesh.visible = paused || Math.sin(clock * led.rate + led.seed * 3) > -0.4;
-    const animate = !paused && !open;
-    if (!moving && !animate && !dirty) return;
+    for (const led of ambientLeds) blink = setVisible(led, paused || Math.sin(blinkClock * led.rate + led.seed * 3) > -0.4) || blink;
+    if (!moving && !(blink && !open) && !dirty) return;
     if (moving || dirty) layout();
     dirty = false;
     renderer.render(scene, camera);
@@ -605,16 +612,33 @@ export function createRack(canvas: HTMLCanvasElement, options: RackOptions): Rac
   observer.observe(canvas);
   fit();
 
+  let disposed = false;
+  const nextTask = () => new Promise<void>((resolve) => setTimeout(resolve, 0));
   Promise.all([
     document.fonts.load(`700 46px ${fontFace.mono}`),
     document.fonts.load(`500 42px ${fontFace.mono}`),
-  ]).catch(() => undefined).then(() => {
-    build();
-    ready = true;
-    dirty = true;
-    tick(0);
-    options.onReady();
-  });
+  ]).catch(() => undefined)
+    // Each start-up step gets its own task so none blocks input for long.
+    .then(nextTask)
+    .then(() => {
+      if (disposed) return;
+      const pmrem = new THREE.PMREMGenerator(renderer);
+      envTarget = pmrem.fromScene(new RoomEnvironment(), 0.04, 0.1, 100, { size: 128 });
+      pmrem.dispose();
+      scene.environment = envTarget.texture;
+    })
+    .then(nextTask)
+    .then(() => { if (!disposed) build(); })
+    .then(nextTask)
+    // Compile shaders off the main thread where the driver allows it, instead of stalling the first frame.
+    .then(() => (disposed ? undefined : renderer.compileAsync(scene, camera).catch(() => undefined)))
+    .then(() => {
+      if (disposed) return;
+      ready = true;
+      dirty = true;
+      tick(0);
+      options.onReady();
+    });
 
   return {
     setHover(id) { hover = id; dirty = true; },
@@ -626,6 +650,7 @@ export function createRack(canvas: HTMLCanvasElement, options: RackOptions): Rac
     },
     setPaused(value) { paused = value; dirty = true; },
     dispose() {
+      disposed = true;
       renderer.setAnimationLoop(null);
       observer.disconnect();
       scene.traverse((object) => {
@@ -635,7 +660,7 @@ export function createRack(canvas: HTMLCanvasElement, options: RackOptions): Rac
         (Array.isArray(material) ? material : material ? [material] : []).forEach((item) => item.dispose());
       });
       textures.forEach((texture) => texture.dispose());
-      envTarget.dispose();
+      envTarget?.dispose();
       renderer.dispose();
     },
   };

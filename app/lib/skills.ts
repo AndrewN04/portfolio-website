@@ -32,7 +32,10 @@ export type SkillKey =
     | "githubactions"
     | "vercel"
     | "vitest"
-    | "pytest";
+    | "pytest"
+    | "threejs"
+    | "framermotion"
+    | "eslint";
 
 export const skillsRegistry: Record<SkillKey, { label: string; svg: string }> =
 {
@@ -148,11 +151,14 @@ export const skillsRegistry: Record<SkillKey, { label: string; svg: string }> =
     vercel: { label: "Vercel", svg: "/vercel.svg" },
     vitest: { label: "Vitest", svg: "/vitest.svg" },
     pytest: { label: "pytest", svg: "/pytest.svg" },
+    threejs: { label: "Three.js", svg: "/threejs.svg" },
+    framermotion: { label: "Framer Motion", svg: "/framermotion.svg" },
+    eslint: { label: "ESLint", svg: "/eslint.svg" },
 };
 
 export const skillCategories = [
-    { name: "Frontend", skills: ["html", "css", "javascript", "typescript", "react", "nextjs", "tailwind"] },
+    { name: "Frontend", skills: ["html", "css", "javascript", "typescript", "react", "nextjs", "tailwind", "threejs", "framermotion"] },
     { name: "Backend & AI", skills: ["nodejs", "python", "fastapi", "pydantic", "cplusplus", "postgres", "mongodb", "supabase", "convex", "firebase", "langchain"] },
     { name: "Infrastructure", skills: ["docker", "linux", "windows", "powershell", "git", "github", "githubactions", "vercel", "aws"] },
-    { name: "Tools & testing", skills: ["prisma", "figma", "postman", "vite", "playwright", "vitest", "pytest"] },
+    { name: "Tools & testing", skills: ["prisma", "figma", "postman", "vite", "eslint", "playwright", "vitest", "pytest"] },
 ] satisfies { name: string; skills: SkillKey[] }[];
