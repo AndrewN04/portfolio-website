@@ -20,7 +20,6 @@
   --z3: #7cc4ff;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --gutter: clamp(16px, 4vw, 56px);
-  --mono: var(--font-mono), ui-monospace, monospace;
 }
 
 html {
@@ -35,6 +34,8 @@ body {
   color: var(--text);
   font-family: var(--font-display), system-ui, sans-serif;
   caret-color: var(--z1);
+  /* Set here, not on :root: Martian Mono's --font-mono is on body, while :root only has Tailwind's default stack. */
+  --mono: var(--font-mono), ui-monospace, monospace;
 }
 
 ::selection { background: var(--z1); color: #050505; }
