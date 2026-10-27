@@ -56,6 +56,8 @@ type Server = {
   power: THREE.Sprite;
   activity: Led[];
   bootAt: number;
+  fade: number;
+  shell: THREE.MeshStandardMaterial[];
 };
 
 const css = (hex: number, alpha = 1) => `rgba(${(hex >> 16) & 255}, ${(hex >> 8) & 255}, ${hex & 255}, ${alpha})`;
@@ -318,16 +320,16 @@ export function createRack(canvas: HTMLCanvasElement, options: RackOptions): Rac
   const toLocal = (x: number, y: number, height: number, faceHeight: number) =>
     new THREE.Vector3((x / TEX_W - 0.5) * FACE_W, (0.5 - y / height) * faceHeight, 0.031);
 
-  function faceMesh(u: number, map: HTMLCanvasElement, glowMap: HTMLCanvasElement) {
+  function faceMesh(u: number, map: HTMLCanvasElement, glowMap: HTMLCanvasElement, sides = chassis) {
     const faceHeight = u * U - 0.012;
     const face = new THREE.MeshStandardMaterial({ map: canvasTexture(map), emissive: 0xffffff, emissiveMap: canvasTexture(glowMap), emissiveIntensity: 0, metalness: 0.45, roughness: 0.5 });
-    const plate = new THREE.Mesh(new THREE.BoxGeometry(FACE_W, faceHeight, 0.06), [chassis, chassis, chassis, chassis, face, chassis]);
+    const plate = new THREE.Mesh(new THREE.BoxGeometry(FACE_W, faceHeight, 0.06), [sides, sides, sides, sides, face, sides]);
     return { plate, face, faceHeight };
   }
 
-  function handle(faceHeight: number, side: number) {
+  function handle(faceHeight: number, side: number, material = aluminium) {
     const radius = faceHeight * 0.3;
-    const mesh = new THREE.Mesh(new THREE.TorusGeometry(radius, 0.022, 10, 28, Math.PI), aluminium);
+    const mesh = new THREE.Mesh(new THREE.TorusGeometry(radius, 0.022, 10, 28, Math.PI), material);
     mesh.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(new THREE.Vector3(0, 1, 0), new THREE.Vector3(0, 0, 1), new THREE.Vector3(1, 0, 0)));
     mesh.position.set(side * (FACE_W / 2 - 0.115), 0, 0.03);
     return mesh;
@@ -391,9 +393,14 @@ export function createRack(canvas: HTMLCanvasElement, options: RackOptions): Rac
           g.fillStyle = "#2f2f36";
           g.fillRect(bx + 6, height - 58, 46, 16);
         });
-        const { plate, face, faceHeight } = faceMesh(unit.u, map, glowMap);
-        group.add(plate, handle(faceHeight, -1), handle(faceHeight, 1));
-        const body = new THREE.Mesh(new THREE.BoxGeometry(FACE_W - 0.52, faceHeight - 0.02, 2.7), chassis);
+        // Each server owns its materials so it can fade out on its own when its window opens.
+        const ownChassis = chassis.clone();
+        const ownMetal = aluminium.clone();
+        const { plate, face, faceHeight } = faceMesh(unit.u, map, glowMap, ownChassis);
+        const shell = [face, ownChassis, ownMetal];
+        shell.forEach((material) => { material.transparent = true; });
+        group.add(plate, handle(faceHeight, -1, ownMetal), handle(faceHeight, 1, ownMetal));
+        const body = new THREE.Mesh(new THREE.BoxGeometry(FACE_W - 0.52, faceHeight - 0.02, 2.7), ownChassis);
         body.position.z = -1.38;
         group.add(body);
         const power = glow(vm.hex, 0.42);
@@ -422,7 +429,7 @@ export function createRack(canvas: HTMLCanvasElement, options: RackOptions): Rac
           new THREE.Vector3(FACE_W / 2, -faceHeight / 2, 0.03),
           new THREE.Vector3(-FACE_W / 2, -faceHeight / 2, 0.03),
         ];
-        servers.push({ vm, group, baseZ: group.position.z, slide: 0, corners, outline, face, power, activity, bootAt: 0.25 + servers.length * 0.18 });
+        servers.push({ vm, group, baseZ: group.position.z, slide: 0, corners, outline, face, power, activity, bootAt: 0.25 + servers.length * 0.18, fade: 1, shell });
         return;
       }
 
@@ -549,14 +556,22 @@ export function createRack(canvas: HTMLCanvasElement, options: RackOptions): Rac
   let paused = options.paused;
   let dirty = true;
   let clock = 0;
+  let holdUntil = 0;
   const nudge = options.reducedMotion ? -1 : 1.6;
+  const PULLED = 1.15;
 
   function tick(dt: number) {
     if (!ready) return;
     clock += dt;
     let moving = false;
     for (const server of servers) {
-      const out = server.vm.id === open ? 1.15 : server.vm.id === hover ? 0.32 : nudge > 0 && clock > nudge && clock < nudge + 0.55 && server === servers[0] ? 0.32 : 0;
+      // Opening: pull all the way out, then fade away. Closing: fade back in where it was, then slide home.
+      const opening = server.vm.id === open;
+      const fadeTarget = opening ? (server.slide > PULLED - 0.07 || options.reducedMotion ? 0 : 1) : clock < holdUntil ? server.fade : 1;
+      const fadeNext = options.reducedMotion ? fadeTarget : server.fade + Math.sign(fadeTarget - server.fade) * Math.min(Math.abs(fadeTarget - server.fade), dt / 0.18);
+      if (fadeNext !== fadeTarget) moving = true;
+      server.fade = fadeNext;
+      const out = opening ? PULLED : server.fade < 1 ? server.slide : server.vm.id === hover ? 0.32 : nudge > 0 && clock > nudge && clock < nudge + 0.55 && server === servers[0] ? 0.32 : 0;
       const next = options.reducedMotion ? out : server.slide + (out - server.slide) * (1 - Math.exp(-dt * 11));
       if (Math.abs(next - out) < 0.002) server.slide = out;
       else { server.slide = next; moving = true; }
@@ -564,10 +579,12 @@ export function createRack(canvas: HTMLCanvasElement, options: RackOptions): Rac
       const lit = options.reducedMotion || paused ? 1 : THREE.MathUtils.clamp((clock - server.bootAt) / 0.35, 0, 1);
       if (lit < 1) moving = true;
       const focus = Math.min(1, server.slide / 0.32);
+      server.group.visible = server.fade > 0.01;
+      server.shell.forEach((material) => { material.opacity = server.fade; });
       server.face.emissiveIntensity = lit * (0.85 + focus * 0.5);
-      server.power.material.opacity = lit * (0.7 + focus * 0.3);
-      server.outline.material.opacity = server.vm.id === hover || server.vm.id === open ? focus : 0;
-      for (const led of server.activity) led.mesh.visible = lit > 0 && (paused || options.reducedMotion || Math.sin(clock * led.rate + led.seed) > -0.2 || Math.sin(clock * 3.1 + led.seed) > 0.7);
+      server.power.material.opacity = lit * (0.7 + focus * 0.3) * server.fade;
+      server.outline.material.opacity = (server.vm.id === hover || opening ? focus : 0) * server.fade;
+      for (const led of server.activity) led.mesh.visible = lit > 0 && server.fade > 0.5 && (paused || options.reducedMotion || Math.sin(clock * led.rate + led.seed) > -0.2 || Math.sin(clock * 3.1 + led.seed) > 0.7);
     }
     if (nudge > 0 && clock < nudge + 1) moving = true;
     for (const led of ambientLeds) led.mesh.visible = paused || options.reducedMotion || Math.sin(clock * led.rate + led.seed * 3) > -0.4;
@@ -602,7 +619,12 @@ export function createRack(canvas: HTMLCanvasElement, options: RackOptions): Rac
 
   return {
     setHover(id) { hover = id; dirty = true; },
-    setOpen(id) { open = id; dirty = true; },
+    setOpen(id) {
+      // Let the window finish closing before the server fades back in.
+      if (!id && open) holdUntil = clock + (options.reducedMotion ? 0 : 0.22);
+      open = id;
+      dirty = true;
+    },
     setPaused(value) { paused = value; dirty = true; },
     dispose() {
       renderer.setAnimationLoop(null);

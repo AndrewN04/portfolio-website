@@ -332,7 +332,6 @@ a { text-underline-offset: 0.2em; }
   background: var(--plane);
   color: var(--text);
   box-shadow: 0 40px 120px -24px rgb(0 0 0 / 0.95), 0 12px 32px -12px rgb(0 0 0 / 0.8);
-  transform-origin: top left;
 }
 .vm-window::backdrop {
   background: rgb(2 2 3 / 0.62);

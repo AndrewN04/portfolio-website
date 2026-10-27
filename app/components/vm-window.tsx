@@ -12,13 +12,8 @@ import { ContactSection } from "./contact-section";
 const EASE_OUT = "cubic-bezier(0.16, 1, 0.3, 1)";
 const EASE_IN = "cubic-bezier(0.7, 0, 0.84, 0)";
 
-// The window grows out of (and shrinks back into) the server that opened it.
-function fromServer(dialog: HTMLElement, id: VmId) {
-  const to = dialog.getBoundingClientRect();
-  const from = document.querySelector(`[data-vm-link="${id}"]`)?.getBoundingClientRect();
-  if (!from?.width || !to.width) return "translateY(24px) scale(0.96)";
-  return `translate(${from.left - to.left}px, ${from.top - to.top}px) scale(${from.width / to.width}, ${from.height / to.height})`;
-}
+// Matches the rack: a server pulls out (~0.3s) and fades (0.18s) before its window pops up.
+const PULL_AND_FADE_MS = 470;
 
 const panels: Record<VmId, React.ReactNode> = {
   about: <AboutPanel />,
@@ -39,35 +34,44 @@ export function VmWindow() {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const body = dialog.querySelector<HTMLElement>(".vm-body");
     if (route && !dialog.open) {
-      dialog.classList.remove("closing");
-      dialog.showModal();
-      dialog.querySelector<HTMLElement>(`#vm-heading-${route}`)?.focus();
-      dialog.animate(
-        reduce ? [{ opacity: 0 }, { opacity: 1 }] : [{ transform: fromServer(dialog, route), opacity: 0.5 }, { transform: "none", opacity: 1 }],
-        { duration: reduce ? 160 : 560, easing: EASE_OUT },
-      );
-      if (!reduce) body?.animate([{ opacity: 0, transform: "translateY(12px)" }, { opacity: 1, transform: "none" }], { duration: 420, delay: 220, easing: EASE_OUT, fill: "backwards" });
-    } else if (route && dialog.open) {
-      // Reopened mid-close: stop shrinking and stay open.
+      const show = () => {
+        dialog.classList.remove("closing");
+        dialog.showModal();
+        dialog.querySelector<HTMLElement>(`#vm-heading-${route}`)?.focus();
+        dialog.animate(
+          reduce
+            ? [{ opacity: 0 }, { opacity: 1 }]
+            : [{ opacity: 0, transform: "scale(0.9)" }, { opacity: 1, transform: "scale(1.012)", offset: 0.65 }, { opacity: 1, transform: "none" }],
+          { duration: reduce ? 160 : 420, easing: EASE_OUT },
+        );
+        if (!reduce) body?.animate([{ opacity: 0, transform: "translateY(10px)" }, { opacity: 1, transform: "none" }], { duration: 380, delay: 140, easing: EASE_OUT, fill: "backwards" });
+      };
+      // Give the 3D server time to slide out and fade before the window appears.
+      if (reduce || !document.querySelector('.rack[data-mode="3d"]')) { show(); return; }
+      const timer = window.setTimeout(show, PULL_AND_FADE_MS);
+      return () => window.clearTimeout(timer);
+    }
+    if (route && dialog.open) {
+      // Reopened mid-close, or switched windows: stay open.
       dialog.getAnimations().forEach((animation) => animation.cancel());
       dialog.classList.remove("closing");
       body?.scrollTo({ top: 0 });
       if (!reduce) body?.animate([{ opacity: 0, transform: "translateX(10px)" }, { opacity: 1, transform: "none" }], { duration: 300, easing: EASE_OUT });
-    } else if (!route && dialog.open) {
+      return;
+    }
+    if (!route && dialog.open) {
       dialog.classList.add("closing");
       const exit = dialog.animate(
-        reduce ? [{ opacity: 1 }, { opacity: 0 }] : [{ transform: "none", opacity: 1 }, { transform: fromServer(dialog, shown), opacity: 0 }],
-        { duration: reduce ? 120 : 360, easing: EASE_IN },
+        reduce ? [{ opacity: 1 }, { opacity: 0 }] : [{ opacity: 1, transform: "none" }, { opacity: 0, transform: "scale(0.94)" }],
+        { duration: reduce ? 120 : 220, easing: EASE_IN },
       );
       const finish = () => { if (!vmFromHash(window.location.hash)) dialog.close(); dialog.classList.remove("closing"); };
       exit.onfinish = finish;
       exit.oncancel = finish;
       // Background tabs can stall animations; the window still has to close.
-      const timer = window.setTimeout(finish, (reduce ? 120 : 360) + 150);
+      const timer = window.setTimeout(finish, (reduce ? 120 : 220) + 150);
       return () => window.clearTimeout(timer);
     }
-    // `shown` only matters for the closing frame, which reads it at that moment.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [route]);
 
   return (
