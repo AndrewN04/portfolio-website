@@ -14,7 +14,7 @@ const martianMono = Martian_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "a04.dev",
+  title: "Andrew Nguyen · a04.dev",
   description:
     "Portfolio website for Andrew Nguyen, a software engineer and web developer crafting thoughtful, modern web experiences.",
   metadataBase: new URL("https://a04.dev"),

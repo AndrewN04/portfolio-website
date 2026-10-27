@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion, type PanInfo } from "framer-motion";
 import { ArrowLeft, ArrowRight, ArrowUpRight, Menu, X } from "lucide-react";
@@ -22,6 +22,7 @@ export function ProjectsGrid() {
   const [menuOpen, setMenuOpen] = useState(false);
   const tabs = useRef<(HTMLButtonElement | null)[]>([]);
   const toggle = useRef<HTMLButtonElement>(null);
+  const list = useRef<HTMLDivElement>(null);
   const project = projects[index];
 
   // Small screens show the list as a menu; closing it hands focus back to its button.
@@ -29,6 +30,29 @@ export function ProjectsGrid() {
     setMenuOpen(false);
     if (toggle.current?.offsetParent) toggle.current.focus();
   };
+
+  // Safari doesn't focus a tapped button, so focus events alone can't tell when a tap lands outside the menu.
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onPointerDown = (event: PointerEvent) => {
+      const target = event.target as Node;
+      if (!toggle.current?.contains(target) && !list.current?.contains(target)) setMenuOpen(false);
+    };
+    // Escape reaches the window as a cancel request; while the menu is open it closes the menu instead.
+    const dialog = toggle.current?.closest("dialog");
+    const onCancel = (event: Event) => {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      setMenuOpen(false);
+      if (toggle.current?.offsetParent) toggle.current.focus();
+    };
+    document.addEventListener("pointerdown", onPointerDown);
+    dialog?.addEventListener("cancel", onCancel, true);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      dialog?.removeEventListener("cancel", onCancel, true);
+    };
+  }, [menuOpen]);
 
   const select = (next: number, focus = false) => {
     const target = (next + projects.length) % projects.length;
@@ -52,8 +76,10 @@ export function ProjectsGrid() {
       <div
         className="guests"
         data-menu={menuOpen ? "open" : "closed"}
-        onBlur={(event) => { if (menuOpen && !event.currentTarget.contains(event.relatedTarget)) setMenuOpen(false); }}
-        onKeyDown={(event) => { if (event.key === "Escape" && menuOpen) { event.preventDefault(); closeMenu(); } }}
+        onBlur={(event) => {
+          const next = event.relatedTarget;
+          if (menuOpen && next && !toggle.current?.contains(next) && !list.current?.contains(next)) setMenuOpen(false);
+        }}
       >
         <button
           ref={toggle}
@@ -68,6 +94,7 @@ export function ProjectsGrid() {
           <span className="mono" aria-hidden="true">{index + 1} / {projects.length}</span>
         </button>
         <div
+          ref={list}
           role="tablist"
           id="guest-list"
           aria-orientation="vertical"
