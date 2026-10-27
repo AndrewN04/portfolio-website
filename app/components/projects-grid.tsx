@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion, type PanInfo } from "framer-motion";
-import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowUpRight, Menu, X } from "lucide-react";
 import { projects, type TechKey } from "../lib/projects";
 import { skillsRegistry, type SkillKey } from "../lib/skills";
 import { useMotionPaused } from "../lib/motion-pref";
@@ -19,8 +19,16 @@ function repoPath(link: string) {
 export function ProjectsGrid() {
   const paused = useMotionPaused();
   const [{ index, direction }, setSelection] = useState({ index: 0, direction: 1 });
+  const [menuOpen, setMenuOpen] = useState(false);
   const tabs = useRef<(HTMLButtonElement | null)[]>([]);
+  const toggle = useRef<HTMLButtonElement>(null);
   const project = projects[index];
+
+  // Small screens show the list as a menu; closing it hands focus back to its button.
+  const closeMenu = () => {
+    setMenuOpen(false);
+    if (toggle.current?.offsetParent) toggle.current.focus();
+  };
 
   const select = (next: number, focus = false) => {
     const target = (next + projects.length) % projects.length;
@@ -41,9 +49,27 @@ export function ProjectsGrid() {
         </a>
       </div>
 
-      <div className="guests">
+      <div
+        className="guests"
+        data-menu={menuOpen ? "open" : "closed"}
+        onBlur={(event) => { if (menuOpen && !event.currentTarget.contains(event.relatedTarget)) setMenuOpen(false); }}
+        onKeyDown={(event) => { if (event.key === "Escape" && menuOpen) { event.preventDefault(); closeMenu(); } }}
+      >
+        <button
+          ref={toggle}
+          type="button"
+          className="guest-toggle"
+          aria-expanded={menuOpen}
+          aria-controls="guest-list"
+          onClick={() => setMenuOpen((open) => !open)}
+        >
+          {menuOpen ? <X size={18} aria-hidden="true" /> : <Menu size={18} aria-hidden="true" />}
+          <span className="guest-toggle-label"><span className="sr-only">Projects menu: </span>{project.title}</span>
+          <span className="mono" aria-hidden="true">{index + 1} / {projects.length}</span>
+        </button>
         <div
           role="tablist"
+          id="guest-list"
           aria-orientation="vertical"
           aria-label="Projects"
           className="guest-list"
@@ -66,7 +92,7 @@ export function ProjectsGrid() {
               aria-controls="guest-panel"
               tabIndex={i === index ? 0 : -1}
               className="guest"
-              onClick={() => select(i)}
+              onClick={() => { select(i); if (menuOpen) closeMenu(); }}
             >
               <span className="guest-dot" data-dev={Boolean(item.status)} aria-hidden="true" />
               <span className="guest-name">{item.title}</span>
