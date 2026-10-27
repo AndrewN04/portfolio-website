@@ -61,8 +61,8 @@ export function CustomCursor() {
       transition={{ opacity: { duration: 0.15 } }}
       aria-hidden="true"
     >
-      {/* Hollow circle cursor */}
-      <div className="w-6 h-6 rounded-full border-2 border-white/60" />
+      {/* Hollow diamond cursor */}
+      <div className="w-5 h-5 rotate-45 rounded-[2px] border-[1.5px] border-[var(--z1)]" />
     </motion.div>
   );
 }

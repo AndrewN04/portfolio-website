@@ -33,7 +33,7 @@ export function ScrollToTopButton() {
         <motion.button
           type="button"
           onClick={scrollToTop}
-          className="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] sm:bottom-20 right-4 sm:right-6 z-50 inline-flex h-11 w-11 items-center justify-center rounded-full bg-black/85 backdrop-blur-sm shadow-lg border border-white/30 text-white transition hover:border-white/60"
+          className="keycap keycap-square fixed bottom-[max(1rem,env(safe-area-inset-bottom))] sm:bottom-20 right-4 sm:right-6 z-50"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}

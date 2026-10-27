@@ -39,7 +39,7 @@ export function RevealFooter() {
         {/* Base Text Layer - Semi-transparent muted */}
         <div
           id="footer-brand-text"
-          className="text-[clamp(4rem,14vw,11rem)] font-bold text-[#252930] select-none tracking-tight leading-none cursor-default footer-brand-text"
+          className="text-[clamp(4rem,14vw,11rem)] text-[#26262b] select-none tracking-tight leading-none cursor-default footer-brand-text"
         >
           a04.dev
         </div>
@@ -49,7 +49,7 @@ export function RevealFooter() {
           <motion.div
             style={{ clipPath }}
             aria-hidden="true"
-            className="absolute inset-0 text-[clamp(4rem,14vw,11rem)] font-bold text-white select-none tracking-tight leading-none cursor-default footer-brand-text"
+            className="absolute inset-0 text-[clamp(4rem,14vw,11rem)] text-[var(--text)] select-none tracking-tight leading-none cursor-default footer-brand-text"
           >
             a04.dev
           </motion.div>
@@ -67,7 +67,7 @@ export function RevealFooter() {
           {/* Right: Socials */}
           <div className="flex items-center gap-6 justify-center md:justify-end">
             <a
-              className="inline-flex min-h-11 min-w-11 items-center justify-center text-[var(--text-muted)] hover:text-white transition-colors"
+              className="inline-flex min-h-11 min-w-11 items-center justify-center text-[var(--text-muted)] hover:text-[var(--text)] transition-colors"
               href="https://github.com/AndrewN04"
               target="_blank"
               rel="noopener noreferrer"
@@ -87,7 +87,7 @@ export function RevealFooter() {
               </svg>
             </a>
             <a
-              className="inline-flex min-h-11 min-w-11 items-center justify-center text-[var(--text-muted)] hover:text-white transition-colors"
+              className="inline-flex min-h-11 min-w-11 items-center justify-center text-[var(--text-muted)] hover:text-[var(--text)] transition-colors"
               href="https://www.linkedin.com/in/adn2004/"
               target="_blank"
               rel="noopener noreferrer"

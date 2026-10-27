@@ -7,11 +7,20 @@ import { projects } from "../lib/projects";
 
 const ITEMS_PER_PAGE = 5;
 const TOTAL_PAGES = Math.ceil(projects.length / ITEMS_PER_PAGE);
-const slideVariants: Variants = {
-  enter: (direction: number) => ({ x: direction * 28, opacity: 0 }),
-  center: { x: 0, opacity: 1 },
-  exit: (direction: number) => ({ x: direction * -28, opacity: 0 }),
+const pageVariants: Variants = {
+  enter: {},
+  center: { transition: { staggerChildren: 0.05 } },
+  exit: { transition: { staggerChildren: 0.03, staggerDirection: -1 } },
 };
+const rowVariants: Variants = {
+  enter: (direction: number) => ({ rotateX: -75, y: direction * 18, opacity: 0 }),
+  center: { rotateX: 0, y: 0, opacity: 1 },
+  exit: (direction: number) => ({ rotateX: 75, y: direction * -18, opacity: 0 }),
+};
+
+function repoPath(link: string) {
+  return link.replace("https://github.com/", "");
+}
 
 export function ProjectsGrid() {
   const reducedMotion = useReducedMotion();
@@ -56,22 +65,18 @@ export function ProjectsGrid() {
   }, [navigate]);
 
   return (
-    <section id="projects" tabIndex={-1} aria-label="Projects" aria-roledescription="carousel" className="section-shell">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="section-heading">
-          <span className="section-index">02</span>
-          <div>
-            <h2 className="section-title">Projects</h2>
-            <p className="section-command"><span className="syntax-green">$</span> ls projects/</p>
-          </div>
-          <a className="button-secondary ml-auto" href="https://github.com/AndrewN04" target="_blank" rel="noopener noreferrer">
+    <section id="projects" tabIndex={-1} aria-label="Projects" aria-roledescription="carousel" className="section-shell" style={{ "--layer": "var(--z2)" } as React.CSSProperties}>
+      <div className="settle mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="section-head">
+          <h2 className="section-title"><span className="mask"><span>Projects</span></span></h2>
+          <a className="keycap" href="https://github.com/AndrewN04" target="_blank" rel="noopener noreferrer">
             GitHub <ArrowUpRight size={16} aria-hidden="true" /><span className="sr-only"> (opens in a new tab)</span>
           </a>
         </div>
 
         <div
           ref={carouselRef}
-          className="relative"
+          className="carousel-stage relative"
           tabIndex={0}
           aria-label="Project slides; use left and right arrow keys to browse"
           onKeyDown={(event) => {
@@ -85,11 +90,10 @@ export function ProjectsGrid() {
             <motion.div
               key={page}
               custom={direction}
-              variants={slideVariants}
+              variants={pageVariants}
               initial="enter"
               animate="center"
               exit="exit"
-              transition={{ duration: reducedMotion ? 0 : 0.28, ease: [0.22, 1, 0.36, 1] }}
               drag="x"
               dragConstraints={{ left: 0, right: 0 }}
               dragElastic={0.08}
@@ -97,30 +101,35 @@ export function ProjectsGrid() {
               style={{ touchAction: "pan-y" }}
               className="flex flex-col gap-2"
             >
-              {visibleProjects.map((project, index) => {
+              {visibleProjects.map((project) => {
                 const ProjectElement = project.link ? "a" : "div";
                 return (
-                  <article key={project.title} className="project-row group">
+                  <motion.article
+                    key={project.title}
+                    custom={direction}
+                    variants={rowVariants}
+                    transition={{ duration: reducedMotion ? 0 : 0.5, ease: [0.16, 1, 0.3, 1] }}
+                    className="project-row"
+                  >
                     <ProjectElement
                       href={project.link || undefined}
                       target={project.link ? "_blank" : undefined}
                       rel={project.link ? "noopener noreferrer" : undefined}
                       draggable={false}
-                      className="flex min-h-[88px] items-center gap-3 px-3 py-3 sm:gap-5 sm:px-5"
+                      className="project-link flex min-h-[92px] items-center gap-4 px-4 py-4 sm:gap-6 sm:px-6"
                     >
-                      <span className="hidden shrink-0 font-mono text-xs text-[var(--text-dim)] sm:inline" aria-hidden="true">
-                        {String(startIndex + index + 1).padStart(2, "0")}
-                      </span>
                       <div className="min-w-0 flex-1">
-                        <div className="mb-1 flex flex-wrap items-center gap-x-3 gap-y-1">
-                          <h3 className="text-base font-semibold leading-snug text-[var(--text)] sm:text-lg" title={project.title}>{project.title}</h3>
-                          {!project.link && <span className="inline-flex items-center gap-1.5 font-mono text-[11px] text-[#efc875]"><Clock3 size={12} aria-hidden="true" /> {project.status ?? "Planned"}</span>}
+                        <div className="mb-1 flex flex-wrap items-baseline gap-x-4 gap-y-1">
+                          <h3 className="text-lg font-bold leading-snug sm:text-xl" title={project.title}>{project.title}</h3>
+                          {project.link
+                            ? <span className="mono text-[11px] text-[var(--text-dim)]">{repoPath(project.link)}</span>
+                            : <span className="mono inline-flex items-center gap-1.5 text-[11px] text-[var(--z1)]"><Clock3 size={12} aria-hidden="true" /> {project.status ?? "Planned"}</span>}
                         </div>
-                        <p className="text-xs leading-relaxed text-[var(--text-muted)] sm:text-sm">{project.description}</p>
+                        <p className="text-sm leading-relaxed text-[var(--text-muted)]">{project.description}</p>
                       </div>
-                      {project.link && <ArrowUpRight className="h-4 w-4 shrink-0 text-[var(--text-muted)] transition-colors group-hover:text-[var(--blue)]" aria-hidden="true" />}
+                      {project.link && <span className="project-open" aria-hidden="true">Repo <ArrowUpRight size={14} /></span>}
                     </ProjectElement>
-                  </article>
+                  </motion.article>
                 );
               })}
             </motion.div>
@@ -130,15 +139,15 @@ export function ProjectsGrid() {
         <p className="sr-only" aria-live="polite" aria-atomic="true">Project set {page + 1} of {TOTAL_PAGES}</p>
         {TOTAL_PAGES > 1 && (
           <div className="mt-5 flex items-center justify-center gap-3" aria-label="Project carousel pagination">
-            <button type="button" onClick={() => navigate(-1)} className="carousel-button" aria-label="View previous projects"><ArrowLeft size={16} aria-hidden="true" /></button>
+            <button type="button" onClick={() => navigate(-1)} className="keycap keycap-square" aria-label="View previous projects"><ArrowLeft size={16} aria-hidden="true" /></button>
             <div className="flex items-center gap-1">
               {Array.from({ length: TOTAL_PAGES }, (_, index) => (
                 <button key={index} type="button" onClick={() => selectPage(index)} className="inline-flex h-11 min-w-11 items-center justify-center" aria-label={`Go to project set ${index + 1}`} aria-current={index === page ? "page" : undefined}>
-                  <span aria-hidden="true" className={`h-2 rounded-full transition-all ${index === page ? "w-7 bg-[var(--blue)]" : "w-2 bg-white/35 hover:bg-white/70"}`} />
+                  <span aria-hidden="true" className={`h-2 rounded-[1px] transition-all duration-500 ${index === page ? "w-8 bg-[var(--z2)]" : "w-2 bg-white/35 hover:bg-white/70"}`} />
                 </button>
               ))}
             </div>
-            <button type="button" onClick={() => navigate(1)} className="carousel-button" aria-label="View next projects"><ArrowRight size={16} aria-hidden="true" /></button>
+            <button type="button" onClick={() => navigate(1)} className="keycap keycap-square" aria-label="View next projects"><ArrowRight size={16} aria-hidden="true" /></button>
           </div>
         )}
       </div>

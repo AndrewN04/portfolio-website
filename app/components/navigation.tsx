@@ -5,9 +5,9 @@ import { useRef, useState } from "react";
 import { Menu, X } from "lucide-react";
 
 const items = [
-  { id: "skills", label: "skills" },
-  { id: "projects", label: "projects" },
-  { id: "contact", label: "contact" },
+  { id: "skills", label: "Skills", layer: "var(--z1)" },
+  { id: "projects", label: "Projects", layer: "var(--z2)" },
+  { id: "contact", label: "Contact", layer: "var(--z3)" },
 ] as const;
 
 export function Navigation() {
@@ -23,18 +23,17 @@ export function Navigation() {
           menuButtonRef.current?.focus();
         }
       }}
-      className="site-nav sticky top-0 z-50 border-b border-[var(--rule)] bg-[var(--canvas)]"
+      className="site-nav sticky top-0 z-50 border-b border-[var(--edge)]"
     >
       <div className="mx-auto flex min-h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
         <Link href="/" className="brand-mark" aria-label="a04.dev home">
-          <span className="syntax-blue">./</span>a04<span className="syntax-green">.dev</span>
+          <span className="brand-cap" aria-hidden="true">A04</span>a04.dev
         </Link>
 
         <div className="hidden items-center gap-8 md:flex">
-          {items.map(({ id, label }, index) => (
-            <a key={id} href={`#${id}`} className="nav-link">
-              <span className="text-[var(--text-dim)]">0{index + 1}</span>
-              <span className="syntax-green">$</span> {label}
+          {items.map(({ id, label, layer }) => (
+            <a key={id} href={`#${id}`} className="nav-link" style={{ "--dot": layer } as React.CSSProperties}>
+              {label}
             </a>
           ))}
         </div>
@@ -53,16 +52,16 @@ export function Navigation() {
       </div>
 
       {mobileMenuOpen && (
-        <div id="mobile-menu" className="border-t border-[var(--rule)] px-4 py-2 md:hidden">
-          {items.map(({ id, label }, index) => (
+        <div id="mobile-menu" className="border-t border-[var(--edge)] px-4 py-2 md:hidden">
+          {items.map(({ id, label, layer }) => (
             <a
               key={id}
               href={`#${id}`}
               onClick={() => setMobileMenuOpen(false)}
               className="nav-link flex min-h-12 items-center gap-2"
+              style={{ "--dot": layer } as React.CSSProperties}
             >
-              <span className="text-[var(--text-dim)]">0{index + 1}</span>
-              <span className="syntax-green">$</span> {label}
+              {label}
             </a>
           ))}
         </div>
