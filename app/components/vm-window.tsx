@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { Power, Server } from "lucide-react";
 import { vms, vmFromHash, type VmId } from "../lib/vms";
 import { closeVm, openVm, useShownVm, useVmRoute } from "../lib/hooks/use-vm-route";
+import { getMotionPaused } from "../lib/motion-pref";
 import { AboutPanel } from "./about-panel";
 import { SkillsSection } from "./skills-section";
 import { ProjectsGrid } from "./projects-grid";
@@ -31,7 +32,8 @@ export function VmWindow() {
   useEffect(() => {
     const dialog = dialogRef.current;
     if (!dialog) return;
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    // The site's Pause motion toggle, not the OS setting, turns these transitions off (owner's call).
+    const reduce = getMotionPaused();
     const body = dialog.querySelector<HTMLElement>(".vm-body");
     if (route && !dialog.open) {
       const show = () => {

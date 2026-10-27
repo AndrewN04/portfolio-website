@@ -2,10 +2,11 @@
 
 import { useRef, useState } from "react";
 import Image from "next/image";
-import { AnimatePresence, motion, useReducedMotion, type PanInfo } from "framer-motion";
+import { AnimatePresence, motion, type PanInfo } from "framer-motion";
 import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
 import { projects, type TechKey } from "../lib/projects";
 import { skillsRegistry, type SkillKey } from "../lib/skills";
+import { useMotionPaused } from "../lib/motion-pref";
 
 const extraLabels: Partial<Record<TechKey, string>> = { opencv: "OpenCV", tensorflow: "TensorFlow", sqlite: "SQLite", neon: "Neon" };
 const registered = (key: TechKey): key is TechKey & SkillKey => key in skillsRegistry;
@@ -16,7 +17,7 @@ function repoPath(link: string) {
 }
 
 export function ProjectsGrid() {
-  const reducedMotion = useReducedMotion();
+  const paused = useMotionPaused();
   const [{ index, direction }, setSelection] = useState({ index: 0, direction: 1 });
   const tabs = useRef<(HTMLButtonElement | null)[]>([]);
   const project = projects[index];
@@ -81,7 +82,7 @@ export function ProjectsGrid() {
               initial={{ opacity: 0, x: direction * 28 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: direction * -28 }}
-              transition={{ duration: reducedMotion ? 0 : 0.35, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: paused ? 0 : 0.35, ease: [0.16, 1, 0.3, 1] }}
               drag="x"
               dragConstraints={{ left: 0, right: 0 }}
               dragElastic={0.08}

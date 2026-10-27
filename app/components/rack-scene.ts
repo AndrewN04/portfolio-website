@@ -7,7 +7,6 @@ export type Quad = [number, number][];
 export type RackOptions = {
   displayFont: string;
   monoFont: string;
-  reducedMotion: boolean;
   paused: boolean;
   onLayout: (quads: Record<VmId, Quad>) => void;
   onReady: () => void;
@@ -557,7 +556,7 @@ export function createRack(canvas: HTMLCanvasElement, options: RackOptions): Rac
   let dirty = true;
   let clock = 0;
   let holdUntil = 0;
-  const nudge = options.reducedMotion ? -1 : 1.6;
+  const nudge = options.paused ? -1 : 1.6;
   const PULLED = 1.15;
 
   function tick(dt: number) {
@@ -567,16 +566,16 @@ export function createRack(canvas: HTMLCanvasElement, options: RackOptions): Rac
     for (const server of servers) {
       // Opening: pull all the way out, then fade away. Closing: fade back in where it was, then slide home.
       const opening = server.vm.id === open;
-      const fadeTarget = opening ? (server.slide > PULLED - 0.07 || options.reducedMotion ? 0 : 1) : clock < holdUntil ? server.fade : 1;
-      const fadeNext = options.reducedMotion ? fadeTarget : server.fade + Math.sign(fadeTarget - server.fade) * Math.min(Math.abs(fadeTarget - server.fade), dt / 0.18);
+      const fadeTarget = opening ? (server.slide > PULLED - 0.07 || paused ? 0 : 1) : clock < holdUntil ? server.fade : 1;
+      const fadeNext = paused ? fadeTarget : server.fade + Math.sign(fadeTarget - server.fade) * Math.min(Math.abs(fadeTarget - server.fade), dt / 0.18);
       if (fadeNext !== fadeTarget) moving = true;
       server.fade = fadeNext;
       const out = opening ? PULLED : server.fade < 1 ? server.slide : server.vm.id === hover ? 0.32 : nudge > 0 && clock > nudge && clock < nudge + 0.55 && server === servers[0] ? 0.32 : 0;
-      const next = options.reducedMotion ? out : server.slide + (out - server.slide) * (1 - Math.exp(-dt * 11));
+      const next = paused ? out : server.slide + (out - server.slide) * (1 - Math.exp(-dt * 11));
       if (Math.abs(next - out) < 0.002) server.slide = out;
       else { server.slide = next; moving = true; }
       server.group.position.z = server.baseZ + server.slide;
-      const lit = options.reducedMotion || paused ? 1 : THREE.MathUtils.clamp((clock - server.bootAt) / 0.35, 0, 1);
+      const lit = paused ? 1 : THREE.MathUtils.clamp((clock - server.bootAt) / 0.35, 0, 1);
       if (lit < 1) moving = true;
       const focus = Math.min(1, server.slide / 0.32);
       server.group.visible = server.fade > 0.01;
@@ -584,11 +583,11 @@ export function createRack(canvas: HTMLCanvasElement, options: RackOptions): Rac
       server.face.emissiveIntensity = lit * (0.85 + focus * 0.5);
       server.power.material.opacity = lit * (0.7 + focus * 0.3) * server.fade;
       server.outline.material.opacity = (server.vm.id === hover || opening ? focus : 0) * server.fade;
-      for (const led of server.activity) led.mesh.visible = lit > 0 && server.fade > 0.5 && (paused || options.reducedMotion || Math.sin(clock * led.rate + led.seed) > -0.2 || Math.sin(clock * 3.1 + led.seed) > 0.7);
+      for (const led of server.activity) led.mesh.visible = lit > 0 && server.fade > 0.5 && (paused || Math.sin(clock * led.rate + led.seed) > -0.2 || Math.sin(clock * 3.1 + led.seed) > 0.7);
     }
     if (nudge > 0 && clock < nudge + 1) moving = true;
-    for (const led of ambientLeds) led.mesh.visible = paused || options.reducedMotion || Math.sin(clock * led.rate + led.seed * 3) > -0.4;
-    const animate = !paused && !options.reducedMotion && !open;
+    for (const led of ambientLeds) led.mesh.visible = paused || Math.sin(clock * led.rate + led.seed * 3) > -0.4;
+    const animate = !paused && !open;
     if (!moving && !animate && !dirty) return;
     if (moving || dirty) layout();
     dirty = false;
@@ -621,7 +620,7 @@ export function createRack(canvas: HTMLCanvasElement, options: RackOptions): Rac
     setHover(id) { hover = id; dirty = true; },
     setOpen(id) {
       // Let the window finish closing before the server fades back in.
-      if (!id && open) holdUntil = clock + (options.reducedMotion ? 0 : 0.22);
+      if (!id && open) holdUntil = clock + (paused ? 0 : 0.22);
       open = id;
       dirty = true;
     },

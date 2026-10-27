@@ -32,7 +32,6 @@ export function ParticleWord({ word, words, paused, suspended }: { word: string;
           font: getComputedStyle(slot).fontFamily,
           words,
           word: wordRef.current,
-          reducedMotion: window.matchMedia("(prefers-reduced-motion: reduce)").matches,
           paused: getMotionPaused(),
           onReady: () => { if (!disposed) setLive(true); },
         });

@@ -5,7 +5,6 @@ export type ParticleOptions = {
   font: string;
   words: readonly string[];
   word: string;
-  reducedMotion: boolean;
   paused: boolean;
   onReady: () => void;
 };
@@ -188,7 +187,7 @@ export function createParticles(canvas: HTMLCanvasElement, options: ParticleOpti
       if (next === word) return;
       word = next;
       if (!ready) return;
-      if (!options.reducedMotion) scatter(0.3);
+      if (!paused) scatter(0.3);
       sample();
       needsFrame = true;
     },

@@ -48,7 +48,6 @@ export function Rack() {
         handleRef.current = createRack(canvas, {
           displayFont: fonts.getPropertyValue("--font-display"),
           monoFont: fonts.getPropertyValue("--font-mono"),
-          reducedMotion: window.matchMedia("(prefers-reduced-motion: reduce)").matches,
           paused: getMotionPaused(),
           onLayout: place,
           onReady: () => { if (!disposed) setMode("3d"); },
