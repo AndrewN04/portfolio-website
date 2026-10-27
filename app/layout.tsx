@@ -1,21 +1,20 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, Fira_Code } from "next/font/google";
+import { Archivo, Martian_Mono } from "next/font/google";
 import "./globals.css";
 
-const spaceGrotesk = Space_Grotesk({
+const archivo = Archivo({
   variable: "--font-display",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  axes: ["wdth"],
 });
 
-const firaCode = Fira_Code({
+const martianMono = Martian_Mono({
   variable: "--font-mono",
   subsets: ["latin"],
-  weight: ["400", "500"],
 });
 
 export const metadata: Metadata = {
-  title: "a04.dev",
+  title: "Andrew Nguyen · a04.dev",
   description:
     "Portfolio website for Andrew Nguyen, a software engineer and web developer crafting thoughtful, modern web experiences.",
   metadataBase: new URL("https://a04.dev"),
@@ -45,7 +44,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
-        className={`${spaceGrotesk.variable} ${firaCode.variable} antialiased`}
+        className={`${archivo.variable} ${martianMono.variable} antialiased`}
       >
         {children}
       </body>

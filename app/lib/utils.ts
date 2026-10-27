@@ -1,14 +1,4 @@
 /**
- * Smoothly scrolls to a section by ID without updating the browser URL
- */
-export const scrollToSection = (id: string): void => {
-  const section = document.getElementById(id);
-  if (!section) return;
-  section.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" });
-  section.focus({ preventScroll: true });
-};
-
-/**
  * Checks if the current device has a coarse pointer (touch device)
  * Safe to call during SSR - returns true as fallback (hides touch-specific features)
  */

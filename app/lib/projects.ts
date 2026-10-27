@@ -1,4 +1,4 @@
-// Tech key type for project tech stacks (currently unused in UI but kept for data structure)
+// Tech stack keys, shown as chips in the Projects window
 export type TechKey =
     | "nextjs"
     | "postgres"
@@ -65,7 +65,7 @@ export const projects: Project[] = [
     {
         title: "Proxmox Homelab: Media Automation + Game Server",
         description:
-            "Homelab on Proxmox with isolated VMs for NAS/media, infrastructure, and gaming. Services include Jellyfin, the *arr stack, RomM, and Crafty/Minecraft, with WireGuard remote access and VPN-isolated torrenting via Gluetun + qSticky.",
+            "Homelab on Proxmox with isolated VMs for NAS/media, infrastructure, and gaming. Services include Jellyfin, the *arr stack, RomM, and Crafty/Minecraft, with WireGuard remote access.",
         link: "https://github.com/AndrewN04/proxmox-homelab",
         tech: ["docker", "linux"],
     },
